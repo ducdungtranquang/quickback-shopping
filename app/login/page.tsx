@@ -24,7 +24,7 @@ const LoginPage = () => {
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
               Sign in to your account
             </h1>
-            <form className="space-y-4 md:space-y-6" action="#">
+            <div className="space-y-4 md:space-y-6">
               <InputSection
                 type="email"
                 name="email"
@@ -90,7 +90,7 @@ const LoginPage = () => {
                   Sign up
                 </Link>
               </p>
-            </form>
+            </div>
           </div>
         </div>
       </div>

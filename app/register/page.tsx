@@ -10,6 +10,11 @@ import { useState } from "react";
 
 const RegisterPage = () => {
   const { isAnimating, handleNavigation } = useAnimateNavigation("/login");
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const handleRegis = () => {};
 
   return (
     <section
@@ -24,7 +29,7 @@ const RegisterPage = () => {
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
               Create an account
             </h1>
-            <form className="space-y-4 md:space-y-6">
+            <div className="space-y-4 md:space-y-6">
               <InputSection
                 type="email"
                 name="email"
@@ -32,6 +37,8 @@ const RegisterPage = () => {
                 placeholder="name@gmail.com"
                 required={true}
                 label="Your email"
+                value={email}
+                onChange={(el) => setEmail(el.target.value)}
               />
               <InputSection
                 type="password"
@@ -40,6 +47,8 @@ const RegisterPage = () => {
                 placeholder="••••••••"
                 required={true}
                 label="Password"
+                value={password}
+                onChange={(el) => setPassword(el.target.value)}
               />
               <InputSection
                 type="password"
@@ -48,6 +57,12 @@ const RegisterPage = () => {
                 placeholder="••••••••"
                 required={true}
                 label="Confirm password"
+                value={confirmPassword}
+                onChange={(el) => setConfirmPassword(el.target.value)}
+                showError={
+                  confirmPassword !== password && confirmPassword.length > 0
+                }
+                contentError="Wrong password"
               />
               <div className="flex items-start">
                 <div className="flex items-center h-5">
@@ -73,7 +88,11 @@ const RegisterPage = () => {
                   </label>
                 </div>
               </div>
-              <BasicButton text="Create an account" type="submit" />
+              <BasicButton
+                text="Create an account"
+                type="submit"
+                onClick={handleRegis}
+              />
               <BasicButton
                 text="Sign in with Google"
                 type="submit"
@@ -94,7 +113,7 @@ const RegisterPage = () => {
                   Login here
                 </Link>
               </p>
-            </form>
+            </div>
           </div>
         </div>
       </div>
