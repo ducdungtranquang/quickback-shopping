@@ -18,6 +18,7 @@ interface IInputProps {
   styleInput?: HTMLAttributes<HTMLInputElement>;
   showError?: boolean;
   contentError?: string;
+  disabled?: boolean;
 }
 
 const InputSection = (props: IInputProps) => {
@@ -33,6 +34,7 @@ const InputSection = (props: IInputProps) => {
         </label>
       ) : null}
       <input
+        disabled={props.disabled}
         type={props.type}
         name={props.name}
         id={props.id}

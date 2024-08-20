@@ -1,8 +1,8 @@
 "use client";
 
 import LogoComponent from "@/components/logo";
-import BasicButton from "@/components/minnor/button/basic-button";
-import InputSection from "@/components/minnor/input/input";
+import BasicButton from "@/components/button/basic-button";
+import InputSection from "@/components/input/input";
 import useAnimateNavigation from "@/hook/useAnimateNavigation";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -12,6 +12,7 @@ const RegisterPage = () => {
   const { isAnimating, handleNavigation } = useAnimateNavigation("/login");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const handleRegis = () => {};
@@ -39,6 +40,16 @@ const RegisterPage = () => {
                 label="Your email"
                 value={email}
                 onChange={(el) => setEmail(el.target.value)}
+              />
+              <InputSection
+                type="text"
+                name="name"
+                id="name"
+                placeholder="Name"
+                required={true}
+                label="Your name"
+                value={name}
+                onChange={(el) => setName(el.target.value)}
               />
               <InputSection
                 type="password"
@@ -96,7 +107,7 @@ const RegisterPage = () => {
               <BasicButton
                 text="Sign in with Google"
                 type="submit"
-                variant="plain"
+                variant="basic"
               />
               <BasicButton
                 text="Sign in with Telegram"

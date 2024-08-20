@@ -1,5 +1,5 @@
 import Image from "next/image";
-import BasicButton from "../minnor/button/basic-button";
+import BasicButton from "../button/basic-button";
 import { HTMLAttributes } from "react";
 
 interface IProductCard {

@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import LogoComponent from "@/components/logo";
-import BasicButton from "@/components/minnor/button/basic-button";
-import InputSection from "@/components/minnor/input/input";
+import BasicButton from "@/components/button/basic-button";
+import InputSection from "@/components/input/input";
 import Link from "next/link";
 import useAnimateNavigation from "@/hook/useAnimateNavigation";
 
