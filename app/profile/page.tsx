@@ -36,7 +36,7 @@ const UserProfile = () => {
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4 px-6">
       <div className="flex flex-col md:flex-row gap-4">
         {/* Profile Card */}
         <div className="w-full md:w-1/3 bg-white rounded-lg shadow p-4">
