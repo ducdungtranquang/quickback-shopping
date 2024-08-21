@@ -1,4 +1,4 @@
-import { ChangeEventHandler, useState } from "react";
+import { ChangeEventHandler, HTMLAttributes, useState } from "react";
 
 interface IAutoComplete {
   categories?: string[];
@@ -9,12 +9,13 @@ interface IAutoComplete {
   onSearch?: () => void;
   value?: string;
   onChange?: ChangeEventHandler<HTMLInputElement> | undefined;
+  styles?: HTMLAttributes<HTMLDivElement>;
 }
 
 const AutoCompleteSearch = (props: IAutoComplete) => {
   const [showDropdown, setShowDropdown] = useState(false);
   return (
-    <div className="px-6 py-8">
+    <div className={` py-2 px-2`} style={props.styles}>
       <div className="flex relative">
         <label
           htmlFor="search-dropdown"
