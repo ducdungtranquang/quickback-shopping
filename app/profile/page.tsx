@@ -11,10 +11,8 @@ const UserProfile = () => {
     email: "john.doe@example.com",
     phone: "+123456789",
     company: "Example Inc.",
-    jobTitle: "Software Engineer",
     address: "123 Main St",
     city: "New York",
-    state: "NY",
     zip: "10001",
     bankAccount: "0123456789",
     coinsEarned: "500",
@@ -47,14 +45,14 @@ const UserProfile = () => {
               alt="User Avatar"
             />
             <h2 className="mt-4 text-xl font-semibold">{formData.fullName}</h2>
-            <BasicButton text="Update your photo" variant="basic" />
+            <BasicButton text="Cập nhật ảnh" variant="basic" />
           </div>
         </div>
 
         {/* Account Details */}
         <div className="w-full md:w-2/3 bg-white rounded-lg shadow p-4">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-semibold">Account Details</h3>
+            <h3 className="text-lg font-semibold">Thông tin chi tiết</h3>
             <button
               onClick={() => setIsEditing(!isEditing)}
               className="text-sm text-blue-600"
@@ -65,14 +63,12 @@ const UserProfile = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {[
-              { label: "Full Name", name: "fullName" },
+              { label: "Họ tên", name: "fullName" },
               { label: "Email", name: "email" },
-              { label: "Phone", name: "phone" },
-              { label: "Company", name: "company" },
-              { label: "Job Title", name: "jobTitle" },
-              { label: "Address", name: "address" },
-              { label: "City", name: "city" },
-              { label: "State", name: "state" },
+              { label: "Số điện thoại", name: "phone" },
+              { label: "Công ty", name: "company" },
+              { label: "Địa chỉ", name: "address" },
+              { label: "Thành phố", name: "city" },
               { label: "Zip Code", name: "zip" },
             ].map(({ label, name }) => (
               <div key={name}>
@@ -92,11 +88,20 @@ const UserProfile = () => {
 
       {/* Bank Details */}
       <div className="mt-4 bg-white rounded-lg shadow p-4">
-        <h3 className="text-lg font-semibold mb-4">Bank & Rewards</h3>
+        <h3 className="text-lg font-semibold mb-4">Ngân hàng & phần thưởng</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <InputSection
-              label="Bank Account"
+              label="Số tài khoản"
+              value={formData.bankAccount}
+              onChange={handleInputChange}
+              disabled={!isEditing}
+              styleInput={styleInput}
+            />
+          </div>
+          <div>
+            <InputSection
+              label="Ngân hàng"
               value={formData.bankAccount}
               onChange={handleInputChange}
               disabled={!isEditing}
@@ -106,7 +111,7 @@ const UserProfile = () => {
 
           <div>
             <InputSection
-              label="Coins Earned"
+              label="Tổng số xu"
               value={formData.coinsEarned}
               onChange={handleInputChange}
               disabled={!isEditing}
@@ -116,7 +121,7 @@ const UserProfile = () => {
 
           <div className="md:col-span-2 flex justify-end">
             <BasicButton
-              text="History"
+              text="Lịch sử"
               styles={
                 {
                   maxWidth: "175px",
@@ -125,7 +130,7 @@ const UserProfile = () => {
               }
             />
             <BasicButton
-              text="Withdraw"
+              text="Rút"
               variant="success"
               styles={
                 { maxWidth: "175px" } as HTMLAttributes<HTMLButtonElement>

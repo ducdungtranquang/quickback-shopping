@@ -28,7 +28,7 @@ const RegisterPage = () => {
         <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-              Create an account
+              Tạo tài khoản
             </h1>
             <div className="space-y-4 md:space-y-6">
               <InputSection
@@ -37,7 +37,7 @@ const RegisterPage = () => {
                 id="email"
                 placeholder="name@gmail.com"
                 required={true}
-                label="Your email"
+                label="Email"
                 value={email}
                 onChange={(el) => setEmail(el.target.value)}
               />
@@ -47,7 +47,7 @@ const RegisterPage = () => {
                 id="name"
                 placeholder="Name"
                 required={true}
-                label="Your name"
+                label="Tên"
                 value={name}
                 onChange={(el) => setName(el.target.value)}
               />
@@ -57,7 +57,7 @@ const RegisterPage = () => {
                 id="password"
                 placeholder="••••••••"
                 required={true}
-                label="Password"
+                label="Mật khẩu"
                 value={password}
                 onChange={(el) => setPassword(el.target.value)}
               />
@@ -67,7 +67,7 @@ const RegisterPage = () => {
                 id="confirm-password"
                 placeholder="••••••••"
                 required={true}
-                label="Confirm password"
+                label="Xác nhận mật khẩu"
                 value={confirmPassword}
                 onChange={(el) => setConfirmPassword(el.target.value)}
                 showError={
@@ -89,39 +89,39 @@ const RegisterPage = () => {
                     htmlFor="terms"
                     className="font-light text-gray-500 dark:text-gray-300"
                   >
-                    I accept the{" "}
+                    Tôi đồng ý{" "}
                     <a
                       className="font-medium text-primary-600 hover:underline dark:text-primary-500"
                       href="#"
                     >
-                      Terms and Conditions
+                      Chính sách và Điều kiện
                     </a>
                   </label>
                 </div>
               </div>
               <BasicButton
-                text="Create an account"
+                text="Tạo tài khoản"
                 type="submit"
                 onClick={handleRegis}
               />
               <BasicButton
-                text="Sign in with Google"
+                text="Đăng nhập bằng Google"
                 type="submit"
                 variant="basic"
               />
               <BasicButton
-                text="Sign in with Telegram"
+                text="Đăng nhập bằng Telegram"
                 type="submit"
                 variant="plain"
               />
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                Already have an account?{" "}
+                Đã có tài khoản?{" "}
                 <Link
                   href="/login"
                   className="font-medium text-primary-600 hover:underline dark:text-primary-500"
                   onClick={handleNavigation}
                 >
-                  Login here
+                  Đăng nhập ngay
                 </Link>
               </p>
             </div>

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import BasicButton from "../button/basic-button";
 import { HTMLAttributes } from "react";
+import Link from "next/link";
 
 interface IProductCard {
   cost: number;
@@ -9,6 +10,7 @@ interface IProductCard {
   link: string;
   src: string;
   commission: number;
+  shopLink: string;
 }
 
 const ProductCard = (props: IProductCard) => {
@@ -25,22 +27,30 @@ const ProductCard = (props: IProductCard) => {
         />
       </a>
       <div className="px-5 pb-5">
-        <a href={props.link}>
-          <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
-            {props.name}
-          </h5>
-          <div className="font-semibold tracking-tight text-gray-900 dark:text-white mb-[20px]">
-            {props.shop}
+        <div>
+          <div>
+            <Link
+              href={props.link}
+              className="text-medium font-semibold tracking-tight text-gray-900 dark:text-white"
+            >
+              {props.name}
+            </Link>
           </div>
-        </a>
-        <div className="flex items-center justify-between mb-[20px] flex-col md:flex-row">
+          <Link
+            href={"/"}
+            className=" font-normal text-primary-600 hover:underline dark:text-primary-500 mb-[20px]"
+          >
+            {props.shop}
+          </Link>
+        </div>
+        <div className="flex items-center justify-between sm:mb-[20px] flex-col md:flex-row">
           <span className="text-xl font-bold text-gray-900 dark:text-white">
             {props.commission}%
           </span>
           <BasicButton
-            styles={{ width: "90px" } as HTMLAttributes<HTMLButtonElement>}
+            styles={{ width: "60px" } as HTMLAttributes<HTMLButtonElement>}
             variant="success"
-            text="Save"
+            text="Lưu"
           />
         </div>
         <div className="flex items-center justify-between flex-col md:flex-row">
@@ -51,7 +61,7 @@ const ProductCard = (props: IProductCard) => {
             href={props.link}
             className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           >
-            Buy now
+            Mua
           </a>
         </div>
       </div>
