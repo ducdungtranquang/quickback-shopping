@@ -1,4 +1,10 @@
-import { ChangeEventHandler, HTMLAttributes, useState } from "react";
+import {
+  ChangeEventHandler,
+  HTMLAttributes,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 interface IAutoComplete {
   categories?: string[];
@@ -14,24 +20,47 @@ interface IAutoComplete {
 
 const AutoCompleteSearch = (props: IAutoComplete) => {
   const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  const handleClickOutside = (event: MouseEvent) => {
+    // Kiểm tra nếu click xảy ra bên ngoài dropdown hoặc nút "Danh mục"
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target as Node) &&
+      buttonRef.current &&
+      !buttonRef.current.contains(event.target as Node)
+    ) {
+      setShowDropdown(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div className={` py-2 px-2`} style={props.styles}>
+    <div className={`py-2 px-2`} style={props.styles}>
       <div className="flex relative">
         <label
           htmlFor="search-dropdown"
           className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
         >
-          Your Email
+          Danh mục
         </label>
         {!props.isHiddenCategory && (
           <>
             <button
+              ref={buttonRef}
               id="dropdown-button"
               className="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-e-0 border-gray-300 dark:border-gray-700 dark:text-white rounded-s-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-300 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800"
               type="button"
               onClick={() => setShowDropdown(!showDropdown)}
             >
-              All categories{" "}
+              Danh mục{" "}
               <svg
                 className="w-2.5 h-2.5 ms-2.5"
                 aria-hidden="true"
@@ -51,14 +80,15 @@ const AutoCompleteSearch = (props: IAutoComplete) => {
             {showDropdown && (
               <div
                 id="dropdown"
-                className="absolute top-[50px] z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
+                className="w-full absolute top-[50px] z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
+                ref={dropdownRef}
               >
                 <ul
-                  className="py-2 text-sm text-gray-700 dark:text-gray-200"
+                  className="py-2 text-sm text-gray-700 dark:text-gray-200 flex gap-4 justify-around flex-wrap"
                   aria-labelledby="dropdown-button"
                 >
                   {props.categories?.map((item, i) => (
-                    <li key={i}>
+                    <li className="w-[20%] cursor-pointer " key={i}>
                       <div className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                         {item}
                       </div>
@@ -75,7 +105,7 @@ const AutoCompleteSearch = (props: IAutoComplete) => {
             type="search"
             id="search-dropdown"
             className="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg rounded-s-gray-100 rounded-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
-            placeholder={props.placeholder || "Search"}
+            placeholder={props.placeholder || "Tìm kiếm"}
             value={props.value}
           />
           <button

@@ -1,3 +1,7 @@
+import BasicButton from "@/components/button/basic-button";
+import InputSection from "@/components/input/input";
+import { HTMLAttributes } from "react";
+
 /* eslint-disable @next/next/no-img-element */
 export default function ProductPage() {
   return (
@@ -14,32 +18,32 @@ export default function ProductPage() {
             </div>
             <div className="flex -mx-2 mb-4">
               <div className="w-1/2 px-2">
-                <button className="w-full bg-gray-900 dark:bg-gray-600 text-white py-2 px-4 rounded-full font-bold hover:bg-gray-800 dark:hover:bg-gray-700">
-                  Buy now
+                <button className="text-[16px] w-full bg-gray-900 dark:bg-gray-600 text-white py-2 px-4 rounded-full font-bold hover:bg-gray-800 dark:hover:bg-gray-700">
+                  Mua
                 </button>
               </div>
               <div className="w-1/2 px-2">
-                <button className="w-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white py-2 px-4 rounded-full font-bold hover:bg-gray-300 dark:hover:bg-gray-600">
-                  Save
+                <button className="text-[16px] w-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white py-2 px-4 rounded-full font-bold hover:bg-gray-300 dark:hover:bg-gray-600">
+                  Lưu
                 </button>
               </div>
             </div>
           </div>
           <div className="md:flex-1 px-4">
-            <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">
-              Product Name
+            <h2 className="text-xl font-bold text-gray-800 dark:text-white mb-2">
+              Tên sản phẩm
             </h2>
             <p className="text-gray-600 dark:text-gray-300 text-sm mb-4">
               ABC Test
             </p>
 
-            <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">
-              Shop
+            <h2 className="text-xl font-bold text-gray-800 dark:text-white mb-2">
+              Cửa hàng
             </h2>
             <p className="text-gray-600 dark:text-gray-300 text-sm mb-4">ABC</p>
 
-            <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">
-              Type
+            <h2 className="text-xl font-bold text-gray-800 dark:text-white mb-2">
+              Danh mục
             </h2>
             <p className="text-gray-600 dark:text-gray-300 text-sm mb-4">
               Clothes - Test -Test
@@ -47,20 +51,35 @@ export default function ProductPage() {
             <div className="flex mb-4">
               <div className="mr-4">
                 <span className="font-bold text-gray-700 dark:text-gray-300">
-                  Price:
+                  Giá:{" "}
                 </span>
                 <span className="text-gray-600 dark:text-gray-300">$29.99</span>
               </div>
               <div>
                 <span className="font-bold text-gray-700 dark:text-gray-300">
-                  Commission:
+                  Hoàn:{" "}
                 </span>
                 <span className="text-gray-600 dark:text-gray-300">1%</span>
               </div>
             </div>
+
+            <div className="mb-[20px]">
+              <InputSection label="Mã đơn hàng" placeholder="Nhập ..." />
+              <BasicButton
+                styles={
+                  {
+                    maxWidth: "150px",
+                    marginTop: "10px",
+                  } as HTMLAttributes<HTMLButtonElement>
+                }
+                text="Gửi"
+                variant="success"
+              />
+            </div>
+
             <div>
               <span className="font-bold text-gray-700 dark:text-gray-300">
-                Note:
+                Lưu ý:
               </span>
               <p className="text-gray-600 dark:text-gray-300 text-sm mt-2">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sed

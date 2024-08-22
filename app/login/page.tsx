@@ -22,7 +22,7 @@ const LoginPage = () => {
         <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-              Sign in to your account
+              Đăng nhập
             </h1>
             <div className="space-y-4 md:space-y-6">
               <InputSection
@@ -31,7 +31,7 @@ const LoginPage = () => {
                 id="email"
                 placeholder="name@gmail.com"
                 required={true}
-                label="Your email"
+                label="Email"
                 showError={true}
               />
               <InputSection
@@ -40,17 +40,17 @@ const LoginPage = () => {
                 id="password"
                 placeholder="••••••••"
                 required={true}
-                label="Password"
+                label="Mật khẩu"
               />
               <div className="flex items-center justify-between">
                 <div className="flex items-start">
                   <div className="flex items-center h-5">
-                    <input
-                      id="remember"
-                      aria-describedby="remember"
+                    <InputSection
                       type="checkbox"
-                      className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
+                      name="remember"
+                      id="remember"
                       required={true}
+                      isHiddenLabel={true}
                     />
                   </div>
                   <div className="ml-3 text-sm">
@@ -58,7 +58,7 @@ const LoginPage = () => {
                       htmlFor="remember"
                       className="text-gray-500 dark:text-gray-300"
                     >
-                      Remember me
+                      Ghi nhớ tôi
                     </label>
                   </div>
                 </div>
@@ -66,28 +66,28 @@ const LoginPage = () => {
                   href="#"
                   className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500"
                 >
-                  Forgot password?
+                  Quên mật khẩu?
                 </a>
               </div>
-              <BasicButton text="Sign in" type="submit" />
+              <BasicButton text="Đăng nhập" type="submit" />
               <BasicButton
-                text="Sign in with Google"
+                text="Đăng nhập bằng Google"
                 type="submit"
                 variant="basic"
               />
               <BasicButton
-                text="Sign in with Telegram"
+                text="Đăng nhập bằng Telegram"
                 type="submit"
                 variant="plain"
               />
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                Don’t have an account yet?{" "}
+                Chưa có tài khoản?{" "}
                 <Link
                   href="/register"
                   onClick={handleNavigation}
                   className="font-medium text-primary-600 hover:underline dark:text-primary-500"
                 >
-                  Sign up
+                  Đăng ký
                 </Link>
               </p>
             </div>
