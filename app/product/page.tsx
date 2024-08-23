@@ -64,7 +64,7 @@ export default function ProductListPage() {
               Cửa hàng
             </h2>
             <div className="flex overflow-x-auto custom-scrollbar pb-[5px]">
-              <button className="flex-shrink-0 py-2 px-4 bg-red-500 text-white rounded">
+              <button className="flex-shrink-0 py-2 px-4 bg-primary-600 hover:bg-primary-700 text-white rounded">
                 Phổ biến
               </button>
               <button className="flex-shrink-0 py-2 px-4 bg-gray-200 text-black rounded">

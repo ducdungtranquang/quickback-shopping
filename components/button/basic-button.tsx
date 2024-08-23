@@ -38,7 +38,7 @@ const BasicButton = (props: IBasicButtonProps) => {
       id={props.id}
       onClick={props.onClick}
       type={props.type}
-      className={`w-full font-medium rounded-lg text-sm px-5 py-2.5 text-center ${getButtonClassNames(
+      className={`w-full flex items-center justify-center font-medium rounded-lg text-sm px-5 py-2.5 text-center ${getButtonClassNames(
         props.variant
       )}`}
     >
