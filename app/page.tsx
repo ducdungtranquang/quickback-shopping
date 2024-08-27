@@ -1,5 +1,11 @@
-import Image from "next/image";
+"use client";
+
+import NavBar from "@/layout/navbar";
 
 export default function Home() {
-  return <div> Home</div>;
+  return (
+    <div>
+      <NavBar />
+    </div>
+  );
 }
