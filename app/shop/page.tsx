@@ -4,6 +4,7 @@ import ShopCard from "@/components/card/shop-card";
 import AutoCompleteSearch from "@/components/search/autocomplete-search";
 import Slider from "@/components/slider/slider";
 import Carousel from "@/components/slider/slider";
+import NavBar from "@/layout/navbar";
 import { HTMLAttributes } from "react";
 
 export default function ShopPage() {
@@ -31,7 +32,8 @@ export default function ShopPage() {
 
   return (
     <>
-      <section className="py-6 px-4 bg-gray-100 h-screen overflow-hidden overflow-y-scroll">
+      <NavBar />
+      <section className="py-6 px-4 bg-gray-100 h-screen overflow-hidden overflow-y-scroll mt-[100px]">
         <div className="container mx-auto">
           <Slider slides={slides} loop={true} autoPlay={true} />
         </div>

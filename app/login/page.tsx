@@ -7,14 +7,12 @@ import BasicButton from "@/components/button/basic-button";
 import InputSection from "@/components/input/input";
 import Link from "next/link";
 import useAnimateNavigation from "@/hook/useAnimateNavigation";
-import NavBar from "@/layout/navbar";
 
 const LoginPage = () => {
   const { isAnimating, handleNavigation } = useAnimateNavigation("/register");
 
   return (
     <>
-      <NavBar />
       <section
         className={`bg-gray-50 dark:bg-gray-900 mb-[100px] h-screen ${
           isAnimating ? "page-exit-active" : "page-enter-active"

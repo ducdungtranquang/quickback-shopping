@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { Fragment, useState } from "react";
 import {
   Dialog,
@@ -16,6 +17,7 @@ import {
 import {
   Bars3Icon,
   ShoppingBagIcon,
+  UserIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 
@@ -154,7 +156,10 @@ export default function NavBar() {
   const [openPopover, setOpenPopover] = useState<number>(-1);
 
   return (
-    <div className="bg-white fixed z-10">
+    <div
+      style={{ maxWidth: "992px" }}
+      className="bg-white fixed z-10 top-0 w-full"
+    >
       {/* Mobile menu */}
       <Dialog open={open} onClose={setOpen} className="relative z-40 lg:hidden">
         <DialogBackdrop
@@ -204,7 +209,7 @@ export default function NavBar() {
                         <div key={item.name} className="group relative text-sm">
                           <div className="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
                             <img
-                              alt={item.imageAlt}
+                              alt={item.imageAlt || "alt"}
                               src={item.imageSrc}
                               className="object-cover object-center"
                             />
@@ -443,6 +448,15 @@ export default function NavBar() {
                   </a>
                 </div>
 
+                {/* User */}
+                <div className="ml-4 flow-root lg:ml-6">
+                  <a href="#" className="group -m-2 flex items-center p-2">
+                    <UserIcon
+                      aria-hidden="true"
+                      className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
+                    />
+                  </a>
+                </div>
                 {/* Cart */}
                 <div className="ml-4 flow-root lg:ml-6">
                   <a href="#" className="group -m-2 flex items-center p-2">
