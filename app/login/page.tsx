@@ -14,7 +14,7 @@ const LoginPage = () => {
   return (
     <>
       <section
-        className={`bg-gray-50 dark:bg-gray-900 mb-[100px] h-screen ${
+        className={`bg-gray-50 dark:bg-gray-900 mb-[100px] h-full min-h-screen ${
           isAnimating ? "page-exit-active" : "page-enter-active"
         }`}
       >

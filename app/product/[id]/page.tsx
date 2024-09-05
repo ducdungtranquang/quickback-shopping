@@ -1,5 +1,7 @@
+"use client";
 import BasicButton from "@/components/button/basic-button";
 import InputSection from "@/components/input/input";
+import AutoCompleteSearch from "@/components/search/autocomplete-search";
 import NavBar from "@/layout/navbar";
 import { HTMLAttributes } from "react";
 
@@ -8,10 +10,33 @@ export default function ProductPage() {
   return (
     <>
       <NavBar />
-      <div className="bg-gray-100 dark:bg-gray-800 py-8 mt-[100px]">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="bg-gray-100 dark:bg-gray-800 py-8 mt-[80px] h-full min-h-screen p-4">
+        <AutoCompleteSearch
+          categories={[
+            "Name",
+            "Test",
+            "Test",
+            "Name",
+            "Test",
+            "Test",
+            "Name",
+            "Test",
+            "Test",
+            "Name",
+            "Test",
+            "Test",
+          ]}
+          styles={
+            {
+              top: 0,
+              width: "100%",
+              marginTop: "10px",
+            } as HTMLAttributes<HTMLDivElement>
+          }
+        />
+        <div className="max-w-full mx-auto px-4 md:px-2 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row -mx-4">
-            <div className="md:flex-1 px-4">
+            <div className="md:flex-1 px-2 sm:px-0">
               <div className="md:h-[360px] h-[300px] rounded-lg bg-gray-300 dark:bg-gray-700 mb-4">
                 <img
                   className="w-full h-full object-cover"

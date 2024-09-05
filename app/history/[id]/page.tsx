@@ -61,7 +61,7 @@ export default function HistoryPage() {
   return (
     <div>
       <NavBar />
-      <div className="bg-gray-100 dark:bg-gray-800 py-8 mt-[100px] px-4">
+      <div className="bg-gray-100 dark:bg-gray-800 py-8 mt-[100px] px-4 h-full min-h-screen">
         <h2 className="mt-[20px] text-center">Lịch sử</h2>
         <Tabs tabs={tabs} onTabClick={handleTabClick} />
       </div>

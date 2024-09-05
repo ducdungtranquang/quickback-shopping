@@ -33,7 +33,7 @@ export default function ShopPage() {
   return (
     <>
       <NavBar />
-      <section className="py-6 px-4 bg-gray-100 h-screen overflow-hidden overflow-y-scroll mt-[100px]">
+      <section className="py-6 px-4 bg-gray-100 h-full min-h-screen overflow-hidden overflow-y-scroll mt-[100px]">
         <div className="container mx-auto">
           <Slider slides={slides} loop={true} autoPlay={true} />
         </div>
