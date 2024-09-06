@@ -5,6 +5,7 @@ import AutoCompleteSearch from "@/components/search/autocomplete-search";
 import Slider from "@/components/slider/slider";
 import Carousel from "@/components/slider/slider";
 import NavBar from "@/layout/navbar";
+import { CATEGORIES } from "@/ultils/constant/constant";
 import { HTMLAttributes } from "react";
 
 export default function ShopPage() {
@@ -38,6 +39,7 @@ export default function ShopPage() {
           <Slider slides={slides} loop={true} autoPlay={true} />
         </div>
         <AutoCompleteSearch
+          categories={CATEGORIES}
           styles={
             {
               top: 0,

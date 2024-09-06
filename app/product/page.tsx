@@ -3,6 +3,7 @@ import ProductCard from "@/components/card/product-card";
 import AutoCompleteSearch from "@/components/search/autocomplete-search";
 import Slider from "@/components/slider/slider";
 import NavBar from "@/layout/navbar";
+import { CATEGORIES } from "@/ultils/constant/constant";
 import { HTMLAttributes } from "react";
 
 export default function ProductListPage() {
@@ -36,20 +37,7 @@ export default function ProductListPage() {
           <Slider slides={slides} loop={true} autoPlay={true} />
         </div>
         <AutoCompleteSearch
-          categories={[
-            "Name",
-            "Test",
-            "Test",
-            "Name",
-            "Test",
-            "Test",
-            "Name",
-            "Test",
-            "Test",
-            "Name",
-            "Test",
-            "Test",
-          ]}
+          categories={CATEGORIES}
           styles={
             {
               top: 0,

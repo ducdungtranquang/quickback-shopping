@@ -1,28 +1,82 @@
 "use client";
+import Accordion from "@/components/accordion/accordion";
+import InfoCard from "@/components/card/info-card";
 import AutoCompleteSearch from "@/components/search/autocomplete-search";
 import NavBar from "@/layout/navbar";
+import { CATEGORIES } from "@/ultils/constant/constant";
 import { HTMLAttributes } from "react";
 
 export default function SupportPage() {
+  const accordionItems = [
+    {
+      id: "1",
+      title: "What is Flowbite?",
+      content: (
+        <div>
+          <p className="mb-2 text-gray-500 dark:text-gray-400">
+            Flowbite is an open-source library of interactive components built
+            on top of Tailwind CSS including buttons, dropdowns, modals,
+            navbars, and more.
+          </p>
+          <p className="text-gray-500 dark:text-gray-400">
+            Check out this guide to learn how to{" "}
+            <a
+              href="/docs/getting-started/introduction/"
+              className="text-blue-600 dark:text-blue-500 hover:underline"
+            >
+              get started
+            </a>{" "}
+            and start developing websites even faster with components on top of
+            Tailwind CSS.
+          </p>
+        </div>
+      ),
+    },
+    {
+      id: "2",
+      title: "Is there a Figma file available?",
+      content: (
+        <div>
+          <p className="mb-2 text-gray-500 dark:text-gray-400">
+            Flowbite is first conceptualized and designed using the Figma
+            software so everything you see in the library has a design
+            equivalent in our Figma file.
+          </p>
+          <p className="text-gray-500 dark:text-gray-400">
+            Check out the{" "}
+            <a
+              href="https://flowbite.com/figma/"
+              className="text-blue-600 dark:text-blue-500 hover:underline"
+            >
+              Figma design system
+            </a>{" "}
+            based on the utility classes from Tailwind CSS and components from
+            Flowbite.
+          </p>
+        </div>
+      ),
+    },
+    {
+      id: "3",
+      title: "What are the differences between Flowbite and Tailwind UI?",
+      content: (
+        <div>
+          <p className="mb-2 text-gray-500 dark:text-gray-400">
+            The main difference is that the core components from Flowbite are
+            open source under the MIT license, whereas Tailwind UI is a paid
+            product.
+          </p>
+        </div>
+      ),
+    },
+  ];
+
   return (
     <>
       <NavBar />
       <div className="py-6 px-4 bg-gray-100 h-full min-h-screen overflow-hidden overflow-y-scroll mt-[85px]">
         <AutoCompleteSearch
-          categories={[
-            "Name",
-            "Test",
-            "Test",
-            "Name",
-            "Test",
-            "Test",
-            "Name",
-            "Test",
-            "Test",
-            "Name",
-            "Test",
-            "Test",
-          ]}
+          categories={CATEGORIES}
           styles={
             {
               top: 0,
@@ -31,9 +85,22 @@ export default function SupportPage() {
             } as HTMLAttributes<HTMLDivElement>
           }
         />
-        <h2 className="text-xl font-bold text-black sm:text-xl md:text-2xl text-center mt-2">
+        <h1 className="text-xl font-medium text-black sm:text-xl md:text-2xl text-center mt-2">
           Hỗ trợ
-        </h2>
+        </h1>
+        <div className="py-5 px-2">
+          <h2 className="text-normal font-medium text-black sm:text-xl px-1 sm:text-center my-2">
+            Các vấn đề thường gặp
+          </h2>
+          <Accordion items={accordionItems} />
+        </div>
+        <div className="py-5 px-2">
+          <h2 className="text-normal font-medium text-black sm:text-xl px-1 sm:text-center my-2">
+            Tư vấn và hỗ trợ trực tiếp
+          </h2>
+          <InfoCard message={"Thông tin cá nhân"} link="/profile/123" />
+          <InfoCard message={"Hỗ trợ"} link="/" />
+        </div>
       </div>
     </>
   );

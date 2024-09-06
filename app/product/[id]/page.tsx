@@ -3,6 +3,7 @@ import BasicButton from "@/components/button/basic-button";
 import InputSection from "@/components/input/input";
 import AutoCompleteSearch from "@/components/search/autocomplete-search";
 import NavBar from "@/layout/navbar";
+import { CATEGORIES } from "@/ultils/constant/constant";
 import { HTMLAttributes } from "react";
 
 /* eslint-disable @next/next/no-img-element */
@@ -12,20 +13,7 @@ export default function ProductPage() {
       <NavBar />
       <div className="bg-gray-100 dark:bg-gray-800 py-8 mt-[80px] h-full min-h-screen p-4">
         <AutoCompleteSearch
-          categories={[
-            "Name",
-            "Test",
-            "Test",
-            "Name",
-            "Test",
-            "Test",
-            "Name",
-            "Test",
-            "Test",
-            "Name",
-            "Test",
-            "Test",
-          ]}
+          categories={CATEGORIES}
           styles={
             {
               top: 0,
