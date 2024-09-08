@@ -161,7 +161,7 @@ export default function NavBar() {
       className="bg-white fixed z-10 top-0 w-full"
     >
       {/* Mobile menu */}
-      <Dialog open={open} onClose={setOpen} className="relative z-40 lg:hidden">
+      <Dialog open={open} onClose={setOpen} className="relative z-[10000] lg:hidden">
         <DialogBackdrop
           transition
           className="fixed inset-0 bg-black bg-opacity-25 transition-opacity duration-300 ease-linear data-[closed]:opacity-0"
@@ -305,8 +305,8 @@ export default function NavBar() {
           aria-label="Top"
           className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"
         >
-          <div className="border-b border-gray-200">
-            <div className="flex h-16 items-center">
+          <div className="border-gray-200 py-3">
+            <div className="flex h-16 items-center justify-between">
               <button
                 type="button"
                 onClick={() => setOpen(true)}
@@ -317,7 +317,7 @@ export default function NavBar() {
                 <Bars3Icon aria-hidden="true" className="h-6 w-6" />
               </button>
 
-              <div className="ml-4 flex lg:ml-0">
+              {/* <div className="ml-4 flex lg:ml-0">
                 <a href="#">
                   <span className="sr-only">CashBack Shopping</span>
                   <img
@@ -326,7 +326,7 @@ export default function NavBar() {
                     className="h-8 w-auto"
                   />
                 </a>
-              </div>
+              </div> */}
 
               {/* Flyout menus */}
               <PopoverGroup className="lg:ml-8 lg:block lg:self-stretch sm:block hidden ml-5">
@@ -449,7 +449,7 @@ export default function NavBar() {
                 </div>
 
                 {/* User */}
-                <div className="ml-4 flow-root lg:ml-6">
+                <div className="ml-4 flow-root lg:ml-6 ml-3">
                   <a href="#" className="group -m-2 flex items-center p-2">
                     <UserIcon
                       aria-hidden="true"
@@ -458,7 +458,7 @@ export default function NavBar() {
                   </a>
                 </div>
                 {/* Cart */}
-                <div className="ml-4 flow-root lg:ml-6">
+                <div className="ml-4 flow-root lg:ml-6 ml-3">
                   <a href="#" className="group -m-2 flex items-center p-2">
                     <ShoppingBagIcon
                       aria-hidden="true"

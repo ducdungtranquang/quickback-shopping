@@ -11,12 +11,14 @@ const UserDetailInfo = () => {
     fullName: "John Doe",
     email: "john.doe@example.com",
     phone: "+123456789",
-    company: "Example Inc.",
+    age: "18",
     address: "123 Main St",
     city: "New York",
-    zip: "10001",
+    password: "",
+    currentPassword: "",
     bankAccount: "0123456789",
     coinsEarned: "500",
+    confirmPassword: ""
   });
 
   const styleInput = {
@@ -71,15 +73,16 @@ const UserDetailInfo = () => {
                 { label: "Họ tên", name: "fullName" },
                 { label: "Email", name: "email" },
                 { label: "Số điện thoại", name: "phone" },
-                { label: "Công ty", name: "company" },
+                { label: "Tuổi", name: "age" },
                 { label: "Địa chỉ", name: "address" },
                 { label: "Thành phố", name: "city" },
-                { label: "Zip Code", name: "zip" },
               ].map(({ label, name }) => (
                 <div key={name}>
                   <InputSection
+                    type={name === "password" ? 'password' : 'text'}
                     label={label}
                     name={name}
+                    placeholder={formData[name]}
                     value={formData[name]}
                     onChange={handleInputChange}
                     disabled={!isEditing}
@@ -87,6 +90,35 @@ const UserDetailInfo = () => {
                   />
                 </div>
               ))}
+              {isEditing && <>
+                <InputSection
+                  type={'password'}
+                  label={"Nhập mật khẩu hiện tại"}
+                  name={'confirm psw'}
+                  placeholder={"*****"}
+                  value={formData.currentPassword}
+                  onChange={handleInputChange}
+                  styleInput={styleInput}
+                />
+                <InputSection
+                  type={'password'}
+                  label={"Mật khẩu mới"}
+                  name={'confirm psw'}
+                  placeholder={"*****"}
+                  value={formData.password}
+                  onChange={handleInputChange}
+                  styleInput={styleInput}
+                />
+                <InputSection
+                  type={'password'}
+                  label={"Nhập lại mật khẩu"}
+                  name={'confirm psw'}
+                  placeholder={"*****"}
+                  value={formData.confirmPassword}
+                  onChange={handleInputChange}
+                  styleInput={styleInput}
+                />
+              </>}
             </div>
           </div>
         </div>

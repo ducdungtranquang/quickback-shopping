@@ -126,7 +126,7 @@ const App = () => {
       <div className="text-center w-full sm-w-[auto]">
         <InfoCard message={"Đăng xuất"} link="/" />
       </div>
-      <p className="text-gray-500 dark:text-gray-400 md:absolute bottom-0 pt-2 relative">
+      <p className="text-gray-500 dark:text-gray-400 bottom-0 pt-2 relative">
         Cảm ơn quý khách đã sử dụng dịch vụ
       </p>
     </div>
