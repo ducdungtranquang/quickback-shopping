@@ -8,6 +8,7 @@ import InputSection from "@/components/input/input";
 import Link from "next/link";
 import useAnimateNavigation from "@/hook/useAnimateNavigation";
 import Cookies from "js-cookie";
+import { login } from "@/ultils/api/auth";
 
 const LoginPage = () => {
   const { isAnimating, handleNavigation } = useAnimateNavigation("/register");
