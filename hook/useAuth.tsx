@@ -1,25 +1,23 @@
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 
-interface IUseAuth {
-    link?: string
-}
-
-const useAuth = (props: IUseAuth) => {
+const useAuth = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
         const token = Cookies.get('authToken');
+        const id = Cookies.get('id');
+        const email = Cookies.get('email');
 
-        if (token) {
+        console.log(email, id, token);
+
+        if (token && id && email) {
             setIsAuthenticated(true);
         } else {
             setIsAuthenticated(false)
-            if (props.link !== undefined) {
-                router.push(`${props.link}`);
-            }
+            router.push('/login');
         }
     }, [router]);
 

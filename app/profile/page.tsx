@@ -2,9 +2,11 @@
 import CashbackCard from "@/components/card/cash-card";
 import HelpCard from "@/components/card/help-card";
 import InfoCard from "@/components/card/info-card";
+import useAuth from "@/hook/useAuth";
 import React from "react";
 
 const App = () => {
+  const isAuthenticated = useAuth()
   const handleWithdraw = () => {
     alert("Rút tiền thành công!");
   };

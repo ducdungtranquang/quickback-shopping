@@ -1,4 +1,4 @@
-export const URL = "http://localhost:5000/";
+export const URL_API = "http://localhost:5000";
 
 export const CATEGORIES = [
   "Name",
