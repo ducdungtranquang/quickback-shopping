@@ -19,6 +19,7 @@ interface IInputProps {
   showError?: boolean;
   contentError?: string;
   disabled?: boolean;
+  checked?: boolean
 }
 
 const InputSection = (props: IInputProps) => {
@@ -44,6 +45,7 @@ const InputSection = (props: IInputProps) => {
         style={props.styleInput}
         value={props?.value}
         onChange={props.onChange}
+        checked={!!props.checked}
       />
 
       {props?.showError && (

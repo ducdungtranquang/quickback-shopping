@@ -20,7 +20,7 @@ const App = () => {
   }
 
   return (
-    <div className="mt-[72px] sm:mt-[72px] h-full min-h-screen lg:h-screen lg:overflow-hidden bg-gray-100 flex flex-col justify-start items-center p-5 pt-0">
+    <div className="mt-[100px] sm:mt-[100px] h-full min-h-screen lg:h-screen lg:overflow-hidden bg-gray-100 flex flex-col justify-start items-center p-5 pt-0">
       <br />
       <CashbackCard
         totalCashback="0đ"

@@ -5,10 +5,16 @@ interface LoginCredentials {
     password: string;
 }
 
+interface RegisterCredentials extends LoginCredentials {
+    name: string;
+    accountBank?: string;
+}
+
 interface LoginResponse {
     token: string;
     email: string;
-    _id: string
+    _id: string;
+    name: string
 }
 
 export const login = async (credentials: LoginCredentials): Promise<LoginResponse> => {
@@ -27,4 +33,16 @@ export const googleLogin = async (tokenId: string): Promise<GoogleLoginResponse>
     return response;
 };
 
+export const register = async (credentials: RegisterCredentials): Promise<LoginResponse> => {
+    const response = await apiCall<LoginResponse>('/api/auth/register', 'POST', credentials);
+    return response;
+};
 
+export const verifyToken = async (token: string): Promise<boolean> => {
+    try {
+        const response = await apiCall<{ valid: boolean }>('/api/auth/verify-token', 'POST', { token });
+        return response.valid;
+    } catch (error) {
+        return false;
+    }
+};

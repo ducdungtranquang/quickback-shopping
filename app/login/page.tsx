@@ -26,11 +26,12 @@ const LoginPage = () => {
     setError(null);
 
     try {
-      const { email: emailLogin, token, _id } = await login({ email, password });
+      const { email: emailLogin, token, _id, name } = await login({ email, password });
       if (token) {
         Cookies.set('authToken', token);
         Cookies.set('email', emailLogin);
         Cookies.set('id', _id);
+        Cookies.set('user_name', name);
         router.push("/profile");
       }
     } catch (err) {
@@ -52,7 +53,7 @@ const LoginPage = () => {
   return (
     <>
       <section
-        className={`bg-gray-50 dark:bg-gray-900 mb-[100px] h-full min-h-screen ${isAnimating ? "page-exit-active" : "page-enter-active"
+        className={`bg-gray-50 dark:bg-gray-900 mt-[100px] mb-[100px] h-full min-h-screen ${isAnimating ? "page-exit-active" : "page-enter-active"
           }`}
       >
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen mb-[50px] lg:mt-[50px] lg:py-0">
@@ -93,6 +94,7 @@ const LoginPage = () => {
                         name="remember"
                         id="remember"
                         required={true}
+                        checked={true}
                         isHiddenLabel={true}
                       />
                     </div>
@@ -108,7 +110,7 @@ const LoginPage = () => {
                 </div>
                 <a
                   href="#"
-                  className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500"
+                  className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500 mt-5 block"
                 >
                   Quên mật khẩu?
                 </a>
