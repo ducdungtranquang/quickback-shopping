@@ -1,480 +1,269 @@
-/* eslint-disable @next/next/no-img-element */
-import { Fragment, useState } from "react";
-import {
-  Dialog,
-  DialogBackdrop,
-  DialogPanel,
-  Popover,
-  PopoverButton,
-  PopoverGroup,
-  PopoverPanel,
-  Tab,
-  TabGroup,
-  TabList,
-  TabPanel,
-  TabPanels,
-} from "@headlessui/react";
-import {
-  Bars3Icon,
-  ShoppingBagIcon,
-  UserIcon,
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
+import React, { useState } from "react";
+import Image from "next/image";
+import BasicButton from "@/components/button/basic-button";
 
-const navigation = {
-  categories: [
-    {
-      id: "shop",
-      name: "Mua sắm",
-      featured: [
-        {
-          name: "Cơ bản",
-          href: "#",
-          imageSrc:
-            "https://tailwindui.com/img/ecommerce-images/mega-menu-category-01.jpg",
-          imageAlt:
-            "Models sitting back to back, wearing Basic Tee in black and bone.",
-        },
-        {
-          name: "Hoàn tiền cao",
-          href: "#",
-          imageSrc:
-            "https://tailwindui.com/img/ecommerce-images/mega-menu-category-02.jpg",
-          imageAlt:
-            "Close up of Basic Tee fall bundle with off-white, ochre, olive, and black tees.",
-        },
-      ],
-      sections: [
-        {
-          id: "clothing",
-          name: "Thời trang",
-          items: [
-            { name: "Tops", href: "#" },
-            { name: "Dresses", href: "#" },
-            { name: "Pants", href: "#" },
-            { name: "Denim", href: "#" },
-            { name: "Sweaters", href: "#" },
-            { name: "T-Shirts", href: "#" },
-            { name: "Jackets", href: "#" },
-            { name: "Activewear", href: "#" },
-            { name: "Browse All", href: "#" },
-          ],
-        },
-        {
-          id: "giadung",
-          name: "Gia dụng",
-          items: [
-            { name: "Watches", href: "#" },
-            { name: "Wallets", href: "#" },
-            { name: "Bags", href: "#" },
-            { name: "Sunglasses", href: "#" },
-            { name: "Hats", href: "#" },
-            { name: "Belts", href: "#" },
-          ],
-        },
-        {
-          id: "mom",
-          name: "Mẹ và bé",
-          items: [
-            { name: "Full Nelson", href: "#" },
-            { name: "My Way", href: "#" },
-            { name: "Re-Arranged", href: "#" },
-            { name: "Counterfeit", href: "#" },
-            { name: "Significant Other", href: "#" },
-          ],
-        },
-      ],
-    },
-    {
-      id: "brand",
-      name: "Thương hiệu",
-      featured: [
-        {
-          name: "Hot",
-          href: "#",
-          imageSrc:
-            "https://tailwindui.com/img/ecommerce-images/product-page-04-detail-product-shot-01.jpg",
-          imageAlt:
-            "Drawstring top with elastic loop closure and textured interior padding.",
-        },
-        {
-          name: "Hoàn tiền cao",
-          href: "#",
-          imageSrc:
-            "https://tailwindui.com/img/ecommerce-images/category-page-02-image-card-06.jpg",
-          imageAlt:
-            "Three shirts in gray, white, and blue arranged on table with same line drawing of hands and shapes overlapping on front of shirt.",
-        },
-      ],
-      sections: [
-        {
-          id: "clothing",
-          name: "Thời trang",
-          items: [
-            { name: "Tops", href: "#" },
-            { name: "Pants", href: "#" },
-            { name: "Sweaters", href: "#" },
-            { name: "T-Shirts", href: "#" },
-            { name: "Jackets", href: "#" },
-            { name: "Activewear", href: "#" },
-            { name: "Browse All", href: "#" },
-          ],
-        },
-        {
-          id: "giadung",
-          name: "Gia dụng",
-          items: [
-            { name: "Watches", href: "#" },
-            { name: "Wallets", href: "#" },
-            { name: "Bags", href: "#" },
-            { name: "Sunglasses", href: "#" },
-            { name: "Hats", href: "#" },
-            { name: "Belts", href: "#" },
-          ],
-        },
-        {
-          id: "mom",
-          name: "Mẹ và bé",
-          items: [
-            { name: "Re-Arranged", href: "#" },
-            { name: "Counterfeit", href: "#" },
-            { name: "Full Nelson", href: "#" },
-            { name: "My Way", href: "#" },
-          ],
-        },
-      ],
-    },
-  ],
-  pages: [
-    { name: "Liên hệ", href: "#" },
-    { name: "Chính sách", href: "#" },
-  ],
-};
+const Navbar: React.FC = () => {
+  const [isCartDropdownOpen, setCartDropdownOpen] = useState(false);
+  const [isUserDropdownOpen, setUserDropdownOpen] = useState(false);
+  const [isMenuOpen, setMenuOpen] = useState(false);
 
-export default function NavBar() {
-  const [open, setOpen] = useState(false);
-  const [openPopover, setOpenPopover] = useState<number>(-1);
+  const toggleCartDropdown = () => {
+    setCartDropdownOpen(!isCartDropdownOpen);
+    setMenuOpen(false);
+    setUserDropdownOpen(false);
+  };
+
+  const toggleUserDropdown = () => {
+    setUserDropdownOpen(!isUserDropdownOpen);
+    setCartDropdownOpen(false);
+    setMenuOpen(false);
+  };
+
+  const toggleMenu = () => {
+    setMenuOpen(!isMenuOpen);
+    setUserDropdownOpen(false);
+    setCartDropdownOpen(false);
+  };
 
   return (
-    <div
-      style={{ maxWidth: "992px" }}
-      className="bg-white fixed z-10 top-0 w-full"
+    <nav
+      style={{ maxWidth: "992px", zIndex: 10000 }}
+      className="bg-white dark:bg-gray-800 antialiased w-full fixed top-0 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
     >
-      {/* Mobile menu */}
-      <Dialog open={open} onClose={setOpen} className="relative z-[10000] lg:hidden">
-        <DialogBackdrop
-          transition
-          className="fixed inset-0 bg-black bg-opacity-25 transition-opacity duration-300 ease-linear data-[closed]:opacity-0"
-        />
-
-        <div className="fixed inset-0 z-40 flex">
-          <DialogPanel
-            transition
-            className="relative flex w-full max-w-xs transform flex-col overflow-y-auto bg-white pb-12 shadow-xl transition duration-300 ease-in-out data-[closed]:-translate-x-full"
-          >
-            <div className="flex px-4 pb-2 pt-5">
-              <button
-                type="button"
-                onClick={() => setOpen(false)}
-                className="relative -m-2 inline-flex items-center justify-center rounded-md p-2 text-gray-400"
-              >
-                <span className="absolute -inset-0.5" />
-                <span className="sr-only">Close menu</span>
-                <XMarkIcon aria-hidden="true" className="h-6 w-6" />
-              </button>
+      <div className="max-w-screen-xl px-4 mx-auto 2xl:px-0 py-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-8 relative">
+            <div className="shrink-0">
+              <a href="#" title="Trang Chủ">
+                <Image
+                  className="block w-auto h-8 dark:hidden"
+                  src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/logo-full.svg"
+                  alt="Logo"
+                  width={150}
+                  height={40}
+                />
+                <Image
+                  className="hidden w-auto h-8 dark:block"
+                  src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/logo-full-dark.svg"
+                  alt="Logo"
+                  width={150}
+                  height={40}
+                />
+              </a>
             </div>
 
-            {/* Links */}
-            <TabGroup className="mt-2">
-              <div className="border-b border-gray-200">
-                <TabList className="-mb-px flex space-x-8 px-4">
-                  {navigation.categories.map((category) => (
-                    <Tab
-                      key={category.name}
-                      className="flex-1 whitespace-nowrap border-b-2 border-transparent px-1 py-4 text-base font-medium text-gray-900 data-[selected]:border-indigo-600 data-[selected]:text-indigo-600"
-                    >
-                      {category.name}
-                    </Tab>
-                  ))}
-                </TabList>
-              </div>
-              <TabPanels as={Fragment}>
-                {navigation.categories.map((category) => (
-                  <TabPanel
-                    key={category.name}
-                    className="space-y-10 px-4 pb-8 pt-10"
-                  >
-                    <div className="grid grid-cols-2 gap-x-4">
-                      {category.featured.map((item) => (
-                        <div key={item.name} className="group relative text-sm">
-                          <div className="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
-                            <img
-                              alt={item.imageAlt || "alt"}
-                              src={item.imageSrc}
-                              className="object-cover object-center"
-                            />
-                          </div>
-                          <a
-                            href={item.href}
-                            className="mt-6 block font-medium text-gray-900"
-                          >
-                            <span
-                              aria-hidden="true"
-                              className="absolute inset-0 z-10"
-                            />
-                            {item.name}
-                          </a>
-                          <p aria-hidden="true" className="mt-1">
-                            Mua ngay
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-                    {category.sections.map((section) => (
-                      <div key={section.name}>
-                        <p
-                          id={`${category.id}-${section.id}-heading-mobile`}
-                          className="font-medium text-gray-900"
-                        >
-                          {section.name}
-                        </p>
-                        <ul
-                          role="list"
-                          aria-labelledby={`${category.id}-${section.id}-heading-mobile`}
-                          className="mt-6 flex flex-col space-y-6"
-                        >
-                          {section.items.map((item) => (
-                            <li key={item.name} className="flow-root">
-                              <a
-                                href={item.href}
-                                className="-m-2 block p-2 text-gray-500"
-                              >
-                                {item.name}
-                              </a>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    ))}
-                  </TabPanel>
-                ))}
-              </TabPanels>
-            </TabGroup>
-
-            <div className="space-y-6 border-t border-gray-200 px-4 py-6">
-              {navigation.pages.map((page) => (
-                <div key={page.name} className="flow-root">
+            <ul
+              className={`hidden md:flex items-center gap-6 py-3 sm:justify-center top-full left-0 w-full bg-white dark:bg-gray-800 lg:static lg:w-auto lg:bg-transparent transition-all duration-300 ease-in-out`}
+            >
+              {[
+                "Trang Chủ",
+                "Bán Chạy",
+                "Gợi Ý Quà Tặng",
+                "Khuyến Mãi Hôm Nay",
+                "Bán Hàng",
+              ].map((item) => (
+                <li key={item} className="px-4">
                   <a
-                    href={page.href}
-                    className="-m-2 block p-2 font-medium text-gray-900"
+                    href="#"
+                    className="block text-sm font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500 py-2 lg:py-0"
                   >
-                    {page.name}
+                    {item}
                   </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="flex items-center lg:space-x-2">
+            <button
+              onClick={toggleCartDropdown}
+              className="inline-flex items-center rounded-lg p-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm font-medium text-gray-900 dark:text-white"
+            >
+              <span className="sr-only">Giỏ Hàng</span>
+              <svg
+                className="w-5 h-5 lg:mr-1"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312"
+                />
+              </svg>
+              <span className="hidden sm:flex">Giỏ Hàng Của Tôi</span>
+              <svg
+                className="hidden sm:flex w-4 h-4 text-gray-900 dark:text-white ml-1"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="m19 9-7 7-7-7"
+                />
+              </svg>
+            </button>
+
+            <div
+              style={{ top: "72px", maxHeight: "290px" }}
+              className={`${
+                isCartDropdownOpen ? "nav-enter" : "nav-exit"
+              } absolute z-10 mx-auto max-w-xl w-sm space-y-4 overflow-hidden rounded-lg bg-white p-4 antialiased shadow-lg dark:bg-gray-800 overflow-y-scroll border border-gray-200`}
+            >
+              <BasicButton text="Tất cả" variant="plain" />
+              {[
+                { name: "Apple iPhone 15", price: 599, qty: 1 },
+                { name: "Apple iPad Air", price: 499, qty: 1 },
+                { name: "Sony Playstation 5", price: 799, qty: 1 },
+                { name: "Sony Playstation 5", price: 799, qty: 1 },
+                { name: "Sony Playstation 5", price: 799, qty: 1 },
+              ].map((item, index) => (
+                <div key={index} className="grid grid-cols-2">
+                  <div>
+                    <a
+                      href="#"
+                      className="truncate text-sm font-semibold text-gray-900 dark:text-white hover:underline"
+                    >
+                      {item.name}
+                    </a>
+                    <p className="mt-0.5 truncate text-sm text-gray-500 dark:text-gray-400">
+                      ${item.price}
+                    </p>
+                  </div>
+                  <div className="flex items-center justify-end gap-6">
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                      Số lượng: {item.qty}
+                    </p>
+                    <button className="text-red-600 hover:text-red-700 dark:text-red-500 dark:hover:text-red-600">
+                      <span className="sr-only">Xóa</span>
+                      <svg
+                        className="h-4 w-4"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M2 12a10 10 0 1 1 20 0 10 10 0 0 1-20 0Zm7.7-3.7a1 1 0 0 0-1.4 1.4l2.3 2.3-2.3 2.3a1 1 0 1 0 1.4 1.4l2.3-2.3 2.3 2.3a1 1 0 0 0 1.4-1.4L13.4 12l2.3-2.3a1 1 0 0 0-1.4-1.4L12 10.6 9.7 8.3Z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
 
-            <div className="space-y-6 border-t border-gray-200 px-4 py-6">
-              <div className="flow-root">
-                <a
-                  href="#"
-                  className="-m-2 block p-2 font-medium text-gray-900"
-                >
-                  Đăng nhập
-                </a>
-              </div>
-              <div className="flow-root">
-                <a
-                  href="#"
-                  className="-m-2 block p-2 font-medium text-gray-900"
-                >
-                  Đăng ký
-                </a>
-              </div>
-            </div>
-          </DialogPanel>
-        </div>
-      </Dialog>
-
-      <header className="relative bg-white">
-        <div className="w-full py-2 flex items-center text-center justify-center bg-primary-600 px-4 text-sm font-medium text-white sm:px-6 lg:px-8">
-          Hoàn tiền không giới hạn với CashBack Shopping
-        </div>
-
-        <nav
-          aria-label="Top"
-          className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"
-        >
-          <div className="border-gray-200 py-3">
-            <div className="flex h-16 items-center justify-between">
-              <button
-                type="button"
-                onClick={() => setOpen(true)}
-                className="relative rounded-md bg-white p-2 text-gray-400 lg:hidden"
+            <button
+              onClick={toggleUserDropdown}
+              className="inline-flex items-center rounded-lg p-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm font-medium text-gray-900 dark:text-white"
+            >
+              <svg
+                className="w-5 h-5 mr-1"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
               >
-                <span className="absolute -inset-0.5" />
-                <span className="sr-only">Mở</span>
-                <Bars3Icon aria-hidden="true" className="h-6 w-6" />
-              </button>
+                <path
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  d="M7 17v1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                />
+              </svg>
+              <svg
+                className="w-4 h-4 text-gray-900 dark:text-white ml-1"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="m19 9-7 7-7-7"
+                />
+              </svg>
+            </button>
+            <button
+              className="lg:hidden block p-2 text-gray-700 dark:text-gray-300"
+              onClick={toggleMenu}
+              aria-label="Mở Menu"
+            >
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+            </button>
 
-              {/* <div className="ml-4 flex lg:ml-0">
-                <a href="#">
-                  <span className="sr-only">CashBack Shopping</span>
-                  <img
-                    alt=""
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                    className="h-8 w-auto"
-                  />
-                </a>
-              </div> */}
-
-              {/* Flyout menus */}
-              <PopoverGroup className="lg:ml-8 lg:block lg:self-stretch sm:block hidden ml-5">
-                <div className="flex h-full space-x-8">
-                  {navigation.categories.map((category, index) => (
-                    <Popover
-                      key={category.name}
-                      className="flex"
-                      onMouseEnter={() => setOpenPopover(index)} // Mở Popover khi hover vào
-                      onMouseLeave={() => setOpenPopover(-1)} // Đóng Popover khi rời chuột ra
-                    >
-                      <div className="relative flex">
-                        <PopoverButton className="relative z-10 -mb-px flex items-center border-b-2 border-transparent pt-px text-sm font-medium text-gray-700 transition-colors duration-200 ease-out hover:text-gray-800">
-                          {category.name}
-                        </PopoverButton>
-                      </div>
-
-                      {openPopover === index && ( // Hiển thị PopoverPanel nếu index khớp với openPopover
-                        <PopoverPanel
-                          transition
-                          className="absolute inset-x-0 top-full text-sm text-gray-500 transition data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in"
-                        >
-                          <div className="absolute inset-0 top-1/2 bg-white shadow" />
-
-                          <div className="relative bg-white">
-                            <div className="mx-auto max-w-7xl px-8">
-                              <div className="grid grid-cols-2 gap-x-8 gap-y-10 py-16">
-                                <div className="col-start-2 grid grid-cols-2 gap-x-8">
-                                  {category.featured.map((item) => (
-                                    <div
-                                      key={item.name}
-                                      className="group relative text-base sm:text-sm"
-                                    >
-                                      <div className="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
-                                        <img
-                                          alt={item.imageAlt}
-                                          src={item.imageSrc}
-                                          className="object-cover object-center"
-                                        />
-                                      </div>
-                                      <a
-                                        href={item.href}
-                                        className="mt-6 block font-medium text-gray-900"
-                                      >
-                                        <span
-                                          aria-hidden="true"
-                                          className="absolute inset-0 z-10"
-                                        />
-                                        {item.name}
-                                      </a>
-                                      <p aria-hidden="true" className="mt-1">
-                                        Mua ngay
-                                      </p>
-                                    </div>
-                                  ))}
-                                </div>
-                                <div className="row-start-1 grid grid-cols-3 gap-x-8 gap-y-10 text-sm">
-                                  {category.sections.map((section) => (
-                                    <div key={section.name}>
-                                      <p
-                                        id={`${section.name}-heading`}
-                                        className="font-medium text-gray-900"
-                                      >
-                                        {section.name}
-                                      </p>
-                                      <ul
-                                        role="list"
-                                        aria-labelledby={`${section.name}-heading`}
-                                        className="mt-6 space-y-6 sm:mt-4 sm:space-y-4"
-                                      >
-                                        {section.items.map((item) => (
-                                          <li key={item.name} className="flex">
-                                            <a
-                                              href={item.href}
-                                              className="hover:text-gray-800"
-                                            >
-                                              {item.name}
-                                            </a>
-                                          </li>
-                                        ))}
-                                      </ul>
-                                    </div>
-                                  ))}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </PopoverPanel>
-                      )}
-                    </Popover>
-                  ))}
-
-                  {navigation.pages.map((page) => (
-                    <a
-                      key={page.name}
-                      href={page.href}
-                      className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800"
-                    >
-                      {page.name}
-                    </a>
-                  ))}
-                </div>
-              </PopoverGroup>
-
-              <div className="ml-auto flex items-center">
-                <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
+            <div
+              style={{ top: "72px" }}
+              className={`${
+                isUserDropdownOpen ? "nav-enter" : "nav-exit"
+              } absolute z-10 w-56 divide-y divide-gray-100 overflow-hidden overflow-y-auto rounded-lg bg-white antialiased shadow dark:divide-gray-600 dark:bg-gray-700`}
+            >
+              <ul className="p-2 text-start text-sm font-medium text-gray-900 dark:text-white">
+                <li>
                   <a
                     href="#"
-                    className="text-sm font-medium text-gray-700 hover:text-gray-800"
+                    className="block px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-600"
                   >
-                    Đăng nhập
+                    Tài Khoản Của Tôi
                   </a>
-                  <span aria-hidden="true" className="h-6 w-px bg-gray-200" />
+                </li>
+                <li>
                   <a
                     href="#"
-                    className="text-sm font-medium text-gray-700 hover:text-gray-800"
+                    className="block px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-600"
                   >
-                    Đăng ký
+                    Đơn Hàng Của Tôi
                   </a>
-                </div>
-
-                {/* User */}
-                <div className="ml-4 flow-root lg:ml-6 ml-3">
-                  <a href="#" className="group -m-2 flex items-center p-2">
-                    <UserIcon
-                      aria-hidden="true"
-                      className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
-                    />
-                  </a>
-                </div>
-                {/* Cart */}
-                <div className="ml-4 flow-root lg:ml-6 ml-3">
-                  <a href="#" className="group -m-2 flex items-center p-2">
-                    <ShoppingBagIcon
-                      aria-hidden="true"
-                      className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
-                    />
-                    <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
-                      0
-                    </span>
-                    <span className="sr-only">items in cart, view bag</span>
-                  </a>
-                </div>
-              </div>
+                </li>
+              </ul>
             </div>
           </div>
-        </nav>
-      </header>
-    </div>
+        </div>
+      </div>
+
+      <div className={`lg:hidden ${isMenuOpen ? "nav-enter" : "nav-exit"}`}>
+        <ul className="flex flex-col items-start gap-1 py-4 pt-0 px-8 bg-white dark:bg-gray-800">
+          {[
+            "Trang Chủ",
+            "Bán Chạy",
+            "Gợi Ý Quà Tặng",
+            "Khuyến Mãi Hôm Nay",
+            "Bán Hàng",
+          ].map((item) => (
+            <li key={item} className="w-full">
+              <a
+                href="#"
+                className="block w-full text-sm p-4 font-medium text-gray-900 hover:text-primary-700 dark:text-white dark:hover:text-primary-500 hover:bg-gray-100"
+              >
+                {item}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </nav>
   );
-}
+};
+
+export default Navbar;

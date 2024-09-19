@@ -39,7 +39,7 @@ const UserDetailInfo = () => {
   return (
     <>
       <NavBar />
-      <div className="container mx-auto p-4 px-6 mt-[100px] h-full min-h-screen">
+      <div className="container mx-auto p-4 px-6 mt-[72px] h-full min-h-screen">
         <div className="flex flex-col md:flex-row gap-4">
           {/* Profile Card */}
           <div className="w-full md:w-1/3 bg-white rounded-lg shadow p-4">
