@@ -6,7 +6,7 @@ import useAuth from "@/hook/useAuth";
 import React from "react";
 
 const App = () => {
-  const isAuthenticated = useAuth();
+  const isAuthenticated = useAuth(true);
   const handleWithdraw = () => {
     alert("Rút tiền thành công!");
   };

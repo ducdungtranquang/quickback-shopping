@@ -20,6 +20,8 @@ import {
   UserIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
+import useAuth from "@/hook/useAuth";
+import Link from "next/link";
 
 const navigation = {
   categories: [
@@ -154,6 +156,7 @@ const navigation = {
 export default function NavBar() {
   const [open, setOpen] = useState(false);
   const [openPopover, setOpenPopover] = useState<number>(-1);
+  const { isAuthenticated } = useAuth();
 
   return (
     <div
@@ -161,7 +164,11 @@ export default function NavBar() {
       className="bg-white dark:bg-gray-800 fixed z-10 top-0 w-full"
     >
       {/* Mobile menu */}
-      <Dialog open={open} onClose={setOpen} className="relative z-[10000] lg:hidden">
+      <Dialog
+        open={open}
+        onClose={setOpen}
+        className="relative z-[10000] lg:hidden"
+      >
         <DialogBackdrop
           transition
           className="fixed inset-0 bg-black bg-opacity-25 transition-opacity duration-300 ease-linear data-[closed]:opacity-0"
@@ -317,26 +324,15 @@ export default function NavBar() {
                 <Bars3Icon aria-hidden="true" className="h-6 w-6" />
               </button>
 
-              {/* <div className="ml-4 flex lg:ml-0">
-                <a href="#">
-                  <span className="sr-only">CashBack Shopping</span>
-                  <img
-                    alt=""
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                    className="h-8 w-auto"
-                  />
-                </a>
-              </div> */}
-
               {/* Flyout menus */}
-              <PopoverGroup className="lg:ml-8 lg:block lg:self-stretch sm:block hidden ml-5">
+              <PopoverGroup className="lg:ml-8 lg:block lg:self-stretch lg:block hidden ml-5">
                 <div className="flex h-full space-x-8">
                   {navigation.categories.map((category, index) => (
                     <Popover
                       key={category.name}
                       className="flex"
-                      onMouseEnter={() => setOpenPopover(index)} // Mở Popover khi hover vào
-                      onMouseLeave={() => setOpenPopover(-1)} // Đóng Popover khi rời chuột ra
+                      onMouseEnter={() => setOpenPopover(index)}
+                      onMouseLeave={() => setOpenPopover(-1)}
                     >
                       <div className="relative flex">
                         <PopoverButton className="relative z-10 -mb-px flex items-center border-b-2 border-transparent pt-px text-sm font-medium text-gray-700 transition-colors duration-200 ease-out hover:text-gray-800">
@@ -344,7 +340,7 @@ export default function NavBar() {
                         </PopoverButton>
                       </div>
 
-                      {openPopover === index && ( // Hiển thị PopoverPanel nếu index khớp với openPopover
+                      {openPopover === index && (
                         <PopoverPanel
                           transition
                           className="absolute inset-x-0 top-full text-sm text-gray-500 transition data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in"
@@ -433,19 +429,30 @@ export default function NavBar() {
 
               <div className="ml-auto flex items-center">
                 <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                  <a
-                    href="#"
-                    className="text-sm font-medium text-gray-700 hover:text-gray-800"
-                  >
-                    Đăng nhập
-                  </a>
-                  <span aria-hidden="true" className="h-6 w-px bg-gray-200" />
-                  <a
-                    href="#"
-                    className="text-sm font-medium text-gray-700 hover:text-gray-800"
-                  >
-                    Đăng ký
-                  </a>
+                  {isAuthenticated ? (
+                    <div className="text-sm font-medium text-gray-700 hover:text-gray-800">
+                      Đăng xuất
+                    </div>
+                  ) : (
+                    <>
+                      <Link
+                        href="/login"
+                        className="text-sm font-medium text-gray-700 hover:text-gray-800"
+                      >
+                        Đăng nhập
+                      </Link>
+                      <span
+                        aria-hidden="true"
+                        className="h-6 w-px bg-gray-200"
+                      />
+                      <Link
+                        href="/register"
+                        className="text-sm font-medium text-gray-700 hover:text-gray-800"
+                      >
+                        Đăng ký
+                      </Link>
+                    </>
+                  )}
                 </div>
 
                 {/* User */}
