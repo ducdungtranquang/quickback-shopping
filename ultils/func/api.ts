@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 import { URL_API } from "../constant/constant";
 
 export async function apiCall<T>(
@@ -25,4 +26,11 @@ export async function apiCall<T>(
     }
 
     return response.json();
+}
+
+export const logout = () => {
+    Cookies.remove("authToken");
+    Cookies.remove("id");
+    Cookies.remove("email");
+    window.open('/login')
 }

@@ -2,11 +2,22 @@
 import CashbackCard from "@/components/card/cash-card";
 import HelpCard from "@/components/card/help-card";
 import InfoCard from "@/components/card/info-card";
+import BaseModal from "@/components/modals/base-modal";
 import useAuth from "@/hook/useAuth";
-import React from "react";
+import { logout } from "@/ultils/func/api";
+import React, { useState } from "react";
 
 const App = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const isAuthenticated = useAuth(true);
+
+  const handleOpenModal = () => setIsModalOpen(true);
+  const handleCloseModal = () => setIsModalOpen(false);
+  const handleConfirm = () => {
+    logout()
+    setIsModalOpen(false);
+  };
+
   const handleWithdraw = () => {
     alert("Rút tiền thành công!");
   };
@@ -20,7 +31,7 @@ const App = () => {
   }
 
   return (
-    <div className="mt-[100px] sm:mt-[100px] h-full min-h-screen lg:h-screen lg:overflow-hidden bg-gray-100 flex flex-col justify-start items-center p-5 pt-0">
+    <div className="mt-[100px] sm:mt-[100px] h-full min-h-screen lg:overflow-hidden bg-gray-100 flex flex-col justify-start items-center p-5 pt-0">
       <br />
       <CashbackCard
         totalCashback="0đ"
@@ -134,8 +145,19 @@ const App = () => {
       </div>
 
       <div className="text-center w-full sm-w-[auto]">
-        <InfoCard message={"Đăng xuất"} link="/" />
+        <InfoCard message={"Đăng xuất"} link="/" onClick={(e) => {
+          e.preventDefault()
+          handleOpenModal()
+        }} />
       </div>
+      <BaseModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        title="Đăng xuất"
+        onConfirm={handleConfirm}
+      >
+        <p>Bạn có chắc chắn muốn đăng xuất</p>
+      </BaseModal>
       <p className="text-gray-500 dark:text-gray-400 bottom-0 pt-2 relative">
         Cảm ơn quý khách đã sử dụng dịch vụ
       </p>

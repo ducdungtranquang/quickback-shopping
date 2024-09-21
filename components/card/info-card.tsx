@@ -6,6 +6,7 @@ interface InfoCardProps {
   icon?: React.ReactNode;
   className?: string;
   link: string;
+  onClick?: (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void
 }
 
 const InfoCard: React.FC<InfoCardProps> = ({
@@ -13,9 +14,11 @@ const InfoCard: React.FC<InfoCardProps> = ({
   icon,
   className,
   link,
+  onClick
 }) => {
   return (
     <Link
+      onClick={(e) => onClick && onClick(e)}
       href={link}
       className={`w-full flex items-center p-4 text-sm text-gray-800 rounded-lg bg-white w-full border-gray-200 shadow dark:bg-gray-800 dark:border-gray-700 mt-4 ${className}`}
       role="InfoCard"

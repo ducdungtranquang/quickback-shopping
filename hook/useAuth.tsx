@@ -1,11 +1,13 @@
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState, useRef } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import Cookies from "js-cookie";
 import { verifyToken } from "@/ultils/api/auth";
 
 const useAuth = (isNavigation?: boolean) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const router = useRouter();
+  const pathname = usePathname();
+  const hasVerified = useRef(false);
 
   const navigateLogin = () => {
     if (isNavigation) {
@@ -17,8 +19,9 @@ const useAuth = (isNavigation?: boolean) => {
     const token = Cookies.get("authToken");
     const id = Cookies.get("id");
     const email = Cookies.get("email");
+    console.log(hasVerified.current);
 
-    if (token && id && email) {
+    if (token && id && email && !hasVerified.current) {
       const checkToken = async () => {
         try {
           const isValid = await verifyToken(token);
@@ -39,11 +42,12 @@ const useAuth = (isNavigation?: boolean) => {
       };
 
       checkToken();
-    } else {
+      hasVerified.current = true;
+    } else if (!token || !id || !email) {
       setIsAuthenticated(false);
       navigateLogin();
     }
-  }, [router]);
+  }, [pathname]);
 
   return { isAuthenticated };
 };
