@@ -22,6 +22,9 @@ import {
 } from "@heroicons/react/24/outline";
 import useAuth from "@/hook/useAuth";
 import Link from "next/link";
+import BaseModal from "@/components/modals/base-modal";
+import { logout } from "@/ultils/func/api";
+import { useRouter } from "next/navigation";
 
 const navigation = {
   categories: [
@@ -154,9 +157,18 @@ const navigation = {
 };
 
 export default function NavBar() {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
-  const [openPopover, setOpenPopover] = useState<number>(-1);
   const { isAuthenticated } = useAuth();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleOpenModal = () => setIsModalOpen(true);
+  const handleCloseModal = () => setIsModalOpen(false);
+  const handleConfirm = () => {
+    logout()
+    setIsModalOpen(false);
+  };
+
 
   return (
     <div
@@ -331,8 +343,6 @@ export default function NavBar() {
                     <Popover
                       key={category.name}
                       className="flex"
-                      onMouseEnter={() => setOpenPopover(index)}
-                      onMouseLeave={() => setOpenPopover(-1)}
                     >
                       <div className="relative flex">
                         <PopoverButton className="relative z-10 -mb-px flex items-center border-b-2 border-transparent pt-px text-sm font-medium text-gray-700 transition-colors duration-200 ease-out hover:text-gray-800">
@@ -340,78 +350,76 @@ export default function NavBar() {
                         </PopoverButton>
                       </div>
 
-                      {openPopover === index && (
-                        <PopoverPanel
-                          transition
-                          className="absolute inset-x-0 top-full text-sm text-gray-500 transition data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in"
-                        >
-                          <div className="absolute inset-0 top-1/2 bg-white shadow" />
+                      <PopoverPanel
+                        transition
+                        className="absolute inset-x-0 top-full text-sm text-gray-500 transition data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150 data-[enter]:ease-out data-[leave]:ease-in"
+                      >
+                        <div className="absolute inset-0 top-1/2 bg-white shadow" />
 
-                          <div className="relative bg-white">
-                            <div className="mx-auto max-w-7xl px-8">
-                              <div className="grid grid-cols-2 gap-x-8 gap-y-10 py-16">
-                                <div className="col-start-2 grid grid-cols-2 gap-x-8">
-                                  {category.featured.map((item) => (
-                                    <div
-                                      key={item.name}
-                                      className="group relative text-base sm:text-sm"
+                        <div className="relative bg-white">
+                          <div className="mx-auto max-w-7xl px-8">
+                            <div className="grid grid-cols-2 gap-x-8 gap-y-10 py-16">
+                              <div className="col-start-2 grid grid-cols-2 gap-x-8">
+                                {category.featured.map((item) => (
+                                  <div
+                                    key={item.name}
+                                    className="group relative text-base sm:text-sm"
+                                  >
+                                    <div className="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
+                                      <img
+                                        alt={item.imageAlt}
+                                        src={item.imageSrc}
+                                        className="object-cover object-center"
+                                      />
+                                    </div>
+                                    <a
+                                      href={item.href}
+                                      className="mt-6 block font-medium text-gray-900"
                                     >
-                                      <div className="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
-                                        <img
-                                          alt={item.imageAlt}
-                                          src={item.imageSrc}
-                                          className="object-cover object-center"
-                                        />
-                                      </div>
-                                      <a
-                                        href={item.href}
-                                        className="mt-6 block font-medium text-gray-900"
-                                      >
-                                        <span
-                                          aria-hidden="true"
-                                          className="absolute inset-0 z-10"
-                                        />
-                                        {item.name}
-                                      </a>
-                                      <p aria-hidden="true" className="mt-1">
-                                        Mua ngay
-                                      </p>
-                                    </div>
-                                  ))}
-                                </div>
-                                <div className="row-start-1 grid grid-cols-3 gap-x-8 gap-y-10 text-sm">
-                                  {category.sections.map((section) => (
-                                    <div key={section.name}>
-                                      <p
-                                        id={`${section.name}-heading`}
-                                        className="font-medium text-gray-900"
-                                      >
-                                        {section.name}
-                                      </p>
-                                      <ul
-                                        role="list"
-                                        aria-labelledby={`${section.name}-heading`}
-                                        className="mt-6 space-y-6 sm:mt-4 sm:space-y-4"
-                                      >
-                                        {section.items.map((item) => (
-                                          <li key={item.name} className="flex">
-                                            <a
-                                              href={item.href}
-                                              className="hover:text-gray-800"
-                                            >
-                                              {item.name}
-                                            </a>
-                                          </li>
-                                        ))}
-                                      </ul>
-                                    </div>
-                                  ))}
-                                </div>
+                                      <span
+                                        aria-hidden="true"
+                                        className="absolute inset-0 z-10"
+                                      />
+                                      {item.name}
+                                    </a>
+                                    <p aria-hidden="true" className="mt-1">
+                                      Mua ngay
+                                    </p>
+                                  </div>
+                                ))}
+                              </div>
+                              <div className="row-start-1 grid grid-cols-3 gap-x-8 gap-y-10 text-sm">
+                                {category.sections.map((section) => (
+                                  <div key={section.name}>
+                                    <p
+                                      id={`${section.name}-heading`}
+                                      className="font-medium text-gray-900"
+                                    >
+                                      {section.name}
+                                    </p>
+                                    <ul
+                                      role="list"
+                                      aria-labelledby={`${section.name}-heading`}
+                                      className="mt-6 space-y-6 sm:mt-4 sm:space-y-4"
+                                    >
+                                      {section.items.map((item) => (
+                                        <li key={item.name} className="flex">
+                                          <a
+                                            href={item.href}
+                                            className="hover:text-gray-800"
+                                          >
+                                            {item.name}
+                                          </a>
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  </div>
+                                ))}
                               </div>
                             </div>
                           </div>
-                        </PopoverPanel>
-                      )}
+                        </div>
+                      </PopoverPanel>
                     </Popover>
                   ))}
 
@@ -430,7 +438,7 @@ export default function NavBar() {
               <div className="ml-auto flex items-center">
                 <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
                   {isAuthenticated ? (
-                    <div className="text-sm font-medium text-gray-700 hover:text-gray-800">
+                    <div onClick={handleOpenModal} className="cursor-pointer text-sm font-medium text-gray-700 hover:text-gray-800">
                       Đăng xuất
                     </div>
                   ) : (
@@ -439,7 +447,7 @@ export default function NavBar() {
                         href="/login"
                         className="text-sm font-medium text-gray-700 hover:text-gray-800"
                       >
-                        Đăng nhập
+                        {isAuthenticated === null ? '' : 'Đăng nhập'}
                       </Link>
                       <span
                         aria-hidden="true"
@@ -449,7 +457,7 @@ export default function NavBar() {
                         href="/register"
                         className="text-sm font-medium text-gray-700 hover:text-gray-800"
                       >
-                        Đăng ký
+                        {isAuthenticated === null ? '' : 'Đăng ký'}
                       </Link>
                     </>
                   )}
@@ -466,7 +474,9 @@ export default function NavBar() {
                 </div>
                 {/* Cart */}
                 <div className="ml-4 flow-root lg:ml-6 ml-3">
-                  <a href="#" className="group -m-2 flex items-center p-2">
+                  <div onClick={() => {
+                    router.push('/history/123?activeId=cart')
+                  }} className="group -m-2 flex items-center p-2">
                     <ShoppingBagIcon
                       aria-hidden="true"
                       className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
@@ -475,13 +485,21 @@ export default function NavBar() {
                       0
                     </span>
                     <span className="sr-only">items in cart, view bag</span>
-                  </a>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </nav>
       </header>
+      <BaseModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        title="Đăng xuất"
+        onConfirm={handleConfirm}
+      >
+        <p>Bạn có chắc chắn muốn đăng xuất</p>
+      </BaseModal>
     </div>
   );
 }

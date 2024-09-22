@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 
 interface Tab {
   id: string;
@@ -9,10 +9,11 @@ interface Tab {
 interface TabsProps {
   tabs: Tab[];
   onTabClick?: (id: string) => void;
+  activeTab: string;
+  setActiveTab: Dispatch<SetStateAction<string>>
 }
 
-const Tabs: React.FC<TabsProps> = ({ tabs, onTabClick }) => {
-  const [activeTab, setActiveTab] = useState(tabs[0].id);
+const Tabs: React.FC<TabsProps> = ({ tabs, onTabClick, activeTab, setActiveTab }) => {
 
   const handleTabClick = (id: string) => {
     setActiveTab(id);
@@ -31,11 +32,10 @@ const Tabs: React.FC<TabsProps> = ({ tabs, onTabClick }) => {
           {tabs.map((tab) => (
             <li className="me-2" role="presentation" key={tab.id}>
               <button
-                className={`inline-block p-4 border-b-2 rounded-t-lg ${
-                  activeTab === tab.id
-                    ? "text-purple-600 border-purple-600 dark:text-purple-500 dark:border-purple-500"
-                    : "text-gray-500 hover:text-gray-600 hover:border-gray-300 dark:text-gray-400 dark:border-transparent dark:hover:text-gray-300"
-                }`}
+                className={`inline-block p-4 border-b-2 rounded-t-lg ${activeTab === tab.id
+                  ? "text-purple-600 border-purple-600 dark:text-purple-500 dark:border-purple-500"
+                  : "text-gray-500 hover:text-gray-600 hover:border-gray-300 dark:text-gray-400 dark:border-transparent dark:hover:text-gray-300"
+                  }`}
                 id={`${tab.id}-tab`}
                 onClick={() => handleTabClick(tab.id)}
                 type="button"
@@ -56,9 +56,8 @@ const Tabs: React.FC<TabsProps> = ({ tabs, onTabClick }) => {
             id={tab.id}
             role="tabpanel"
             aria-labelledby={`${tab.id}-tab`}
-            className={`p-4 rounded-lg bg-gray-50 dark:bg-gray-800 ${
-              activeTab === tab.id ? "block" : "hidden"
-            }`}
+            className={`p-4 rounded-lg bg-gray-50 dark:bg-gray-800 ${activeTab === tab.id ? "block" : "hidden"
+              }`}
           >
             {tab.content}
           </div>

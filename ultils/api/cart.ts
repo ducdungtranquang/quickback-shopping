@@ -2,18 +2,20 @@ import { apiCall } from "../func/api";
 
 interface CartItem {
     productId: string;
-    name: string;
+    productName: string;
     quantity: number;
     price: number;
+    productLink: string;
+    cashbackPercentage: number
 }
 
-interface GetCartResponse {
+export interface GetCartResponse {
     cartItems: CartItem[];
     totalPrice: number;
 }
 
-export const getCart = async (token: string): Promise<GetCartResponse> => {
-    return apiCall<GetCartResponse>('/api/cart', 'GET', undefined, token);
+export const getCart = async (token: string, signal?: AbortSignal): Promise<GetCartResponse> => {
+    return apiCall<GetCartResponse>('/api/cart', 'GET', undefined, token, signal);
 };
 
 interface EditCartResponse {

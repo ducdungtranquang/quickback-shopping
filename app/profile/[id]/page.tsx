@@ -2,10 +2,12 @@
 "use client";
 import BasicButton from "@/components/button/basic-button";
 import InputSection from "@/components/input/input";
+import useAuth from "@/hook/useAuth";
 import NavBar from "@/layout/navbar";
 import { HTMLAttributes, useState } from "react";
 
 const UserDetailInfo = () => {
+  const isAuthenticated = useAuth(true);
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState<any>({
     fullName: "John Doe",
@@ -35,6 +37,14 @@ const UserDetailInfo = () => {
       [name]: value,
     });
   };
+
+  if (isAuthenticated === null) {
+    return <div>Loading...</div>;
+  }
+
+  if (!isAuthenticated) {
+    return null;
+  }
 
   return (
     <>

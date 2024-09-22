@@ -1,11 +1,11 @@
 import React from "react";
 
-type TableColumn = {
+export type TableColumn = {
   header: string;
   key: string;
 };
 
-type TableRow = {
+export type TableRow = {
   [key: string]: string | number;
 };
 

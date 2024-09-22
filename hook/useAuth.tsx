@@ -19,7 +19,6 @@ const useAuth = (isNavigation?: boolean) => {
     const token = Cookies.get("authToken");
     const id = Cookies.get("id");
     const email = Cookies.get("email");
-    console.log(hasVerified.current);
 
     if (token && id && email && !hasVerified.current) {
       const checkToken = async () => {

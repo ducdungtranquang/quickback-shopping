@@ -5,7 +5,8 @@ export async function apiCall<T>(
     url: string,
     method: 'GET' | 'POST' | 'PUT' | 'DELETE',
     data?: any,
-    token?: string
+    token?: string,
+    signal?: AbortSignal
 ): Promise<T> {
     const headers: HeadersInit = {
         'Content-Type': 'application/json',
@@ -19,6 +20,7 @@ export async function apiCall<T>(
         method,
         headers,
         body: data ? JSON.stringify(data) : undefined,
+        signal,
     });
 
     if (!response.ok) {
@@ -28,9 +30,10 @@ export async function apiCall<T>(
     return response.json();
 }
 
+
 export const logout = () => {
     Cookies.remove("authToken");
     Cookies.remove("id");
     Cookies.remove("email");
-    window.open('/login')
+    window.location.href = '/login'
 }
