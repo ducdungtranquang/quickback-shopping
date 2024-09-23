@@ -24,7 +24,6 @@ const AutoCompleteSearch = (props: IAutoComplete) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   const handleClickOutside = (event: MouseEvent) => {
-    // Kiểm tra nếu click xảy ra bên ngoài dropdown hoặc nút "Danh mục"
     if (
       dropdownRef.current &&
       !dropdownRef.current.contains(event.target as Node) &&
@@ -84,11 +83,11 @@ const AutoCompleteSearch = (props: IAutoComplete) => {
                 ref={dropdownRef}
               >
                 <ul
-                  className="py-2 text-sm text-gray-700 dark:text-gray-200 flex gap-4 justify-around flex-wrap"
+                  className="py-3 px-1 text-sm text-gray-700 dark:text-gray-200 flex gap-1 justify-start flex-wrap nav-enter"
                   aria-labelledby="dropdown-button"
                 >
                   {props.categories?.map((item, i) => (
-                    <li className="w-[20%] cursor-pointer " key={i}>
+                    <li className="cursor-pointer underline" key={i}>
                       <div className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                         {item}
                       </div>
