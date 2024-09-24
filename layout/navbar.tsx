@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { Fragment, HTMLAttributes, useState } from "react";
+import { Fragment, HTMLAttributes, useEffect, useState } from "react";
 import {
   Dialog,
   DialogBackdrop,
@@ -38,8 +38,8 @@ export default function NavBar() {
 
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
-  const handleConfirm = () => {
-    logout();
+  const handleConfirm = async () => {
+    await logout();
     setIsModalOpen(false);
   };
 
@@ -52,7 +52,7 @@ export default function NavBar() {
       <Dialog
         open={open}
         onClose={setOpen}
-        className="relative z-[10000] lg:hidden"
+        className="relative z-[999999] lg:hidden"
       >
         <DialogBackdrop
           transition
@@ -77,7 +77,7 @@ export default function NavBar() {
             </div>
 
             {/* Links */}
-            <TabGroup className="mt-2">
+            <TabGroup className="mt-2 z-1">
               <div className="border-b border-gray-200">
                 <TabList className="-mb-px flex space-x-8 px-4">
                   {NAVIGATION_LIST.categories.map((category) => (
@@ -167,22 +167,36 @@ export default function NavBar() {
             </div>
 
             <div className="space-y-6 border-t border-gray-200 px-4 py-6">
-              <div className="flow-root">
-                <a
-                  href="#"
-                  className="-m-2 block p-2 font-medium text-gray-900"
+              {isAuthenticated ? (
+                <div
+                  onClick={() => {
+                    handleOpenModal();
+                    setOpen(false);
+                  }}
+                  className="cursor-pointer font-medium text-gray-700 hover:text-gray-800"
                 >
-                  Đăng nhập
-                </a>
-              </div>
-              <div className="flow-root">
-                <a
-                  href="#"
-                  className="-m-2 block p-2 font-medium text-gray-900"
-                >
-                  Đăng ký
-                </a>
-              </div>
+                  Đăng xuất
+                </div>
+              ) : (
+                <>
+                  <div className="flow-root">
+                    <Link
+                      href="login"
+                      className="-m-2 block p-2 font-medium text-gray-900"
+                    >
+                      Đăng nhập
+                    </Link>
+                  </div>
+                  <div className="flow-root">
+                    <Link
+                      href="/register"
+                      className="-m-2 block p-2 font-medium text-gray-900"
+                    >
+                      Đăng ký
+                    </Link>
+                  </div>
+                </>
+              )}
             </div>
           </DialogPanel>
         </div>
@@ -201,7 +215,7 @@ export default function NavBar() {
             <div className="flex h-16 items-center justify-between">
               <button
                 type="button"
-                onClick={() => setOpen(true)}
+                onClick={() => setOpen(!open)}
                 className="relative rounded-md bg-white p-2 text-gray-400 lg:hidden"
               >
                 <span className="absolute -inset-0.5" />
@@ -388,7 +402,9 @@ export default function NavBar() {
       >
         <p>Bạn có chắc chắn muốn đăng xuất</p>
       </BaseModal>
-      <div className={`${showSearch ? "nav-enter" : "nav-exit"}`}>
+      <div
+        className={`${showSearch ? "nav-enter" : "nav-exit"} bg-transparent`}
+      >
         <AutoCompleteSearch
           categories={CATEGORIES}
           styles={

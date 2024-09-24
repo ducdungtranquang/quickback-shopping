@@ -1,5 +1,6 @@
 import Cookies from "js-cookie";
 import { URL_API } from "../constant/constant";
+import { logoutAccount } from "../api/auth";
 
 export async function apiCall<T>(
     url: string,
@@ -31,7 +32,9 @@ export async function apiCall<T>(
 }
 
 
-export const logout = () => {
+export const logout = async () => {
+    const token = Cookies.get('authToken')
+    await logoutAccount(token!)
     Cookies.remove("authToken");
     Cookies.remove("id");
     Cookies.remove("email");
