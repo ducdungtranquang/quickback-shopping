@@ -1,13 +1,50 @@
 "use client";
+import React, { useState, useEffect, useRef } from "react";
 import ProductCard from "@/components/card/product-card";
-import AutoCompleteSearch from "@/components/search/autocomplete-search";
 import Slider from "@/components/slider/slider";
 import NavBar from "@/layout/navbar";
-import { CATEGORIES } from "@/ultils/constant/constant";
-import { HTMLAttributes } from "react";
 
 export default function ProductListPage() {
-  const test = Array(20).fill("test");
+  const [products, setProducts] = useState<string[]>(Array(20).fill("test"));
+  const [page, setPage] = useState<number>(1);
+  const [loading, setLoading] = useState<boolean>(false);
+  const observerRef = useRef<HTMLDivElement | null>(null);
+
+  // Mô phỏng việc tải thêm dữ liệu
+  const fetchMoreProducts = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setProducts((prevProducts) => [
+        ...prevProducts,
+        ...Array(20).fill(`test page ${page + 1}`),
+      ]);
+      setPage((prevPage) => prevPage + 1);
+      setLoading(false);
+    }, 1000);
+  };
+
+  useEffect(() => {
+    if (loading) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          fetchMoreProducts();
+        }
+      },
+      { threshold: 1.0 }
+    );
+
+    if (observerRef.current) {
+      observer.observe(observerRef.current);
+    }
+
+    return () => {
+      if (observerRef.current) {
+        observer.unobserve(observerRef.current);
+      }
+    };
+  }, [loading]);
+
   const slides = [
     <div
       className="bg-blue-500 h-[200px] sm:h-[400px] flex items-center justify-center text-white"
@@ -33,19 +70,9 @@ export default function ProductListPage() {
     <>
       <NavBar />
       <section className="py-6 px-4 bg-gray-100 h-full min-h-screen overflow-hidden overflow-y-scroll mt-[100px]">
-        <div className="container mx-auto">
+        <div className="mx-auto mt-[20px]">
           <Slider slides={slides} loop={true} autoPlay={true} />
         </div>
-        <AutoCompleteSearch
-          categories={CATEGORIES}
-          styles={
-            {
-              top: 0,
-              width: "auto",
-              marginTop: "10px",
-            } as HTMLAttributes<HTMLDivElement>
-          }
-        />
 
         {/* Header */}
         <div className="mx-auto px-2 max-w-7xl lg:px-8 mt-[50px]">
@@ -70,27 +97,13 @@ export default function ProductListPage() {
           </div>
         </div>
 
-        {/* Pagination */}
-        <div className="flex justify-between items-center mt-8 mb-[20px] px-2">
-          <button className="py-2 px-4 bg-gray-200 text-black rounded">
-            Trước
-          </button>
-          <div className="flex space-x-2 items-center ">
-            <span>1/9</span>
-            <button className="py-2 px-4 bg-gray-200 text-black rounded">
-              Tiếp
-            </button>
-          </div>
-        </div>
-
-        {/* Product Grid */}
         <div className="flex flex-wrap justify-around sm:justify-left gap-2 sm:gap-4">
-          {test?.map((item, i) => (
+          {products.map((item, i) => (
             <ProductCard
               key={i}
               cost={0}
-              name={"Test Product"}
-              shop={"Test Shop"}
+              name={`Test Product ${i + 1}`}
+              shop={`Test Shop`}
               link={"#"}
               src={"https://via.placeholder.com/150"}
               commission={0}
@@ -98,6 +111,14 @@ export default function ProductListPage() {
             />
           ))}
         </div>
+
+        {loading && (
+          <div className="flex justify-center mt-4">
+            <p>Đang tải thêm sản phẩm...</p>
+          </div>
+        )}
+
+        <div ref={observerRef} className="h-10"></div>
       </section>
     </>
   );

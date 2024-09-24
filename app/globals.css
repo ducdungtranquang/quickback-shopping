@@ -141,3 +141,14 @@ body {
 .nav-exit {
   animation: nav-exit 0.5s forwards;
 }
+
+/* Custom slide */
+.swiper-button-prev,
+.swiper-button-next {
+  color: white !important;
+}
+
+.swiper-button-prev:after,
+.swiper-button-next:after {
+  font-size: 22px !important;
+}

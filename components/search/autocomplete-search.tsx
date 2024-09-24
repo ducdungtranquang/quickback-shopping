@@ -79,7 +79,7 @@ const AutoCompleteSearch = (props: IAutoComplete) => {
             {showDropdown && (
               <div
                 id="dropdown"
-                className="w-full absolute top-[50px] z-1 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
+                className="w-full absolute top-[50px] z-[1000] bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
                 ref={dropdownRef}
               >
                 <ul

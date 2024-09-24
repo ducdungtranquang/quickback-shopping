@@ -6,22 +6,17 @@ import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import { A11y, Pagination, Scrollbar, Navigation } from "swiper/modules";
 
-// Định nghĩa kiểu props cho component
 interface SliderProps {
-  slides: React.ReactNode[]; // Mảng các React elements (VD: hình ảnh, đoạn text, etc)
-  loop?: boolean; // Option để lặp lại slider
-  autoPlay?: boolean; // Option để tự động chạy slider
+  slides: React.ReactNode[];
+  loop?: boolean;
+  autoPlay?: boolean;
 }
 
-const Slider: React.FC<SliderProps> = ({
-  slides,
-  loop = true,
-  autoPlay = false,
-}) => {
+const Slider: React.FC<SliderProps> = ({ slides, loop = true, autoPlay }) => {
   return (
     <div className="slider-container">
       <Swiper
-        style={{ zIndex: 1, borderRadius: "20px" }}
+        style={{ zIndex: 1, borderRadius: "8px" }}
         modules={[Navigation, Pagination, Scrollbar, A11y]}
         spaceBetween={50}
         slidesPerView={1}

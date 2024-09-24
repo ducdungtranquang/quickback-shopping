@@ -1,11 +1,10 @@
 "use client";
 
 import Gallery from "@/components/gallery/gallery";
-import AutoCompleteSearch from "@/components/search/autocomplete-search";
+import GridGallery from "@/components/gallery/grid-gallery";
+import Hero from "@/components/hero/hero";
 import Slider from "@/components/slider/slider";
 import NavBar from "@/layout/navbar";
-import { CATEGORIES } from "@/ultils/constant/constant";
-import { HTMLAttributes } from "react";
 
 export default function Home() {
   const slides = [
@@ -38,23 +37,22 @@ export default function Home() {
     <div>
       <NavBar />
       <section className="py-6 px-4 bg-gray-100 h-full min-h-screen overflow-hidden overflow-y-scroll mt-[100px]">
-        <AutoCompleteSearch
-          categories={CATEGORIES}
-          styles={
-            {
-              top: 0,
-              width: "auto",
-            } as HTMLAttributes<HTMLDivElement>
-          }
-        />
-        <div className="container mx-auto w-full">
+        <div className="mt-[10px]">
+          <Hero />
+        </div>
+        <div className="mx-auto w-full mt-[20px]">
           <Slider slides={slides} loop={true} autoPlay={true} />
         </div>
 
-        <h2 className="text-xl font-bold text-black sm:text-xl md:text-2xl mt-[20px] text-center p-2">
+        <h2 className="text-xl font-bold text-black sm:text-xl md:text-2xl mt-[20px] md:mt-[40px] text-center py-4">
           Sản phẩm nổi bật
         </h2>
         <Gallery />
+
+        <h2 className="text-xl font-bold text-black sm:text-xl md:text-2xl mt-[20px] md:mt-[40px] text-center py-4">
+          Sản phẩm nổi bật
+        </h2>
+        <GridGallery />
       </section>
     </div>
   );

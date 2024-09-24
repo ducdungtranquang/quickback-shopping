@@ -1,12 +1,8 @@
 "use client";
 import ProductCard from "@/components/card/product-card";
 import ShopCard from "@/components/card/shop-card";
-import AutoCompleteSearch from "@/components/search/autocomplete-search";
 import Slider from "@/components/slider/slider";
-import Carousel from "@/components/slider/slider";
 import NavBar from "@/layout/navbar";
-import { CATEGORIES } from "@/ultils/constant/constant";
-import { HTMLAttributes } from "react";
 
 export default function ShopPage() {
   const test = Array(5).fill("test");
@@ -35,19 +31,9 @@ export default function ShopPage() {
     <>
       <NavBar />
       <section className="py-6 px-4 bg-gray-100 h-full min-h-screen overflow-hidden overflow-y-scroll mt-[100px]">
-        <div className="container mx-auto">
+        <div className="mx-auto mt[20px]">
           <Slider slides={slides} loop={true} autoPlay={true} />
         </div>
-        <AutoCompleteSearch
-          categories={CATEGORIES}
-          styles={
-            {
-              top: 0,
-              width: "auto",
-              marginTop: "10px",
-            } as HTMLAttributes<HTMLDivElement>
-          }
-        />
 
         {/* Header */}
         <div className="mx-auto px-2 max-w-7xl mt-[50px]">

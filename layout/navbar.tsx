@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { Fragment, useState } from "react";
+import { Fragment, HTMLAttributes, useState } from "react";
 import {
   Dialog,
   DialogBackdrop,
@@ -19,145 +19,19 @@ import {
   ShoppingBagIcon,
   UserIcon,
   XMarkIcon,
+  MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
 import useAuth from "@/hook/useAuth";
 import Link from "next/link";
 import BaseModal from "@/components/modals/base-modal";
 import { logout } from "@/ultils/func/api";
 import { useRouter } from "next/navigation";
-
-const navigation = {
-  categories: [
-    {
-      id: "shop",
-      name: "Mua sắm",
-      featured: [
-        {
-          name: "Cơ bản",
-          href: "#",
-          imageSrc:
-            "https://tailwindui.com/img/ecommerce-images/mega-menu-category-01.jpg",
-          imageAlt:
-            "Models sitting back to back, wearing Basic Tee in black and bone.",
-        },
-        {
-          name: "Hoàn tiền cao",
-          href: "#",
-          imageSrc:
-            "https://tailwindui.com/img/ecommerce-images/mega-menu-category-02.jpg",
-          imageAlt:
-            "Close up of Basic Tee fall bundle with off-white, ochre, olive, and black tees.",
-        },
-      ],
-      sections: [
-        {
-          id: "clothing",
-          name: "Thời trang",
-          items: [
-            { name: "Tops", href: "#" },
-            { name: "Dresses", href: "#" },
-            { name: "Pants", href: "#" },
-            { name: "Denim", href: "#" },
-            { name: "Sweaters", href: "#" },
-            { name: "T-Shirts", href: "#" },
-            { name: "Jackets", href: "#" },
-            { name: "Activewear", href: "#" },
-            { name: "Browse All", href: "#" },
-          ],
-        },
-        {
-          id: "giadung",
-          name: "Gia dụng",
-          items: [
-            { name: "Watches", href: "#" },
-            { name: "Wallets", href: "#" },
-            { name: "Bags", href: "#" },
-            { name: "Sunglasses", href: "#" },
-            { name: "Hats", href: "#" },
-            { name: "Belts", href: "#" },
-          ],
-        },
-        {
-          id: "mom",
-          name: "Mẹ và bé",
-          items: [
-            { name: "Full Nelson", href: "#" },
-            { name: "My Way", href: "#" },
-            { name: "Re-Arranged", href: "#" },
-            { name: "Counterfeit", href: "#" },
-            { name: "Significant Other", href: "#" },
-          ],
-        },
-      ],
-    },
-    {
-      id: "brand",
-      name: "Thương hiệu",
-      featured: [
-        {
-          name: "Hot",
-          href: "#",
-          imageSrc:
-            "https://tailwindui.com/img/ecommerce-images/product-page-04-detail-product-shot-01.jpg",
-          imageAlt:
-            "Drawstring top with elastic loop closure and textured interior padding.",
-        },
-        {
-          name: "Hoàn tiền cao",
-          href: "#",
-          imageSrc:
-            "https://tailwindui.com/img/ecommerce-images/category-page-02-image-card-06.jpg",
-          imageAlt:
-            "Three shirts in gray, white, and blue arranged on table with same line drawing of hands and shapes overlapping on front of shirt.",
-        },
-      ],
-      sections: [
-        {
-          id: "clothing",
-          name: "Thời trang",
-          items: [
-            { name: "Tops", href: "#" },
-            { name: "Pants", href: "#" },
-            { name: "Sweaters", href: "#" },
-            { name: "T-Shirts", href: "#" },
-            { name: "Jackets", href: "#" },
-            { name: "Activewear", href: "#" },
-            { name: "Browse All", href: "#" },
-          ],
-        },
-        {
-          id: "giadung",
-          name: "Gia dụng",
-          items: [
-            { name: "Watches", href: "#" },
-            { name: "Wallets", href: "#" },
-            { name: "Bags", href: "#" },
-            { name: "Sunglasses", href: "#" },
-            { name: "Hats", href: "#" },
-            { name: "Belts", href: "#" },
-          ],
-        },
-        {
-          id: "mom",
-          name: "Mẹ và bé",
-          items: [
-            { name: "Re-Arranged", href: "#" },
-            { name: "Counterfeit", href: "#" },
-            { name: "Full Nelson", href: "#" },
-            { name: "My Way", href: "#" },
-          ],
-        },
-      ],
-    },
-  ],
-  pages: [
-    { name: "Liên hệ", href: "#" },
-    { name: "Chính sách", href: "#" },
-  ],
-};
+import AutoCompleteSearch from "@/components/search/autocomplete-search";
+import { CATEGORIES, NAVIGATION_LIST } from "@/ultils/constant/constant";
 
 export default function NavBar() {
   const router = useRouter();
+  const [showSearch, setShowSearch] = useState(false);
   const [open, setOpen] = useState(false);
   const { isAuthenticated } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -165,15 +39,14 @@ export default function NavBar() {
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
   const handleConfirm = () => {
-    logout()
+    logout();
     setIsModalOpen(false);
   };
-
 
   return (
     <div
       style={{ maxWidth: "992px" }}
-      className="bg-white dark:bg-gray-800 fixed z-10 top-0 w-full"
+      className="bg-white dark:bg-gray-800 fixed z-[99999] top-0 w-full"
     >
       {/* Mobile menu */}
       <Dialog
@@ -207,7 +80,7 @@ export default function NavBar() {
             <TabGroup className="mt-2">
               <div className="border-b border-gray-200">
                 <TabList className="-mb-px flex space-x-8 px-4">
-                  {navigation.categories.map((category) => (
+                  {NAVIGATION_LIST.categories.map((category) => (
                     <Tab
                       key={category.name}
                       className="flex-1 whitespace-nowrap border-b-2 border-transparent px-1 py-4 text-base font-medium text-gray-900 data-[selected]:border-indigo-600 data-[selected]:text-indigo-600"
@@ -218,7 +91,7 @@ export default function NavBar() {
                 </TabList>
               </div>
               <TabPanels as={Fragment}>
-                {navigation.categories.map((category) => (
+                {NAVIGATION_LIST.categories.map((category) => (
                   <TabPanel
                     key={category.name}
                     className="space-y-10 px-4 pb-8 pt-10"
@@ -281,7 +154,7 @@ export default function NavBar() {
             </TabGroup>
 
             <div className="space-y-6 border-t border-gray-200 px-4 py-6">
-              {navigation.pages.map((page) => (
+              {NAVIGATION_LIST.pages.map((page) => (
                 <div key={page.name} className="flow-root">
                   <a
                     href={page.href}
@@ -339,11 +212,8 @@ export default function NavBar() {
               {/* Flyout menus */}
               <PopoverGroup className="lg:ml-8 lg:block lg:self-stretch lg:block hidden ml-5">
                 <div className="flex h-full space-x-8">
-                  {navigation.categories.map((category, index) => (
-                    <Popover
-                      key={category.name}
-                      className="flex"
-                    >
+                  {NAVIGATION_LIST.categories.map((category, index) => (
+                    <Popover key={category.name} className="flex">
                       <div className="relative flex">
                         <PopoverButton className="relative z-10 -mb-px flex items-center border-b-2 border-transparent pt-px text-sm font-medium text-gray-700 transition-colors duration-200 ease-out hover:text-gray-800">
                           {category.name}
@@ -423,7 +293,7 @@ export default function NavBar() {
                     </Popover>
                   ))}
 
-                  {navigation.pages.map((page) => (
+                  {NAVIGATION_LIST.pages.map((page) => (
                     <a
                       key={page.name}
                       href={page.href}
@@ -438,7 +308,10 @@ export default function NavBar() {
               <div className="ml-auto flex items-center">
                 <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
                   {isAuthenticated ? (
-                    <div onClick={handleOpenModal} className="cursor-pointer text-sm font-medium text-gray-700 hover:text-gray-800">
+                    <div
+                      onClick={handleOpenModal}
+                      className="cursor-pointer text-sm font-medium text-gray-700 hover:text-gray-800"
+                    >
                       Đăng xuất
                     </div>
                   ) : (
@@ -447,7 +320,7 @@ export default function NavBar() {
                         href="/login"
                         className="text-sm font-medium text-gray-700 hover:text-gray-800"
                       >
-                        {isAuthenticated === null ? '' : 'Đăng nhập'}
+                        {isAuthenticated === null ? "" : "Đăng nhập"}
                       </Link>
                       <span
                         aria-hidden="true"
@@ -457,12 +330,24 @@ export default function NavBar() {
                         href="/register"
                         className="text-sm font-medium text-gray-700 hover:text-gray-800"
                       >
-                        {isAuthenticated === null ? '' : 'Đăng ký'}
+                        {isAuthenticated === null ? "" : "Đăng ký"}
                       </Link>
                     </>
                   )}
                 </div>
 
+                {/* Search */}
+                <div className="ml-4 flow-root lg:ml-6 ml-3">
+                  <div
+                    className="group -m-2 flex items-center p-2"
+                    onClick={() => setShowSearch(!showSearch)}
+                  >
+                    <MagnifyingGlassIcon
+                      aria-hidden="true"
+                      className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
+                    />
+                  </div>
+                </div>
                 {/* User */}
                 <div className="ml-4 flow-root lg:ml-6 ml-3">
                   <a href="#" className="group -m-2 flex items-center p-2">
@@ -474,9 +359,12 @@ export default function NavBar() {
                 </div>
                 {/* Cart */}
                 <div className="ml-4 flow-root lg:ml-6 ml-3">
-                  <div onClick={() => {
-                    router.push('/history/123?activeId=cart')
-                  }} className="group -m-2 flex items-center p-2">
+                  <div
+                    onClick={() => {
+                      router.push("/history/123?activeId=cart");
+                    }}
+                    className="group -m-2 flex items-center p-2"
+                  >
                     <ShoppingBagIcon
                       aria-hidden="true"
                       className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
@@ -500,6 +388,17 @@ export default function NavBar() {
       >
         <p>Bạn có chắc chắn muốn đăng xuất</p>
       </BaseModal>
+      <div className={`${showSearch ? "nav-enter" : "nav-exit"}`}>
+        <AutoCompleteSearch
+          categories={CATEGORIES}
+          styles={
+            {
+              top: 0,
+              width: "auto",
+            } as HTMLAttributes<HTMLDivElement>
+          }
+        />
+      </div>
     </div>
   );
 }

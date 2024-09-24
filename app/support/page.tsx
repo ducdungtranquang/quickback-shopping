@@ -1,10 +1,7 @@
 "use client";
 import Accordion from "@/components/accordion/accordion";
 import InfoCard from "@/components/card/info-card";
-import AutoCompleteSearch from "@/components/search/autocomplete-search";
 import NavBar from "@/layout/navbar";
-import { CATEGORIES } from "@/ultils/constant/constant";
-import { HTMLAttributes } from "react";
 
 export default function SupportPage() {
   const accordionItems = [
@@ -74,18 +71,8 @@ export default function SupportPage() {
   return (
     <>
       <NavBar />
-      <div className="py-6 px-4 bg-gray-100 h-full min-h-screen overflow-hidden overflow-y-scroll mt-[85px]">
-        <AutoCompleteSearch
-          categories={CATEGORIES}
-          styles={
-            {
-              top: 0,
-              width: "auto",
-              marginTop: "10px",
-            } as HTMLAttributes<HTMLDivElement>
-          }
-        />
-        <h1 className="text-xl font-medium text-black sm:text-xl md:text-2xl text-center mt-2">
+      <div className="py-6 px-4 bg-gray-100 h-full min-h-screen overflow-hidden overflow-y-scroll mt-[100px]">
+        <h1 className="text-xl font-medium text-black sm:text-xl md:text-2xl text-center mt-4">
           Hỗ trợ
         </h1>
         <div className="py-5 px-2">
