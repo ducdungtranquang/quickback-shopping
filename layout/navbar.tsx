@@ -29,11 +29,14 @@ import { useRouter } from "next/navigation";
 import AutoCompleteSearch from "@/components/search/autocomplete-search";
 import { CATEGORIES, NAVIGATION_LIST } from "@/ultils/constant/constant";
 
-export default function NavBar() {
+interface IProps {
+  isAuthenticated: boolean | null;
+}
+
+export default function NavBar({ isAuthenticated }: IProps) {
   const router = useRouter();
   const [showSearch, setShowSearch] = useState(false);
   const [open, setOpen] = useState(false);
-  const { isAuthenticated } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleOpenModal = () => setIsModalOpen(true);

@@ -1,6 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 "use client";
 
+import Spinner from "@/components/spinner/spinner";
 import DataTable from "@/components/table/table";
 import Tabs from "@/components/tabs/tabs";
 import { useFetchDataForTab } from "@/hook/useFetchDataForTab";
@@ -42,7 +43,7 @@ export default function HistoryPage() {
   ) => (
     <div>
       {loading ? (
-        <p className="text-sm">Loading ...</p>
+        <Spinner />
       ) : error ? (
         <p className="text-sm">{error}</p>
       ) : data && data.length > 0 ? (
@@ -94,7 +95,7 @@ export default function HistoryPage() {
 
   return (
     <div>
-      <NavBar />
+      <NavBar isAuthenticated={true} />
       <div className="bg-gray-100 dark:bg-gray-800 py-8 mt-[100px] px-4 h-full min-h-screen">
         <h2 className="mt-[20px] text-center">Lịch sử</h2>
         <Tabs

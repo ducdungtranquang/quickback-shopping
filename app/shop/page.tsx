@@ -2,9 +2,12 @@
 import ProductCard from "@/components/card/product-card";
 import ShopCard from "@/components/card/shop-card";
 import Slider from "@/components/slider/slider";
+import useAuth from "@/hook/useAuth";
 import NavBar from "@/layout/navbar";
 
 export default function ShopPage() {
+  const { isAuthenticated } = useAuth(false);
+
   const test = Array(5).fill("test");
   const slides = [
     <div
@@ -29,7 +32,7 @@ export default function ShopPage() {
 
   return (
     <>
-      <NavBar />
+      <NavBar isAuthenticated={isAuthenticated} />
       <section className="py-6 px-4 bg-gray-100 h-full min-h-screen overflow-hidden overflow-y-scroll mt-[100px]">
         <div className="mx-auto mt[20px]">
           <Slider slides={slides} loop={true} autoPlay={true} />

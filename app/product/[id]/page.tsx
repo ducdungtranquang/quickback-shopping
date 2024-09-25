@@ -1,11 +1,14 @@
 "use client";
+import useAuth from "@/hook/useAuth";
 import NavBar from "@/layout/navbar";
 
 /* eslint-disable @next/next/no-img-element */
 export default function ProductPage() {
+  const { isAuthenticated } = useAuth(false);
+
   return (
     <>
-      <NavBar />
+      <NavBar isAuthenticated={isAuthenticated} />
       <div className="bg-gray-100 dark:bg-gray-800 py-8 mt-[100px] h-full min-h-screen p-4">
         <div className="max-w-full mx-auto px-4 md:px-2 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row -mx-4">

@@ -3,8 +3,10 @@ import React, { useState, useEffect, useRef } from "react";
 import ProductCard from "@/components/card/product-card";
 import Slider from "@/components/slider/slider";
 import NavBar from "@/layout/navbar";
+import useAuth from "@/hook/useAuth";
 
 export default function ProductListPage() {
+  const { isAuthenticated } = useAuth(false);
   const [products, setProducts] = useState<string[]>(Array(20).fill("test"));
   const [page, setPage] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
@@ -68,7 +70,7 @@ export default function ProductListPage() {
 
   return (
     <>
-      <NavBar />
+      <NavBar isAuthenticated={isAuthenticated} />
       <section className="py-6 px-4 bg-gray-100 h-full min-h-screen overflow-hidden overflow-y-scroll mt-[100px]">
         <div className="mx-auto mt-[20px]">
           <Slider slides={slides} loop={true} autoPlay={true} />

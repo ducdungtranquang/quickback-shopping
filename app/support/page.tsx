@@ -1,9 +1,12 @@
 "use client";
 import Accordion from "@/components/accordion/accordion";
 import InfoCard from "@/components/card/info-card";
+import useAuth from "@/hook/useAuth";
 import NavBar from "@/layout/navbar";
 
 export default function SupportPage() {
+  const { isAuthenticated } = useAuth(false);
+
   const accordionItems = [
     {
       id: "1",
@@ -70,7 +73,7 @@ export default function SupportPage() {
 
   return (
     <>
-      <NavBar />
+      <NavBar isAuthenticated={isAuthenticated} />
       <div className="py-6 px-4 bg-gray-100 h-full min-h-screen overflow-hidden overflow-y-scroll mt-[100px]">
         <h1 className="text-xl font-medium text-black sm:text-xl md:text-2xl text-center mt-4">
           Hỗ trợ

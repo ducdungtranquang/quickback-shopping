@@ -2,6 +2,7 @@
 "use client";
 import BasicButton from "@/components/button/basic-button";
 import InputSection from "@/components/input/input";
+import Spinner from "@/components/spinner/spinner";
 import useAuth from "@/hook/useAuth";
 import NavBar from "@/layout/navbar";
 import { HTMLAttributes, useState } from "react";
@@ -20,7 +21,7 @@ const UserDetailInfo = () => {
     currentPassword: "",
     bankAccount: "0123456789",
     coinsEarned: "500",
-    confirmPassword: ""
+    confirmPassword: "",
   });
 
   const styleInput = {
@@ -39,7 +40,7 @@ const UserDetailInfo = () => {
   };
 
   if (isAuthenticated === null) {
-    return <div>Loading...</div>;
+    return <Spinner />;
   }
 
   if (!isAuthenticated) {
@@ -48,7 +49,7 @@ const UserDetailInfo = () => {
 
   return (
     <>
-      <NavBar />
+      <NavBar isAuthenticated={isAuthenticated.isAuthenticated} />
       <div className="container mx-auto p-4 px-6 mt-[100px] h-full min-h-screen">
         <div className="flex flex-col md:flex-row gap-4">
           {/* Profile Card */}
@@ -89,7 +90,7 @@ const UserDetailInfo = () => {
               ].map(({ label, name }) => (
                 <div key={name}>
                   <InputSection
-                    type={name === "password" ? 'password' : 'text'}
+                    type={name === "password" ? "password" : "text"}
                     label={label}
                     name={name}
                     placeholder={formData[name]}
@@ -100,35 +101,37 @@ const UserDetailInfo = () => {
                   />
                 </div>
               ))}
-              {isEditing && <>
-                <InputSection
-                  type={'password'}
-                  label={"Nhập mật khẩu hiện tại"}
-                  name={'confirm psw'}
-                  placeholder={"*****"}
-                  value={formData.currentPassword}
-                  onChange={handleInputChange}
-                  styleInput={styleInput}
-                />
-                <InputSection
-                  type={'password'}
-                  label={"Mật khẩu mới"}
-                  name={'confirm psw'}
-                  placeholder={"*****"}
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  styleInput={styleInput}
-                />
-                <InputSection
-                  type={'password'}
-                  label={"Nhập lại mật khẩu"}
-                  name={'confirm psw'}
-                  placeholder={"*****"}
-                  value={formData.confirmPassword}
-                  onChange={handleInputChange}
-                  styleInput={styleInput}
-                />
-              </>}
+              {isEditing && (
+                <>
+                  <InputSection
+                    type={"password"}
+                    label={"Nhập mật khẩu hiện tại"}
+                    name={"confirm psw"}
+                    placeholder={"*****"}
+                    value={formData.currentPassword}
+                    onChange={handleInputChange}
+                    styleInput={styleInput}
+                  />
+                  <InputSection
+                    type={"password"}
+                    label={"Mật khẩu mới"}
+                    name={"confirm psw"}
+                    placeholder={"*****"}
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    styleInput={styleInput}
+                  />
+                  <InputSection
+                    type={"password"}
+                    label={"Nhập lại mật khẩu"}
+                    name={"confirm psw"}
+                    placeholder={"*****"}
+                    value={formData.confirmPassword}
+                    onChange={handleInputChange}
+                    styleInput={styleInput}
+                  />
+                </>
+              )}
             </div>
           </div>
         </div>

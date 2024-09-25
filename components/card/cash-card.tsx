@@ -14,7 +14,6 @@ const CashbackCard: React.FC<CashbackCardProps> = ({
 }) => {
   return (
     <>
-      <NavBar />
       <div className="max-w-[992px] w-full p-6 bg-gradient-to-r from-blue-500 to-blue-700 rounded-xl shadow-md text-white">
         <div className="flex justify-between items-center mb-4 gap-[20px]">
           <div className="flex items-center space-x-2">

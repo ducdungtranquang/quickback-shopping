@@ -4,9 +4,11 @@ import Gallery from "@/components/gallery/gallery";
 import GridGallery from "@/components/gallery/grid-gallery";
 import Hero from "@/components/hero/hero";
 import Slider from "@/components/slider/slider";
+import useAuth from "@/hook/useAuth";
 import NavBar from "@/layout/navbar";
 
 export default function Home() {
+  const { isAuthenticated } = useAuth(false);
   const slides = [
     <div
       className="bg-blue-500 h-[200px] sm:h-[400px] flex items-center justify-center text-white"
@@ -35,7 +37,7 @@ export default function Home() {
   ];
   return (
     <div>
-      <NavBar />
+      <NavBar isAuthenticated={isAuthenticated} />
       <section className="py-6 px-4 bg-gray-100 h-full min-h-screen overflow-hidden overflow-y-scroll mt-[100px]">
         <div className="mt-[10px]">
           <Hero />
