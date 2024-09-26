@@ -22,7 +22,7 @@ const Slider: React.FC<SliderProps> = ({ slides, loop = true, autoPlay }) => {
         slidesPerView={1}
         navigation
         pagination={{ clickable: true }}
-        scrollbar={{ draggable: true }}
+        // scrollbar={{ draggable: true }}
         loop={loop}
         autoplay={
           autoPlay ? { delay: 3000, disableOnInteraction: false } : false

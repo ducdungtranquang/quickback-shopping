@@ -5,6 +5,7 @@ interface HelpCardProps {
   description?: string;
   guidelineLink: string;
   imgContent?: React.ReactNode;
+  btnContent?: string;
 }
 
 const HelpCard: React.FC<HelpCardProps> = ({
@@ -12,10 +13,11 @@ const HelpCard: React.FC<HelpCardProps> = ({
   description,
   guidelineLink,
   imgContent,
+  btnContent,
 }) => {
   return (
     <div className="max-w-[992px] w-full p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-      <div className="flex items-center gap-[5px]">
+      <div className="flex items-center gap-[10px]">
         {imgContent}
         <a href="#">
           <h5 className="mb-3 font-semibold tracking-tight text-gray-900 dark:text-white">
@@ -32,7 +34,7 @@ const HelpCard: React.FC<HelpCardProps> = ({
         href={guidelineLink}
         className="inline-flex font-sm items-center text-blue-600 hover:underline"
       >
-        Xem
+        {btnContent ? btnContent : "Xem"}
         <svg
           className="w-3 h-3 ms-2.5 rtl:rotate-[270deg]"
           aria-hidden="true"

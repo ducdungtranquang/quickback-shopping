@@ -11,24 +11,26 @@ export function useFetchDataForTab(
   useEffect(() => {
     const controller = new AbortController();
 
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const result = await fetchDataFn(controller.signal);
-        setData(result);
-        setError(null);
-      } catch (error: any) {
-        if (error.name === "AbortError") {
-          console.log("Request was cancelled");
-        } else {
-          setError("Failed to fetch data");
+    if (activeTab) {
+      const fetchData = async () => {
+        try {
+          setLoading(true);
+          const result = await fetchDataFn(controller.signal);
+          setData(result);
+          setError(null);
+        } catch (error: any) {
+          if (error.name === "AbortError") {
+            console.log("Request was cancelled");
+          } else {
+            setError("Failed to fetch data");
+          }
+        } finally {
+          setLoading(false);
         }
-      } finally {
-        setLoading(false);
-      }
-    };
+      };
 
-    fetchData();
+      fetchData();
+    }
 
     return () => {
       controller.abort();
