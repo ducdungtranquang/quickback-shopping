@@ -9,7 +9,6 @@ import { useParams } from "next/navigation";
 export default function EventPage() {
   const { isAuthenticated } = useAuth(false);
   const { event } = useParams();
-  console.log("event", event);
   return (
     <div>
       <NavBar isAuthenticated={isAuthenticated} />
