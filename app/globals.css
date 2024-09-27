@@ -109,3 +109,46 @@ body {
 .toast-exit {
   animation: toast-exit 0.5s forwards;
 }
+
+@keyframes nav-enter {
+  from {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes nav-exit {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+    border: 0;
+  }
+  to {
+    transform: translateY(-30px);
+    opacity: 0;
+    display: none;
+  }
+}
+
+.nav-enter {
+  animation: nav-enter 0.5s forwards;
+}
+
+.nav-exit {
+  animation: nav-exit 0.5s forwards;
+}
+
+/* Custom slide */
+.swiper-button-prev,
+.swiper-button-next {
+  color: white !important;
+}
+
+.swiper-button-prev:after,
+.swiper-button-next:after {
+  font-size: 22px !important;
+}

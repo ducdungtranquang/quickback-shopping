@@ -1,29 +1,54 @@
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import Cookies from 'js-cookie';
+import { useEffect, useState, useRef } from "react";
+import { useRouter, usePathname } from "next/navigation";
+import Cookies from "js-cookie";
+import { verifyToken } from "@/ultils/api/auth";
 
-interface IUseAuth {
-    link?: string
-}
+const useAuth = (isNavigation?: boolean) => {
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const router = useRouter();
+  const pathname = usePathname();
+  const hasVerified = useRef(false);
 
-const useAuth = (props: IUseAuth) => {
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const router = useRouter();
+  const navigateLogin = () => {
+    if (isNavigation) {
+      router.push("/login");
+    }
+  };
 
-    useEffect(() => {
-        const token = Cookies.get('authToken');
+  useEffect(() => {
+    const token = Cookies.get("authToken");
+    const id = Cookies.get("id");
+    const email = Cookies.get("email");
 
-        if (token) {
+    if (token && id && email && !hasVerified.current) {
+      const checkToken = async () => {
+        try {
+          const isValid = await verifyToken(token);
+          if (isValid) {
             setIsAuthenticated(true);
-        } else {
-            setIsAuthenticated(false)
-            if (props.link !== undefined) {
-                router.push(`${props.link}`);
-            }
+          } else {
+            Cookies.remove("authToken");
+            Cookies.remove("id");
+            Cookies.remove("email");
+            setIsAuthenticated(false);
+            navigateLogin();
+          }
+        } catch (error) {
+          console.error("Token verification failed", error);
+          setIsAuthenticated(false);
+          navigateLogin();
         }
-    }, [router]);
+      };
 
-    return isAuthenticated;
+      checkToken();
+      hasVerified.current = true;
+    } else if (!token || !id || !email) {
+      setIsAuthenticated(false);
+      navigateLogin();
+    }
+  }, [pathname]);
+
+  return { isAuthenticated };
 };
 
 export default useAuth;
