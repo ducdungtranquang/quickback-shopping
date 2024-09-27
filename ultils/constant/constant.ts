@@ -144,3 +144,21 @@ export const CATEGORIES = [
   "Đồ thể thao",
   "Mẹ và bé",
 ];
+
+export const treeSlide = [
+  {
+    title: "Sunflower",
+    image: "/Lotus.svg",
+    days: 7,
+  },
+  {
+    title: "Apple",
+    image: "/Mushroom.svg",
+    days: 7,
+  },
+  {
+    title: "Cactus",
+    image: "/Cactus.svg",
+    days: 7,
+  },
+];
