@@ -13,7 +13,7 @@ export default function ProgressCard({ title, des, src }: IProgressCard) {
             {title}
           </div>
           <div className="mb-3 text-base dark:text-white">{des}</div>
-          <div className="w-[50%] bg-gray-200 rounded-full h-2.5 mb-4 dark:bg-gray-700">
+          <div className="w-[50%] min-w-[200px] bg-gray-200 rounded-full h-2.5 mb-4 dark:bg-gray-700">
             <div className="bg-green-400 h-2.5 rounded-full dark:bg-blue-500" />
           </div>
         </div>
