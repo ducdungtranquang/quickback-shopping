@@ -1,88 +1,174 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import BasicButton from "@/components/button/basic-button";
 import ProgressCard from "@/components/card/progress-card";
 import BaseModal from "@/components/modals/base-modal";
 import Slider from "@/components/slider/slider";
+import Cookies from "js-cookie";
+import {
+  getGardenStatus,
+  harvestTree,
+  IGardenStatus,
+  plantTree,
+  waterTree,
+} from "@/ultils/api/garden";
+import Spinner from "@/components/spinner/spinner";
 
 interface TreeItem {
   id: number;
   title: string;
   description: string;
+  type: string;
   src: string;
   bgColor: string;
 }
 
-export default function GardenLayout() {
+const treeList: TreeItem[] = [
+  {
+    id: 1,
+    title: "Làm quen bạn mới",
+    description: "Lần đầu vào QuickBack Garden",
+    src: "/Sunflower_05.svg",
+    bgColor: "bg-green-500",
+    type: "Sunflower",
+  },
+  {
+    id: 2,
+    title: "Quà tặng bạn mới",
+    description: "Quà tặng bạn mới",
+    src: "/Cactus_05.svg",
+    bgColor: "bg-red-500",
+    type: "Cactus",
+  },
+  {
+    id: 3,
+    title: "Khởi động",
+    description: "Hoàn thành 1 lần mua sắm",
+    src: "/Mushroom_05.svg",
+    bgColor: "bg-orange-500",
+    type: "Mushroom",
+  },
+  {
+    id: 4,
+    title: "Cây sen",
+    description: "Một loài hoa đẹp",
+    src: "/Lotus_05.svg",
+    bgColor: "bg-blue-500",
+    type: "Lotus",
+  },
+];
+
+const canWaterTree = (lastWateredAt: string): boolean => {
+  const lastWateredTime = new Date(lastWateredAt).getTime();
+  const currentTime = Date.now();
+  return (currentTime - lastWateredTime) / (1000 * 60 * 60) >= 24;
+};
+
+export default function GardenLayout({
+  isAuthenticated,
+}: {
+  isAuthenticated: boolean | null;
+}) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedTree, setSelectedTree] = useState<number>(1);
+  const [selectedTree, setSelectedTree] = useState<string>("");
+  const [treeStatus, setTreeStatus] = useState<IGardenStatus>({
+    _id: "",
+    type: "",
+    status: "",
+    waterings: 0,
+    lastWateredAt: 0 as any,
+  });
+  const [loading, setLoading] = useState(true);
+  const token = Cookies.get("authToken");
 
-  const handleOpenModal = () => setIsModalOpen(true);
-  const handleCloseModal = () => setIsModalOpen(false);
-  const handleConfirm = () => {
-    setIsModalOpen(false);
-  };
+  useEffect(() => {
+    const fetchTreeStatus = async () => {
+      if (isAuthenticated && token) {
+        try {
+          const { tree } = await getGardenStatus(token);
+          setTreeStatus(tree);
+        } catch (error) {
+          console.error("Error fetching tree status:", error);
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+    fetchTreeStatus();
+  }, [isAuthenticated, token]);
 
-  const treeList: TreeItem[] = [
-    {
-      id: 1,
-      title: "Làm quen bạn mới",
-      description: "Lần đầu vào QuickBack Garden",
-      src: "/Sunflower_05.svg",
-      bgColor: "bg-green-500",
-    },
-    {
-      id: 2,
-      title: "Quà tặng bạn mới",
-      description: "Quà tặng bạn mới",
-      src: "/Cactus_05.svg",
-      bgColor: "bg-red-500",
-    },
-    {
-      id: 3,
-      title: "Khởi động",
-      description: "Hoàn thành 1 lần mua sắm",
-      src: "/Mushroom_05.svg",
-      bgColor: "bg-orange-500",
-    },
-    {
-      id: 4,
-      title: "Cây sen",
-      description: "Một loài hoa đẹp",
-      src: "/Lotus_05.svg",
-      bgColor: "bg-blue-500",
-    },
-  ];
+  const handlePlantTree = useCallback(async () => {
+    if (!token || !selectedTree) return;
+    try {
+      setLoading(true);
+      await plantTree(token, selectedTree);
+      setIsModalOpen(false);
+      const { tree } = await getGardenStatus(token);
+      setTreeStatus(tree);
+    } catch (error) {
+      console.error("Error planting tree:", error);
+    } finally {
+      setLoading(false);
+    }
+  }, [selectedTree, token]);
 
-  const slides = treeList.map((tree) => (
-    <div
-      key={tree.id}
-      onClick={() => setSelectedTree(tree.id)}
-      className={`${
-        tree.bgColor
-      } h-[200px] sm:h-[400px] cursor-pointer flex items-center justify-center relative text-white ${
-        selectedTree === tree.id ? "bg-gray-600" : ""
-      }`}
-    >
-      <img
-        className={`${selectedTree === tree.id ? "opacity-40" : ""}`}
-        src={tree.src}
-        alt="tree"
-      />
-      {selectedTree === tree.id && (
-        <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-lg sm:text-2xl font-bold">Chọn</span>
+  const handleWaterTree = useCallback(async () => {
+    try {
+      const canWater = canWaterTree(treeStatus.lastWateredAt?.toString());
+      if (
+        treeStatus.status === "alive" &&
+        treeStatus.waterings < 7 &&
+        canWater
+      ) {
+        setLoading(true);
+        const message = await waterTree(token!, treeStatus._id, canWater);
+        setLoading(false);
+      } else if (treeStatus.status === "finish") {
+        await harvestTree(token!);
+      } else {
+        setIsModalOpen(true);
+      }
+
+      const { tree } = await getGardenStatus(token!);
+      setTreeStatus(tree);
+    } catch (error) {
+      console.error("Error watering tree:", error);
+    }
+  }, [treeStatus, token]);
+
+  const slides = useMemo(
+    () =>
+      treeList.map((tree) => (
+        <div
+          key={tree.id}
+          onClick={() => setSelectedTree(tree.type)}
+          className={`${
+            tree.bgColor
+          } h-[200px] sm:h-[400px] cursor-pointer flex items-center justify-center relative text-white ${
+            selectedTree === tree.type ? "bg-gray-600" : ""
+          }`}
+        >
+          <img
+            className={`${selectedTree === tree.type ? "opacity-40" : ""}`}
+            src={tree.src}
+            alt="tree"
+          />
+          {selectedTree === tree.type && (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <span className="text-lg sm:text-2xl font-bold">Chọn</span>
+            </div>
+          )}
         </div>
-      )}
-    </div>
-  ));
+      )),
+    [selectedTree]
+  );
 
   return (
     <div className="relative">
       <BaseModal
         isOpen={isModalOpen}
-        onClose={handleCloseModal}
+        onClose={() => setIsModalOpen(false)}
         title="Chọn cây"
-        onConfirm={handleConfirm}
+        onConfirm={handlePlantTree}
       >
         <Slider
           slides={slides}
@@ -93,30 +179,48 @@ export default function GardenLayout() {
         />
       </BaseModal>
 
-      <div>
-        <img
-          alt="banner"
-          src="/garden_banner.webp"
-          className="w-full min-h-[72px] object-cover"
-        />
-      </div>
+      <img
+        alt="banner"
+        src="/garden_banner.webp"
+        className="w-full min-h-[72px] object-cover"
+      />
 
       <div className="absolute top-[56px] sm:top-[140px] left-1/2 transform -translate-x-1/2 z-5 flex flex-col items-center w-[90%] px-2 py-5 bg-white rounded-lg">
-        <div className="w-[200px] h-[200px] bg-[#f2faf3] rounded-full border-4 border-green-100 flex justify-center items-center">
-          <img alt="tree" src="/Lotus_03.svg" className="w-[120px] h-[120px]" />
-        </div>
-        <div className="mt-4 text-center">
-          <p className="text-sm md:text-medium font-semibold">
-            Bạn còn phải tưới 3 lần nước nữa
-          </p>
-          <div className="mt-4">
-            <BasicButton
-              variant="success"
-              text="Tưới ngay"
-              onClick={handleOpenModal}
-            />
-          </div>
-        </div>
+        {loading ? (
+          <Spinner />
+        ) : (
+          <>
+            <div className="w-[200px] h-[200px] bg-[#f2faf3] rounded-full border-4 border-green-100 flex justify-center items-center">
+              <img
+                alt="tree"
+                src="/Lotus_03.svg"
+                className="w-[120px] h-[120px]"
+              />
+            </div>
+            <div className="mt-4 text-center">
+              <p className="text-sm md:text-medium font-semibold">
+                {treeStatus.status === "alive" && treeStatus.waterings < 7
+                  ? `Bạn còn phải tưới ${7 - treeStatus.waterings} lần nước nữa`
+                  : treeStatus.status === "finish"
+                  ? "Thu hoạch ngay!"
+                  : "Rất tiếc, vui lòng trồng cây mới"}
+              </p>
+              <BasicButton
+                variant="success"
+                text={
+                  treeStatus.status === "alive" && treeStatus.waterings < 7
+                    ? canWaterTree(treeStatus.lastWateredAt?.toString())
+                      ? "Tưới ngay"
+                      : "Tiêu 100Đ để tưới cây"
+                    : treeStatus.status === "finish"
+                    ? "Thu hoạch ngay"
+                    : "Chọn cây mới"
+                }
+                onClick={handleWaterTree}
+              />
+            </div>
+          </>
+        )}
 
         <hr className="my-8 w-full h-[3px] bg-green-200 border-0 dark:bg-green-700" />
 
@@ -134,23 +238,6 @@ export default function GardenLayout() {
                 des={item.description}
                 src={item.src}
               />
-            ))}
-          </div>
-        </div>
-
-        <div className="mt-4 w-full">
-          <h2 className="font-semibold tracking-tight text-gray-900 dark:text-white">
-            Những hoạt động khác
-          </h2>
-          <div className="grid grid-cols-3 gap-2 mt-2">
-            {[1, 2, 3].map((index) => (
-              <div key={index}>
-                <img
-                  className="h-auto max-w-full rounded-lg"
-                  src={`https://flowbite.s3.amazonaws.com/docs/gallery/square/image-${index}.jpg`}
-                  alt={`Hoạt động ${index}`}
-                />
-              </div>
             ))}
           </div>
         </div>

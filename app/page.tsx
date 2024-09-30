@@ -59,7 +59,7 @@ export default function Home() {
         </div>
 
         <h2 className="text-xl font-bold text-black sm:text-xl md:text-2xl mt-[20px] md:mt-[40px] text-center py-4">
-          Sản phẩm nổi bật
+          Thương hiệu nổi bật
         </h2>
         <Gallery />
 
