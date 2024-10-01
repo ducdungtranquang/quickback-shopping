@@ -10,6 +10,7 @@ export interface IGardenStatus {
 
 interface IGardenStatusTree {
   tree: IGardenStatus;
+  userCoin: number;
 }
 
 export interface IPlantTree {
@@ -20,8 +21,8 @@ export interface IPlantTree {
 
 export interface IWaterTree {
   userId: string;
-  success: boolean;
-  nextWatering: Date;
+  status: boolean;
+  message: string;
 }
 
 interface IHarvestTree {

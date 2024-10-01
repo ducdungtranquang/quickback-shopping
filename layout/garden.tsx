@@ -12,6 +12,7 @@ import {
   waterTree,
 } from "@/ultils/api/garden";
 import Spinner from "@/components/spinner/spinner";
+import Toast from "@/components/toast/toast";
 
 interface TreeItem {
   id: number;
@@ -77,15 +78,26 @@ export default function GardenLayout({
     waterings: 0,
     lastWateredAt: 0 as any,
   });
+  const [userMoney, setUserCoin] = useState(0);
   const [loading, setLoading] = useState(true);
   const token = Cookies.get("authToken");
+  const [isToastHidden, setIsToastHidden] = useState(true);
+
+  const showToast = () => {
+    setIsToastHidden(false);
+  };
+
+  const hideToast = () => {
+    setIsToastHidden(true);
+  };
 
   useEffect(() => {
     const fetchTreeStatus = async () => {
       if (isAuthenticated && token) {
         try {
-          const { tree } = await getGardenStatus(token);
+          const { tree, userCoin } = await getGardenStatus(token);
           setTreeStatus(tree);
+          setUserCoin(userCoin);
         } catch (error) {
           console.error("Error fetching tree status:", error);
         } finally {
@@ -102,7 +114,8 @@ export default function GardenLayout({
       setLoading(true);
       await plantTree(token, selectedTree);
       setIsModalOpen(false);
-      const { tree } = await getGardenStatus(token);
+      const { tree, userCoin } = await getGardenStatus(token);
+      setUserCoin(userCoin);
       setTreeStatus(tree);
     } catch (error) {
       console.error("Error planting tree:", error);
@@ -117,10 +130,13 @@ export default function GardenLayout({
       if (
         treeStatus.status === "alive" &&
         treeStatus.waterings < 7 &&
-        canWater
+        userMoney >= 100
       ) {
         setLoading(true);
-        const message = await waterTree(token!, treeStatus._id, canWater);
+        const res = await waterTree(token!, treeStatus._id, !canWater);
+        if (!res.status) {
+          showToast();
+        }
         setLoading(false);
       } else if (treeStatus.status === "finish") {
         await harvestTree(token!);
@@ -128,7 +144,8 @@ export default function GardenLayout({
         setIsModalOpen(true);
       }
 
-      const { tree } = await getGardenStatus(token!);
+      const { tree, userCoin } = await getGardenStatus(token!);
+      setUserCoin(userCoin);
       setTreeStatus(tree);
     } catch (error) {
       console.error("Error watering tree:", error);
@@ -164,6 +181,14 @@ export default function GardenLayout({
 
   return (
     <div className="relative">
+      {!isToastHidden && (
+        <Toast
+          type="error"
+          content="Đây là thông báo thành công!"
+          isHidden={isToastHidden}
+          onClose={hideToast}
+        />
+      )}
       <BaseModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
@@ -211,10 +236,18 @@ export default function GardenLayout({
                   treeStatus.status === "alive" && treeStatus.waterings < 7
                     ? canWaterTree(treeStatus.lastWateredAt?.toString())
                       ? "Tưới ngay"
-                      : "Tiêu 100Đ để tưới cây"
+                      : `Tiêu 100Đ để tưới cây ${
+                          userMoney >= 100 ? "" : "(Không đủ tiền)"
+                        }`
                     : treeStatus.status === "finish"
                     ? "Thu hoạch ngay"
                     : "Chọn cây mới"
+                }
+                disabled={
+                  treeStatus.status === "alive" &&
+                  treeStatus.waterings < 7 &&
+                  !canWaterTree(treeStatus.lastWateredAt?.toString()) &&
+                  userMoney < 100
                 }
                 onClick={handleWaterTree}
               />
