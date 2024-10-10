@@ -226,22 +226,6 @@ export default function NavBar({ isAuthenticated }: IProps) {
                 <Bars3Icon aria-hidden="true" className="h-6 w-6" />
               </button>
 
-              <div
-                className={`${
-                  showSearch ? "nav-enter" : "nav-exit"
-                } bg-transparent`}
-              >
-                <AutoCompleteSearch
-                  categories={CATEGORIES}
-                  styles={
-                    {
-                      top: 0,
-                      width: "auto",
-                    } as HTMLAttributes<HTMLDivElement>
-                  }
-                />
-              </div>
-
               {/* Flyout menus */}
               <PopoverGroup className="lg:ml-8 lg:block lg:self-stretch lg:block hidden ml-5">
                 <div className="flex h-full space-x-8">
@@ -424,6 +408,19 @@ export default function NavBar({ isAuthenticated }: IProps) {
           </div>
         </nav>
       </header>
+      <div
+        className={`${showSearch ? "nav-enter" : "nav-exit h-0 hidden"} bg-transparent`}
+      >
+        <AutoCompleteSearch
+          categories={CATEGORIES}
+          styles={
+            {
+              top: 0,
+              width: "auto",
+            } as HTMLAttributes<HTMLDivElement>
+          }
+        />
+      </div>
     </div>
   );
 }

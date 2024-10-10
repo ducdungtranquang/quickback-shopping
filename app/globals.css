@@ -135,6 +135,7 @@ body {
 }
 
 .nav-enter {
+  display: block;
   animation: nav-enter 0.5s forwards;
 }
 
