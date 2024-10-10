@@ -15,7 +15,7 @@ export default function Home() {
       key={0}
     >
       <img
-        className="h-full object-cover w-full"
+        className="h-full object-fit w-full"
         src="/home_banner.jpg"
         alt=""
       />
@@ -25,7 +25,7 @@ export default function Home() {
       key={1}
     >
       <img
-        className="h-full object-cover w-full"
+        className="h-full object-fit w-full"
         src="/home_banner1.jpg"
         alt=""
       />
@@ -35,8 +35,8 @@ export default function Home() {
       key={2}
     >
       <img
-        className="h-full object-cover w-full"
-        src="/home_banner.jpg"
+        className="h-full object-fit w-full"
+        src="/my_pham.jpg"
         alt=""
       />
     </div>,
@@ -44,7 +44,11 @@ export default function Home() {
       className="bg-red-500 h-[200px] sm:h-[400px] flex items-center justify-center text-white"
       key={3}
     >
-      Slide 4
+      <img
+        className="h-full object-fit w-full"
+        src="/slider_4.jpg"
+        alt=""
+      />
     </div>,
   ];
   return (

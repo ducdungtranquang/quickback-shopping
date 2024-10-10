@@ -52,19 +52,33 @@ export default function ProductListPage() {
       className="bg-blue-500 h-[200px] sm:h-[400px] flex items-center justify-center text-white"
       key={0}
     >
-      Slide 1
+      <img
+        className="h-full object-cover w-full"
+        src="/home_banner.jpg"
+        alt=""
+      />
     </div>,
     <div
       className="bg-green-500 h-[200px] sm:h-[400px] flex items-center justify-center text-white"
       key={1}
     >
-      Slide 2
+      <img className="h-full object-cover w-full" src="/giay_dep.jpg" alt="" />
     </div>,
     <div
       className="bg-red-500 h-[200px] sm:h-[400px] flex items-center justify-center text-white"
       key={2}
     >
-      Slide 3
+      <img className="h-full object-cover w-full" src="/my_pham.jpg" alt="" />
+    </div>,
+    <div
+      className="bg-red-500 h-[200px] sm:h-[400px] flex items-center justify-center text-white"
+      key={3}
+    >
+      <img
+        className="h-full object-cover w-full"
+        src="/home_banner1.jpg"
+        alt=""
+      />
     </div>,
   ];
 
