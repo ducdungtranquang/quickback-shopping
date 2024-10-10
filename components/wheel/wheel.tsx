@@ -174,7 +174,7 @@ const WheelComponent: React.FC<WheelComponentProps> = ({
     canvasContext.lineWidth = 5;
     canvasContext.strokeStyle = contrastColor || "white";
     canvasContext.fill();
-    canvasContext.font = "bold 2em " + fontFamily;
+    canvasContext.font = "bold 1.25em " + fontFamily;
     canvasContext.fillStyle = contrastColor || "white";
     canvasContext.textAlign = "center";
     canvasContext.fillText(buttonText || "spin", centerX, centerY + 3);

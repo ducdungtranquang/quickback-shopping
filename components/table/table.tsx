@@ -1,3 +1,4 @@
+import { useRouter } from "next/navigation";
 import React from "react";
 
 export type TableColumn = {
@@ -12,9 +13,11 @@ export type TableRow = {
 interface TableProps {
   columns: TableColumn[];
   data: TableRow[];
+  navigate?: string[];
 }
 
-const DataTable: React.FC<TableProps> = ({ columns, data }) => {
+const DataTable: React.FC<TableProps> = ({ columns, data, navigate }) => {
+  const router = useRouter();
   return (
     <div className="relative overflow-x-auto">
       <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -37,8 +40,28 @@ const DataTable: React.FC<TableProps> = ({ columns, data }) => {
                   : "bg-white border-b dark:bg-gray-800 dark:border-gray-700"
               }`}
             >
-              {columns.map((column) => (
-                <td key={column.key} className="px-6 py-4">
+              {columns.map((column, i) => (
+                <td
+                  style={{
+                    cursor:
+                      i === 0 && navigate && navigate?.length > 0
+                        ? "pointer"
+                        : "",
+                    textDecoration:
+                      i === 0 && navigate && navigate?.length > 0
+                        ? "underline"
+                        : "",
+                  }}
+                  onClick={() => {
+                    if (i === 0) {
+                      if (navigate && navigate?.length > 0) {
+                        router.push(`/product/${navigate[i]}`);
+                      }
+                    }
+                  }}
+                  key={column.key}
+                  className="px-6 py-4"
+                >
                   {row[column.key]}
                 </td>
               ))}

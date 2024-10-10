@@ -9,15 +9,18 @@ interface PurchaseHistoryItem {
 }
 
 interface GetPurchaseResponse {
-  purchases: PurchaseHistoryItem[];
+  purchaseHistory: PurchaseHistoryItem[];
+  total: number;
+  pag: number;
 }
 
 export const getPurchase = async (
   token: string,
+  page: number,
   signal?: AbortSignal
 ): Promise<GetPurchaseResponse> => {
   return apiCall<GetPurchaseResponse>(
-    "/api/purchase",
+    `/api/purchase-history?page=${page}`,
     "GET",
     undefined,
     token,

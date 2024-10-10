@@ -5,23 +5,32 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import { A11y, Pagination, Scrollbar, Navigation } from "swiper/modules";
+import { CheckIcon } from "@heroicons/react/24/outline";
 
 interface SliderProps {
   slides: React.ReactNode[];
   loop?: boolean;
   autoPlay?: boolean;
+  slidesPerView?: number;
+  spaceBetween?: number;
 }
 
-const Slider: React.FC<SliderProps> = ({ slides, loop = true, autoPlay }) => {
+const Slider: React.FC<SliderProps> = ({
+  slides,
+  loop = true,
+  autoPlay,
+  slidesPerView = 1,
+  spaceBetween = 50,
+}) => {
   return (
     <div className="slider-container">
       <Swiper
         style={{ zIndex: 1, borderRadius: "8px" }}
         modules={[Navigation, Pagination, Scrollbar, A11y]}
-        spaceBetween={50}
-        slidesPerView={1}
+        spaceBetween={spaceBetween}
+        slidesPerView={slidesPerView}
         navigation
-        pagination={{ clickable: true }}
+        // pagination={{ clickable: true }}
         // scrollbar={{ draggable: true }}
         loop={loop}
         autoplay={

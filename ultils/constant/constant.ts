@@ -145,20 +145,29 @@ export const CATEGORIES = [
   "Mẹ và bé",
 ];
 
-export const treeSlide = [
+export const images = [
   {
-    title: "Sunflower",
-    image: "/Lotus.svg",
-    days: 7,
+    id: 1,
+    src: "/Lotus_05.svg",
+    title: "Black Coffee",
+    desc: "Black coffee is a beverage made from roasted coffee beans. The beans are ground and soaked in water, which releases their flavor, color, caffeine content, and nutrients. ",
   },
   {
-    title: "Apple",
-    image: "/Mushroom.svg",
-    days: 7,
+    id: 2,
+    src: "/Cactus_05.svg",
+    title: "Cappuccino",
+    desc: "A cappuccino is an espresso-based coffee drink that is traditionally prepared with steamed milk foam (microfoam). Cappuccino. Type, Hot.",
   },
   {
-    title: "Cactus",
-    image: "/Cactus.svg",
-    days: 7,
+    id: 3,
+    src: "/Mushroom_05.svg",
+    title: "Espresso",
+    desc: "Espresso is a concentrated form of coffee, served in shots. It's made of two ingredients - finely ground, 100% coffee, and hot water.",
+  },
+  {
+    id: 4,
+    src: "/Sunflower_05.svg",
+    title: "Latte",
+    desc: "A latte or caffè latte is a milk coffee that boasts a silky layer of foam as a real highlight to the drink. A true latte will be made up of one or two shots of espresso, steamed milk and a final, thin layer of frothed milk on top",
   },
 ];
