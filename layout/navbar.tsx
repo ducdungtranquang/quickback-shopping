@@ -393,30 +393,29 @@ export default function NavBar({ isAuthenticated }: IProps) {
                   </div>
                 </div>
               </div>
-
-              <BaseModal
-                isOpen={isModalOpen}
-                onClose={handleCloseModal}
-                title="Đăng xuất"
-                onConfirm={handleConfirm}
-              >
-                <p>Bạn có chắc chắn muốn đăng xuất</p>
-              </BaseModal>
-              <div
-                className={`${
-                  showSearch ? "nav-enter" : "nav-exit"
-                } bg-transparent`}
-              >
-                <AutoCompleteSearch
-                  categories={CATEGORIES}
-                  styles={
-                    {
-                      top: 0,
-                      width: "auto",
-                    } as HTMLAttributes<HTMLDivElement>
-                  }
-                />
-              </div>
+            </div>
+            <BaseModal
+              isOpen={isModalOpen}
+              onClose={handleCloseModal}
+              title="Đăng xuất"
+              onConfirm={handleConfirm}
+            >
+              <p>Bạn có chắc chắn muốn đăng xuất</p>
+            </BaseModal>
+            <div
+              className={`${
+                showSearch ? "nav-enter" : "nav-exit"
+              } bg-transparent`}
+            >
+              <AutoCompleteSearch
+                categories={CATEGORIES}
+                styles={
+                  {
+                    top: 0,
+                    width: "auto",
+                  } as HTMLAttributes<HTMLDivElement>
+                }
+              />
             </div>
           </div>
         </nav>
