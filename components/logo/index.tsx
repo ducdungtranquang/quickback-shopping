@@ -15,7 +15,7 @@ export default function LogoComponent() {
         width={420}
         height={150}
       />
-      Cashback Shopping
+      QuickBack Shopping
     </Link>
   );
 }

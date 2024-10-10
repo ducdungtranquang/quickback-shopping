@@ -207,7 +207,7 @@ export default function NavBar({ isAuthenticated }: IProps) {
 
       <header className="relative bg-white">
         <div className="w-full py-2 flex items-center text-center justify-center bg-primary-600 px-4 text-sm font-medium text-white sm:px-6 lg:px-8">
-          Hoàn tiền không giới hạn với CashBack Shopping
+          Hoàn tiền không giới hạn với QuickBack Shopping
         </div>
 
         <nav

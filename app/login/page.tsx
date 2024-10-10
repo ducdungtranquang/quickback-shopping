@@ -26,12 +26,17 @@ const LoginPage = () => {
     setError(null);
 
     try {
-      const { email: emailLogin, token, _id, name } = await login({ email, password });
+      const {
+        email: emailLogin,
+        token,
+        _id,
+        name,
+      } = await login({ email, password });
       if (token) {
-        Cookies.set('authToken', token);
-        Cookies.set('email', emailLogin);
-        Cookies.set('id', _id);
-        Cookies.set('user_name', name);
+        Cookies.set("authToken", token);
+        Cookies.set("email", emailLogin);
+        Cookies.set("id", _id);
+        Cookies.set("user_name", name);
         router.push("/profile");
       }
     } catch (err) {
@@ -53,8 +58,9 @@ const LoginPage = () => {
   return (
     <>
       <section
-        className={`bg-gray-50 dark:bg-gray-900 mt-[100px] mb-[100px] h-full min-h-screen ${isAnimating ? "page-exit-active" : "page-enter-active"
-          }`}
+        className={`bg-gray-50 dark:bg-gray-900 mt-[100px] mb-[100px] h-full min-h-screen ${
+          isAnimating ? "page-exit-active" : "page-enter-active"
+        }`}
       >
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen mb-[50px] lg:mt-[50px] lg:py-0">
           <LogoComponent />
@@ -103,7 +109,7 @@ const LoginPage = () => {
                         htmlFor="remember"
                         className="text-gray-500 dark:text-gray-300"
                       >
-                        Tôi đồng ý với mọi điều khoản của CashBack Shopping
+                        Tôi đồng ý với mọi điều khoản của QuickBack Shopping
                       </label>
                     </div>
                   </div>
@@ -130,7 +136,7 @@ const LoginPage = () => {
                   text="Đăng nhập bằng Telegram"
                   type="button"
                   variant="plain"
-                // Thêm logic đăng nhập Telegram sau nếu cần
+                  // Thêm logic đăng nhập Telegram sau nếu cần
                 />
                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                   Chưa có tài khoản?{" "}
