@@ -30,7 +30,7 @@ const Slider: React.FC<SliderProps> = ({
         spaceBetween={spaceBetween}
         slidesPerView={slidesPerView}
         navigation
-        pagination={{ clickable: true }}
+        // pagination={{ clickable: true }}
         // scrollbar={{ draggable: true }}
         loop={loop}
         autoplay={
