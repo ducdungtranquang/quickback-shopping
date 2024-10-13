@@ -6,6 +6,14 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+  --primary-color: #1570ef;
+  --secondary-color: #f9fafb;
+  --border-color: #eaecf0;
+  --font-color: #333;
+  --error-color: red;
+  --padding-sm: 8px;
+  --padding-md: 10px;
+  --radius: 8px;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -152,4 +160,122 @@ body {
 .swiper-button-prev:after,
 .swiper-button-next:after {
   font-size: 22px !important;
+}
+
+/* Acesstrade */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.at--card {
+  background: var(--secondary-color);
+  border-radius: var(--radius);
+  width: 100%;
+  padding: var(--padding-md);
+  margin: auto;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border-color);
+}
+
+.at--cps-wrap {
+  display: flex;
+  gap: var(--padding-sm);
+  align-items: center;
+  padding: var(--padding-md) 0;
+  justify-content: center;
+}
+
+.at--cps-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.at--cps-campaign-thumb img {
+  width: 100px;
+  height: 100px;
+  border-radius: var(--radius);
+  object-fit: cover;
+}
+
+.at--convert-link-box {
+  display: flex;
+  gap: var(--padding-sm);
+  width: 100%;
+}
+
+.at--input-box {
+  flex-grow: 1;
+  padding: var(--padding-sm);
+  border-radius: var(--radius);
+  border: 1px solid var(--border-color);
+  outline: none;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+}
+
+.at--input-box:focus {
+  border-color: var(--primary-color);
+}
+
+.at--btn-box {
+  padding: var(--padding-sm);
+  border-radius: var(--radius);
+  border: 1px solid var(--primary-color);
+  background: #fff;
+  color: var(--primary-color);
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.at--btn-box:hover {
+  background: var(--primary-color);
+  color: #fff;
+}
+
+.at--error {
+  color: var(--error-color);
+  font-size: 14px;
+  padding-top: var(--padding-sm);
+  display: none;
+}
+
+.at--direct-box {
+  display: flex;
+  justify-content: center;
+  padding-top: var(--padding-md);
+}
+
+.at--cps-item label {
+  padding: 12px;
+}
+
+.at--btn-direct {
+  background: var(--primary-color);
+  color: #fff;
+  text-decoration: none;
+  padding: var(--padding-sm) var(--padding-md);
+  border-radius: var(--radius);
+}
+
+.at--btn-direct:hover {
+  background: rgb(30 64 175);
+}
+
+hr {
+  background-color: var(--border-color);
+  height: 1px;
+  border: none;
+  margin: var(--padding-md) 0;
+}
+
+@media screen and (max-width: 768px) {
+  .at--cps-wrap {
+    flex-direction: column;
+  }
 }

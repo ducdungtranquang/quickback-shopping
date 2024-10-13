@@ -4,6 +4,7 @@ import ProductCard from "@/components/card/product-card";
 import Slider from "@/components/slider/slider";
 import NavBar from "@/layout/navbar";
 import useAuth from "@/hook/useAuth";
+import AccesstradeWidget from "@/components/acesstrade/accesstradeWidget";
 
 export default function ProductListPage() {
   const { isAuthenticated } = useAuth(false);
@@ -12,8 +13,12 @@ export default function ProductListPage() {
   const [loading, setLoading] = useState<boolean>(false);
   const observerRef = useRef<HTMLDivElement | null>(null);
 
-  // Mô phỏng việc tải thêm dữ liệu
-  const fetchMoreProducts = () => {
+  const fetchMoreProducts = async () => {
+    const res = await fetch(
+      "https://script.google.com/macros/s/AKfycbw-iBmsC65UtJkuay1rXOei1k2o9BsTIJcfYnN372HgkwKjZhQI4Usih-JAWA61pDSm/exec"
+    );
+    const data = await res.json();
+    console.log(data);
     setLoading(true);
     setTimeout(() => {
       setProducts((prevProducts) => [
@@ -88,6 +93,10 @@ export default function ProductListPage() {
       <section className="py-6 px-4 bg-gray-100 h-full min-h-screen overflow-hidden overflow-y-scroll mt-[100px]">
         <div className="mx-auto mt-[20px]">
           <Slider slides={slides} loop={true} autoPlay={true} />
+        </div>
+
+        <div className="my-4">
+          <AccesstradeWidget />
         </div>
 
         {/* Header */}
