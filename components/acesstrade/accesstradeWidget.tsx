@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 
 const AccesstradeWidget: React.FC = () => {
   const [utmSource, setUtmSource] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false); // Trạng thái loading
+  const [loading, setLoading] = useState<boolean>(false); 
 
   useEffect(() => {
     const userId = Cookies.get("id");
@@ -83,7 +83,7 @@ const AccesstradeWidget: React.FC = () => {
       const createDeepLinkBox = (deepLink: string): HTMLDivElement => {
         const newDiv = document.createElement("div");
         newDiv.classList.add("at--direct-box");
-        newDiv.id = "at--direct-box"; // Đặt ID cho div mới
+        newDiv.id = "at--direct-box";
 
         const newAnchor = document.createElement("a");
         newAnchor.href = deepLink;
@@ -100,15 +100,12 @@ const AccesstradeWidget: React.FC = () => {
         if (!text) return;
         let directBox = document.getElementById("at--direct-box");
 
-        // Hiện loading, ẩn nút mua ngay và khóa nút dán link
         setLoading(true);
         loadingElement.style.display = "block";
         convertLinkBtn.disabled = true;
         if (directBox) directBox.style.display = "none";
 
-        // Ẩn nút "Mua Ngay" nếu có
-
-        if (directBox) directBox.remove(); // Xóa nút cũ nếu đã tồn tại
+        if (directBox) directBox.remove(); 
 
         let deepLink = `https://go.isclix.com/deep_link/6019537891464095047/4751584435713464237?sub3=tooldirectlink&sub4=oneatweb`;
         if (utmSource) deepLink += "&utm_source=" + utmSource;
@@ -119,16 +116,13 @@ const AccesstradeWidget: React.FC = () => {
         deepLink += "&url=" + encodeURIComponent(text);
 
         setTimeout(() => {
-          // Mô phỏng thời gian xử lý để tạo hiệu ứng loading
-          // Ẩn loading và hiện lại nút dán link
           setLoading(false);
           loadingElement.style.display = "none";
           convertLinkBtn.disabled = false;
           if (directBox) directBox.style.display = "block";
 
-          // Thêm nút "Mua Ngay" mới
           atWidgetElement.appendChild(createDeepLinkBox(deepLink));
-        }, 2000); // Giả lập delay 2 giây
+        }, 1000); 
       });
     }
   }, [utmSource]);
