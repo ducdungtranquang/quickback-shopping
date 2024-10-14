@@ -1,7 +1,6 @@
-import Image from "next/image";
 import BasicButton from "../button/basic-button";
-import { HTMLAttributes } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 interface IProductCard {
   cost: string;
@@ -14,33 +13,25 @@ interface IProductCard {
 
 const ProductCard = (props: IProductCard) => {
   return (
-    <div className="w-[45%] sm:w-[200px] sm:max-w-[250px] h-[450px] md:h-auto bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 h-full">
-      <a href={props.link || "/"}>
-        <Image
-          className="p-8 rounded-t-lg"
-          src="/next.svg"
-          alt="product image"
-          width={100}
-          height={100}
-          layout="responsive"
-        />
-      </a>
+    <div className="w-[45%] sm:w-[200px] sm:max-w-[250px] md:h-auto bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 h-full">
+      <img
+        className="rounded-t-lg object-cover h-[200px] mb-2 mx-auto"
+        src={props.src}
+        alt="product image"
+      />
       <div className="px-5 pb-5">
         <div>
           <div>
             <Link
-              href={props.link || "/"}
-              className="block h-[120px] font-semibold tracking-tight text-gray-900 dark:text-white overflow-hidden"
+              href={`/product/${props.link}` || "#"}
+              className="block h-[120px] font-semibold tracking-tight text-gray-900 dark:text-white overflow-hidden hover:underline"
             >
               {props.name}
             </Link>
           </div>
-          <Link
-            href={"/"}
-            className=" font-sm h-[30px] block text-primary-600 hover:underline dark:text-primary-500 mb-[20px]"
-          >
+          <div className=" font-sm h-[30px] block text-primary-600 hover:underline dark:text-primary-500 mb-[20px]">
             {props.shop}
-          </Link>
+          </div>
         </div>
         <div className="flex flex-col md:flex-row items-start md:items-center justify-start md:justify-center mb-[20px] md:flex-row">
           <span className="text-sm font-bold text-gray-900 dark:text-white">
@@ -53,7 +44,7 @@ const ProductCard = (props: IProductCard) => {
         <div className="flex items-center justify-between flex-col md:flex-row gap-2 md:gap-4">
           <BasicButton variant="success" text="Lưu" />
           <a
-            href={props.link || "/"}
+            href={`/product/${props.link}` || "#"}
             className="w-full h-[40px] flex items-center justify-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           >
             Mua

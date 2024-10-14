@@ -8,6 +8,7 @@ import NavBar from "@/layout/navbar";
 import useAuth from "@/hook/useAuth";
 import AccesstradeWidget from "@/components/acesstrade/accesstradeWidget";
 import { getProduct, IProduct, IProductQuery } from "@/ultils/api/product";
+import { removeHttps } from "@/ultils/func/helper";
 
 export default function ProductListPage() {
   const { isAuthenticated } = useAuth(false);
@@ -207,8 +208,8 @@ export default function ProductListPage() {
               cost={item.price}
               name={item.name}
               shop={item.shop}
-              link={item.link}
-              src={"https://via.placeholder.com/150"}
+              link={removeHttps(item.link)}
+              src={item.img || "/img_no_img.jpg"}
               commission={item.commission}
             />
           ))}
