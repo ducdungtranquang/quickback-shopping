@@ -9,6 +9,7 @@ import useAuth from "@/hook/useAuth";
 import AccesstradeWidget from "@/components/acesstrade/accesstradeWidget";
 import { getProduct, IProduct, IProductQuery } from "@/ultils/api/product";
 import { removeHttps } from "@/ultils/func/helper";
+import Spinner from "@/components/spinner/spinner";
 
 export default function ProductListPage() {
   const { isAuthenticated } = useAuth(false);
@@ -216,8 +217,9 @@ export default function ProductListPage() {
         </div>
 
         {loading && (
-          <div className="flex justify-center mt-4">
-            <p>Đang tải thêm sản phẩm...</p>
+          <div className="flex justify-center items-center flex-col mt-4">
+            <Spinner />
+            <p className="p-4">Đang tải sản phẩm...</p>
           </div>
         )}
 

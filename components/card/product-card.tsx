@@ -38,7 +38,7 @@ const ProductCard = (props: IProductCard) => {
             {props.commission}%
           </span>
           <span className="text-sm font-bold text-gray-900 dark:text-white">
-            {props.cost}$
+            {props.cost}Đ
           </span>
         </div>
         <div className="flex items-center justify-between flex-col md:flex-row gap-2 md:gap-4">

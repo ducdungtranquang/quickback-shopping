@@ -1,10 +1,26 @@
 "use client";
 import useAuth from "@/hook/useAuth";
 import NavBar from "@/layout/navbar";
+import { getProductById, IProduct } from "@/ultils/api/product";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 /* eslint-disable @next/next/no-img-element */
 export default function ProductPage() {
   const { isAuthenticated } = useAuth(false);
+  const [product, setProduct] = useState<IProduct>();
+  const { id } = useParams();
+
+  console.log(id);
+
+  useEffect(() => {
+    const fetchProductById = async () => {
+      const data = await getProductById(id as string);
+      setProduct(data);
+    };
+
+    fetchProductById();
+  }, [id]);
 
   return (
     <>
@@ -16,7 +32,7 @@ export default function ProductPage() {
               <div className="md:h-[360px] h-[300px] rounded-lg bg-gray-300 dark:bg-gray-700 mb-4">
                 <img
                   className="w-full h-full object-cover"
-                  src="https://cdn.pixabay.com/photo/2020/05/22/17/53/mockup-5206355_960_720.jpg"
+                  src={product?.img}
                   alt="Product Image"
                 />
               </div>
@@ -38,14 +54,14 @@ export default function ProductPage() {
                 Tên sản phẩm
               </h2>
               <p className="text-gray-600 dark:text-gray-300 text-sm mb-4">
-                ABC Test
+                {product?.name}
               </p>
 
               <h2 className="text-xl font-bold text-gray-800 dark:text-white mb-2">
                 Cửa hàng
               </h2>
               <p className="text-gray-600 dark:text-gray-300 text-sm mb-4">
-                ABC
+                {product?.shop}
               </p>
 
               <h2 className="text-xl font-bold text-gray-800 dark:text-white mb-2">
@@ -60,14 +76,16 @@ export default function ProductPage() {
                     Giá:{" "}
                   </span>
                   <span className="text-gray-600 dark:text-gray-300">
-                    $29.99
+                    {product?.price}Đ
                   </span>
                 </div>
                 <div>
                   <span className="font-bold text-gray-700 dark:text-gray-300">
                     Hoàn:{" "}
                   </span>
-                  <span className="text-gray-600 dark:text-gray-300">1%</span>
+                  <span className="text-gray-600 dark:text-gray-300">
+                    {product?.commission}%
+                  </span>
                 </div>
               </div>
 

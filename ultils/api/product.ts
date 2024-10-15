@@ -45,3 +45,16 @@ export const getProduct = async (
     signal
   );
 };
+
+export const getProductById = async (
+  id: string,
+  signal?: AbortSignal
+): Promise<IProduct> => {
+  return apiCall<IProduct>(
+    `/api/product/${id}`,
+    "GET",
+    undefined,
+    undefined,
+    signal
+  );
+};
