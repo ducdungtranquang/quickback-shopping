@@ -1,10 +1,10 @@
 import { apiCall } from "../func/api";
 
-interface CartItem {
+export interface CartItem {
   productId: string;
   productName: string;
   quantity: number;
-  price: number;
+  price: number | string;
   productLink: string;
   cashbackPercentage: number;
 }
@@ -32,6 +32,13 @@ export const getCart = async (
 interface EditCartResponse {
   success: boolean;
 }
+
+export const addToCart = async (
+  data: CartItem,
+  token: string
+): Promise<EditCartResponse> => {
+  return apiCall<EditCartResponse>("/api/cart/add", "POST", data, token);
+};
 
 export const editCart = async (
   productId: string,

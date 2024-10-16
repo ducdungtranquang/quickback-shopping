@@ -209,7 +209,7 @@ export default function ProductListPage() {
               cost={item.price}
               name={item.name}
               shop={item.shop}
-              link={removeHttps(item.link)}
+              link={item.link}
               src={item.img || "/img_no_img.jpg"}
               commission={item.commission}
             />
