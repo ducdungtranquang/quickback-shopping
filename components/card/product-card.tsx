@@ -1,9 +1,8 @@
-import { addToCart, CartItem } from "@/ultils/api/cart";
+import { CartItem } from "@/ultils/api/cart";
 import BasicButton from "../button/basic-button";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { removeHttps } from "@/ultils/func/helper";
-import Cookies from "js-cookie";
+import { useCart } from "@/context/cartContext";
 
 interface IProductCard {
   cost: string;
@@ -15,7 +14,7 @@ interface IProductCard {
 }
 
 const ProductCard = (props: IProductCard) => {
-  const token = Cookies.get("authToken");
+  const { addItem } = useCart();
 
   const handleAddToCart = async () => {
     const data: CartItem = {
@@ -26,7 +25,7 @@ const ProductCard = (props: IProductCard) => {
       quantity: 1,
       cashbackPercentage: Number(props.commission),
     };
-    const res = await addToCart(data, token!);
+    await addItem(data);
   };
 
   return (

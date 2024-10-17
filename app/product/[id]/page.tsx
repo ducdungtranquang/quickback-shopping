@@ -50,14 +50,14 @@ export default function ProductPage() {
               </div>
             </div>
             <div className="md:flex-1 px-4">
-              <h2 className="text-xl font-bold text-gray-800 dark:text-white mb-2">
+              <h2 className="text-md font-bold text-gray-800 dark:text-white mb-2">
                 Tên sản phẩm
               </h2>
               <p className="text-gray-600 dark:text-gray-300 text-sm mb-4">
                 {product?.name}
               </p>
 
-              <h2 className="text-xl font-bold text-gray-800 dark:text-white mb-2">
+              <h2 className="text-md font-bold text-gray-800 dark:text-white mb-2">
                 Cửa hàng
               </h2>
               <p className="text-gray-600 dark:text-gray-300 text-sm mb-4">
