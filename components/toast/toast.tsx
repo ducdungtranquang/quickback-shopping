@@ -10,29 +10,44 @@ interface IToast {
 export default function Toast(props: IToast) {
   const [isExiting, setIsExiting] = useState(false);
 
-  useEffect(() => {
-    if (!props.isHidden) {
-      const timer = setTimeout(() => {
-        setIsExiting(true);
-        setTimeout(() => {
-          props.onClose && props.onClose;
-        }, 500);
-      }, 3000);
+  // useEffect(() => {
+  //   if (!props.isHidden) {
+  //     const timer = setTimeout(() => {
+  //       setIsExiting(true);
+  //       setTimeout(() => {
+  //         props.onClose && props.onClose();
+  //       }, 500);
+  //     }, 3000);
 
-      return () => clearTimeout(timer);
+  //     return () => clearTimeout(timer);
+  //   }
+
+  //   setIsExiting(true);
+  // }, [props.isHidden, props.onClose]);
+
+  const getTypeStyles = () => {
+    switch (props.type) {
+      case "error":
+        return "bg-red-100 text-red-500 dark:bg-red-800 dark:text-red-200";
+      case "warning":
+        return "bg-yellow-100 text-yellow-500 dark:bg-yellow-800 dark:text-yellow-200";
+      case "success":
+        return "bg-green-100 text-green-500 dark:bg-green-800 dark:text-green-200";
+      default:
+        return "bg-white text-gray-500 dark:bg-gray-800 dark:text-gray-400";
     }
-
-    setIsExiting(true);
-  }, [props.isHidden, props.onClose]);
+  };
 
   return (
     <div
-      className={`min-w-[240px] fixed top-4 right-4 flex items-center p-4 mb-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800 ${
+      className={`min-w-[240px] fixed z-[999999] top-4 right-4 flex items-center p-4 mb-4 rounded-lg shadow ${
         isExiting ? "toast-exit" : "toast-enter"
-      }`}
+      } ${getTypeStyles()}`}
       role="alert"
     >
-      <div className="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg dark:bg-green-800 dark:text-green-200">
+      <div
+        className={`inline-flex items-center justify-center flex-shrink-0 w-8 h-8 rounded-lg ${getTypeStyles()}`}
+      >
         {props.type === "error" ? (
           <>
             <svg
@@ -74,7 +89,9 @@ export default function Toast(props: IToast) {
           </>
         )}
       </div>
-      <div className="ms-3 text-sm font-normal">{props.content}</div>
+      <div className="ms-3 text-sm font-normal overflow-hidden">
+        {props.content}
+      </div>
       <button
         type="button"
         className="ms-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"

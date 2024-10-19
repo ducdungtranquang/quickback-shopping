@@ -58,10 +58,14 @@ const treeList: TreeItem[] = [
   },
 ];
 
-const canWaterTree = (lastWateredAt: string): boolean => {
+const canWaterTree = (lastWateredAt: string, plantAt = "1/1/1"): boolean => {
   const lastWateredTime = new Date(lastWateredAt).getTime();
+  const plantAtTime = new Date(plantAt).getTime();
   const currentTime = Date.now();
-  return (currentTime - lastWateredTime) / (1000 * 60 * 60) >= 24;
+  return (
+    (currentTime - lastWateredTime) / (1000 * 60 * 60) >= 24 ||
+    plantAtTime - lastWateredTime === 0
+  );
 };
 
 export default function GardenLayout({
@@ -77,6 +81,7 @@ export default function GardenLayout({
     status: "",
     waterings: 0,
     lastWateredAt: 0 as any,
+    plantedAt: 0 as any,
   });
   const [userMoney, setUserCoin] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -90,23 +95,6 @@ export default function GardenLayout({
   const hideToast = () => {
     setIsToastHidden(true);
   };
-
-  useEffect(() => {
-    const fetchTreeStatus = async () => {
-      if (isAuthenticated && token) {
-        try {
-          const { tree, userCoin } = await getGardenStatus(token);
-          setTreeStatus(tree);
-          setUserCoin(userCoin);
-        } catch (error) {
-          console.error("Error fetching tree status:", error);
-        } finally {
-          setLoading(false);
-        }
-      }
-    };
-    fetchTreeStatus();
-  }, [isAuthenticated, token]);
 
   const handlePlantTree = useCallback(async () => {
     if (!token || !selectedTree) return;
@@ -126,19 +114,18 @@ export default function GardenLayout({
 
   const handleWaterTree = useCallback(async () => {
     try {
-      const canWater = canWaterTree(treeStatus.lastWateredAt?.toString());
-      if (
-        treeStatus.status === "alive" &&
-        treeStatus.waterings < 7 &&
-        userMoney >= 100
-      ) {
+      const canWater = canWaterTree(
+        treeStatus?.lastWateredAt?.toString(),
+        treeStatus?.plantedAt?.toString()
+      );
+      if (treeStatus?.status === "alive" && treeStatus?.waterings < 7) {
         setLoading(true);
         const res = await waterTree(token!, treeStatus._id, !canWater);
-        if (!res.status) {
+        if (!res?.status) {
           showToast();
         }
         setLoading(false);
-      } else if (treeStatus.status === "finish") {
+      } else if (treeStatus?.status === "finish") {
         await harvestTree(token!);
       } else {
         setIsModalOpen(true);
@@ -151,6 +138,23 @@ export default function GardenLayout({
       console.error("Error watering tree:", error);
     }
   }, [treeStatus, token]);
+
+  useEffect(() => {
+    const fetchTreeStatus = async () => {
+      if (isAuthenticated && token) {
+        try {
+          const { tree, userCoin } = await getGardenStatus(token);
+          setTreeStatus(tree);
+          setUserCoin(userCoin);
+        } catch (error) {
+          console.error("Error fetching tree status:", error);
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+    fetchTreeStatus();
+  }, [isAuthenticated, token]);
 
   const slides = useMemo(
     () =>
@@ -184,7 +188,7 @@ export default function GardenLayout({
       {!isToastHidden && (
         <Toast
           type="error"
-          content="Đây là thông báo thành công!"
+          content="Tưới cây thất bại!"
           isHidden={isToastHidden}
           onClose={hideToast}
         />
@@ -224,29 +228,29 @@ export default function GardenLayout({
             </div>
             <div className="mt-4 text-center">
               <p className="text-sm md:text-medium font-semibold">
-                {treeStatus.status === "alive" && treeStatus.waterings < 7
+                {treeStatus?.status === "alive" && treeStatus.waterings < 7
                   ? `Bạn còn phải tưới ${7 - treeStatus.waterings} lần nước nữa`
-                  : treeStatus.status === "finish"
+                  : treeStatus?.status === "finish"
                   ? "Thu hoạch ngay!"
                   : "Rất tiếc, vui lòng trồng cây mới"}
               </p>
               <BasicButton
                 variant="success"
                 text={
-                  treeStatus.status === "alive" && treeStatus.waterings < 7
-                    ? canWaterTree(treeStatus.lastWateredAt?.toString())
+                  treeStatus?.status === "alive" && treeStatus.waterings < 7
+                    ? canWaterTree(treeStatus?.lastWateredAt?.toString())
                       ? "Tưới ngay"
                       : `Tiêu 100Đ để tưới cây ${
                           userMoney >= 100 ? "" : "(Không đủ tiền)"
                         }`
-                    : treeStatus.status === "finish"
+                    : treeStatus?.status === "finish"
                     ? "Thu hoạch ngay"
                     : "Chọn cây mới"
                 }
                 disabled={
-                  treeStatus.status === "alive" &&
+                  treeStatus?.status === "alive" &&
                   treeStatus.waterings < 7 &&
-                  !canWaterTree(treeStatus.lastWateredAt?.toString()) &&
+                  !canWaterTree(treeStatus?.lastWateredAt?.toString()) &&
                   userMoney < 100
                 }
                 onClick={handleWaterTree}

@@ -1,36 +1,65 @@
 "use client";
-import React, { useState, useEffect, useRef } from "react";
+
+import React, {
+  useEffect,
+  useState,
+  useRef,
+  useCallback,
+  Suspense,
+} from "react";
 import ProductCard from "@/components/card/product-card";
 import Slider from "@/components/slider/slider";
 import NavBar from "@/layout/navbar";
 import useAuth from "@/hook/useAuth";
+import AccesstradeWidget from "@/components/acesstrade/accesstradeWidget";
+import { getProduct, IProduct, IProductQuery } from "@/ultils/api/product";
+import Spinner from "@/components/spinner/spinner";
+import { useSearchParams } from "next/navigation";
 
 export default function ProductListPage() {
   const { isAuthenticated } = useAuth(false);
-  const [products, setProducts] = useState<string[]>(Array(20).fill("test"));
+  const [products, setProducts] = useState<IProduct[]>([]);
   const [page, setPage] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
+  const [hasMore, setHasMore] = useState<boolean>(true);
   const observerRef = useRef<HTMLDivElement | null>(null);
+  const searchParams = useSearchParams();
+  const search = searchParams.get("search") || "";
+  const sort = searchParams.get("sort") || "sales";
 
-  // Mô phỏng việc tải thêm dữ liệu
-  const fetchMoreProducts = () => {
+  const fetchMoreProducts = useCallback(async () => {
+    if (loading || !hasMore) return;
+
     setLoading(true);
-    setTimeout(() => {
-      setProducts((prevProducts) => [
-        ...prevProducts,
-        ...Array(20).fill(`test page ${page + 1}`),
-      ]);
+    const query: IProductQuery = {
+      page,
+      limit: 20,
+      searchTerm: search,
+      sort: sort as "price-desc" | "price-asc" | "sales" | "newest",
+    };
+
+    const data = await getProduct(query);
+    if (data.data.length === 0) {
+      setHasMore(false);
+    } else {
+      setProducts((prev) => [...prev, ...data.data]);
       setPage((prevPage) => prevPage + 1);
-      setLoading(false);
-    }, 1000);
-  };
+    }
+    setLoading(false);
+  }, [loading, hasMore, page, search, sort]);
 
   useEffect(() => {
-    if (loading) return;
+    setPage(1);
+    setProducts([]);
+    setHasMore(true);
+    fetchMoreProducts();
+  }, [search, sort]);
+
+  useEffect(() => {
     const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          fetchMoreProducts();
+      async (entries) => {
+        if (entries[0].isIntersecting && !loading) {
+          await fetchMoreProducts();
         }
       },
       { threshold: 1.0 }
@@ -45,7 +74,36 @@ export default function ProductListPage() {
         observer.unobserve(observerRef.current);
       }
     };
-  }, [loading]);
+  }, [fetchMoreProducts, loading]);
+
+  const updateURLParams = (key: string, value: string) => {
+    const params = new URLSearchParams(window.location.search);
+    if (value) {
+      params.set(key, value);
+    } else {
+      params.delete(key);
+    }
+    window.history.replaceState(
+      {},
+      "",
+      `${window.location.pathname}?${params.toString()}`
+    );
+  };
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const searchTerm = event.target.value;
+    updateURLParams("search", searchTerm);
+    setPage(1);
+    setProducts([]);
+    fetchMoreProducts();
+  };
+
+  const handleSortChange = (sortOption: string) => {
+    updateURLParams("sort", sortOption);
+    setPage(1);
+    setProducts([]);
+    fetchMoreProducts();
+  };
 
   const slides = [
     <div
@@ -83,59 +141,93 @@ export default function ProductListPage() {
   ];
 
   return (
-    <>
+    <Suspense fallback={loading}>
       <NavBar isAuthenticated={isAuthenticated} />
       <section className="py-6 px-4 bg-gray-100 h-full min-h-screen overflow-hidden overflow-y-scroll mt-[100px]">
         <div className="mx-auto mt-[20px]">
           <Slider slides={slides} loop={true} autoPlay={true} />
         </div>
 
-        {/* Header */}
-        <div className="mx-auto px-2 max-w-7xl lg:px-8 mt-[50px]">
-          <div className="flex flex-col sm:flex-row justify-between items-center mb-4 space-y-2 sm:space-y-0">
-            <h2 className="text-xl font-bold text-black sm:text-xl md:text-2xl">
-              Cửa hàng
-            </h2>
-            <div className="flex overflow-x-auto custom-scrollbar pb-[5px]">
-              <button className="flex-shrink-0 py-2 px-4 bg-primary-600 hover:bg-primary-700 text-white rounded">
-                Phổ biến
-              </button>
-              <button className="flex-shrink-0 py-2 px-4 bg-gray-200 text-black rounded">
-                Mới nhất
-              </button>
-              <button className="flex-shrink-0 py-2 px-4 bg-gray-200 text-black rounded">
-                Bán chạy
-              </button>
-              <button className="flex-shrink-0 py-2 px-4 bg-gray-200 text-black rounded">
-                Giá
-              </button>
-            </div>
-          </div>
+        <div className="my-4">
+          <AccesstradeWidget />
         </div>
 
-        <div className="flex flex-wrap justify-around sm:justify-left gap-2 sm:gap-4">
+        {/* <div className="mx-auto px-2 max-w-7xl lg:px-8 mt-[50px]">
+          <input
+            type="text"
+            placeholder="Tìm kiếm sản phẩm..."
+            value={search}
+            onChange={handleSearchChange}
+            className="w-full p-2 border border-gray-300 rounded mb-4"
+          />
+        </div> */}
+
+        <div className="flex overflow-x-auto custom-scrollbar pb-[5px] mb-[20px]">
+          <button
+            className={`flex-shrink-0 py-2 px-4 ${
+              sort === "newest"
+                ? "bg-primary-600 text-white"
+                : "bg-gray-200 text-black"
+            } rounded`}
+            onClick={() => handleSortChange("newest")}
+          >
+            Mới nhất
+          </button>
+          <button
+            className={`flex-shrink-0 py-2 px-4 ${
+              sort === "sales"
+                ? "bg-primary-600 text-white"
+                : "bg-gray-200 text-black"
+            } rounded`}
+            onClick={() => handleSortChange("sales")}
+          >
+            Bán chạy
+          </button>
+          <button
+            className={`flex-shrink-0 py-2 px-4 ${
+              sort === "price-asc"
+                ? "bg-primary-600 text-white"
+                : "bg-gray-200 text-black"
+            } rounded`}
+            onClick={() => handleSortChange("price-asc")}
+          >
+            Giá rẻ nhất
+          </button>
+          <button
+            className={`flex-shrink-0 py-2 px-4 ${
+              sort === "price-desc"
+                ? "bg-primary-600 text-white"
+                : "bg-gray-200 text-black"
+            } rounded`}
+            onClick={() => handleSortChange("price-desc")}
+          >
+            Giá cao nhất
+          </button>
+        </div>
+
+        <div className="flex flex-wrap justify-around sm:justify-left gap-2 sm:gap-4 mt-2">
           {products.map((item, i) => (
             <ProductCard
               key={i}
-              cost={0}
-              name={`Test Product ${i + 1}`}
-              shop={`Test Shop`}
-              link={"#"}
-              src={"https://via.placeholder.com/150"}
-              commission={0}
-              shopLink={"/"}
+              cost={item.price}
+              name={item.name}
+              shop={item.shop}
+              link={item.link}
+              src={item.img || "/img_no_img.jpg"}
+              commission={item.commission}
             />
           ))}
         </div>
 
         {loading && (
-          <div className="flex justify-center mt-4">
-            <p>Đang tải thêm sản phẩm...</p>
+          <div className="flex justify-center items-center flex-col mt-4">
+            <Spinner />
+            <p className="p-4">Đang tải sản phẩm...</p>
           </div>
         )}
 
         <div ref={observerRef} className="h-10"></div>
       </section>
-    </>
+    </Suspense>
   );
 }

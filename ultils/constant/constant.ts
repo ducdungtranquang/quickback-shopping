@@ -9,16 +9,14 @@ export const NAVIGATION_LIST = {
         {
           name: "Cơ bản",
           href: "#",
-          imageSrc:
-            "https://tailwindui.com/img/ecommerce-images/mega-menu-category-01.jpg",
+          imageSrc: "/shoe.jpg",
           imageAlt:
             "Models sitting back to back, wearing Basic Tee in black and bone.",
         },
         {
           name: "Hoàn tiền cao",
           href: "#",
-          imageSrc:
-            "https://tailwindui.com/img/ecommerce-images/mega-menu-category-02.jpg",
+          imageSrc: "trainer.jpg",
           imageAlt:
             "Close up of Basic Tee fall bundle with off-white, ochre, olive, and black tees.",
         },
@@ -71,16 +69,14 @@ export const NAVIGATION_LIST = {
         {
           name: "Hot",
           href: "#",
-          imageSrc:
-            "https://tailwindui.com/img/ecommerce-images/product-page-04-detail-product-shot-01.jpg",
+          imageSrc: "shoe.jpg",
           imageAlt:
             "Drawstring top with elastic loop closure and textured interior padding.",
         },
         {
           name: "Hoàn tiền cao",
           href: "#",
-          imageSrc:
-            "https://tailwindui.com/img/ecommerce-images/category-page-02-image-card-06.jpg",
+          imageSrc: "bag.jpg",
           imageAlt:
             "Three shirts in gray, white, and blue arranged on table with same line drawing of hands and shapes overlapping on front of shirt.",
         },
@@ -125,6 +121,7 @@ export const NAVIGATION_LIST = {
     },
   ],
   pages: [
+    { name: "Trang chủ", href: "/" },
     { name: "Liên hệ", href: "#" },
     { name: "Chính sách", href: "#" },
   ],

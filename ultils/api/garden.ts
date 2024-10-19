@@ -6,6 +6,7 @@ export interface IGardenStatus {
   status: string;
   waterings: number;
   lastWateredAt: Date;
+  plantedAt: Date;
 }
 
 interface IGardenStatusTree {
