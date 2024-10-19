@@ -49,8 +49,10 @@ export default function NavBar({ isAuthenticated }: IProps) {
   };
 
   useEffect(() => {
-    fetchCart(1);
-  }, []);
+    if (isAuthenticated) {
+      fetchCart(1);
+    }
+  }, [isAuthenticated]);
 
   return (
     <div

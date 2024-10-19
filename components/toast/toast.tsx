@@ -10,20 +10,20 @@ interface IToast {
 export default function Toast(props: IToast) {
   const [isExiting, setIsExiting] = useState(false);
 
-  // useEffect(() => {
-  //   if (!props.isHidden) {
-  //     const timer = setTimeout(() => {
-  //       setIsExiting(true);
-  //       setTimeout(() => {
-  //         props.onClose && props.onClose();
-  //       }, 500);
-  //     }, 3000);
+  useEffect(() => {
+    if (!props.isHidden) {
+      const timer = setTimeout(() => {
+        setIsExiting(true);
+        setTimeout(() => {
+          props.onClose && props.onClose();
+        }, 500);
+      }, 3000);
 
-  //     return () => clearTimeout(timer);
-  //   }
+      return () => clearTimeout(timer);
+    }
 
-  //   setIsExiting(true);
-  // }, [props.isHidden, props.onClose]);
+    setIsExiting(true);
+  }, [props.isHidden, props.onClose]);
 
   const getTypeStyles = () => {
     switch (props.type) {
@@ -40,7 +40,7 @@ export default function Toast(props: IToast) {
 
   return (
     <div
-      className={`min-w-[240px] fixed z-[999999] top-4 right-4 flex items-center p-4 mb-4 rounded-lg shadow ${
+      className={`min-w-[240px] fixed z-[999999] bottom-4 right-4 flex items-center p-4 mb-4 rounded-lg shadow ${
         isExiting ? "toast-exit" : "toast-enter"
       } ${getTypeStyles()}`}
       role="alert"
