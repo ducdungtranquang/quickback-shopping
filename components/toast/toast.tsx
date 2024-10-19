@@ -10,20 +10,20 @@ interface IToast {
 export default function Toast(props: IToast) {
   const [isExiting, setIsExiting] = useState(false);
 
-  // useEffect(() => {
-  //   if (!props.isHidden) {
-  //     const timer = setTimeout(() => {
-  //       setIsExiting(true);
-  //       setTimeout(() => {
-  //         props.onClose && props.onClose();
-  //       }, 500);
-  //     }, 3000);
+  useEffect(() => {
+    if (!props.isHidden) {
+      const timer = setTimeout(() => {
+        setIsExiting(true);
+        setTimeout(() => {
+          props.onClose && props.onClose();
+        }, 500);
+      }, 3000);
 
-  //     return () => clearTimeout(timer);
-  //   }
+      return () => clearTimeout(timer);
+    }
 
-  //   setIsExiting(true);
-  // }, [props.isHidden, props.onClose]);
+    setIsExiting(true);
+  }, [props.isHidden, props.onClose]);
 
   const getTypeStyles = () => {
     switch (props.type) {
