@@ -1,15 +1,20 @@
 "use client";
 
-import React, { useEffect, useState, useRef, useCallback } from "react";
-import { useSearchParams } from "next/navigation"; // Lấy search params từ URL
+import React, {
+  useEffect,
+  useState,
+  useRef,
+  useCallback,
+  Suspense,
+} from "react";
 import ProductCard from "@/components/card/product-card";
 import Slider from "@/components/slider/slider";
 import NavBar from "@/layout/navbar";
 import useAuth from "@/hook/useAuth";
 import AccesstradeWidget from "@/components/acesstrade/accesstradeWidget";
 import { getProduct, IProduct, IProductQuery } from "@/ultils/api/product";
-import { removeHttps } from "@/ultils/func/helper";
 import Spinner from "@/components/spinner/spinner";
+import { useSearchParams } from "next/navigation";
 
 export default function ProductListPage() {
   const { isAuthenticated } = useAuth(false);
@@ -17,9 +22,7 @@ export default function ProductListPage() {
   const [page, setPage] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
   const [hasMore, setHasMore] = useState<boolean>(true);
-
   const observerRef = useRef<HTMLDivElement | null>(null);
-
   const searchParams = useSearchParams();
   const search = searchParams.get("search") || "";
   const sort = searchParams.get("sort") || "sales";
@@ -138,7 +141,7 @@ export default function ProductListPage() {
   ];
 
   return (
-    <>
+    <Suspense fallback={loading}>
       <NavBar isAuthenticated={isAuthenticated} />
       <section className="py-6 px-4 bg-gray-100 h-full min-h-screen overflow-hidden overflow-y-scroll mt-[100px]">
         <div className="mx-auto mt-[20px]">
@@ -225,6 +228,6 @@ export default function ProductListPage() {
 
         <div ref={observerRef} className="h-10"></div>
       </section>
-    </>
+    </Suspense>
   );
 }
