@@ -20,14 +20,15 @@ import {
   UserIcon,
   XMarkIcon,
   MagnifyingGlassIcon,
+  HomeIcon,
 } from "@heroicons/react/24/outline";
-import useAuth from "@/hook/useAuth";
 import Link from "next/link";
 import BaseModal from "@/components/modals/base-modal";
 import { logout } from "@/ultils/func/api";
 import { useRouter } from "next/navigation";
 import AutoCompleteSearch from "@/components/search/autocomplete-search";
 import { CATEGORIES, NAVIGATION_LIST } from "@/ultils/constant/constant";
+import { useCart } from "@/context/cartContext";
 
 interface IProps {
   isAuthenticated: boolean | null;
@@ -35,6 +36,7 @@ interface IProps {
 
 export default function NavBar({ isAuthenticated }: IProps) {
   const router = useRouter();
+  const { total, fetchCart } = useCart();
   const [showSearch, setShowSearch] = useState(false);
   const [open, setOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -45,6 +47,10 @@ export default function NavBar({ isAuthenticated }: IProps) {
     await logout();
     setIsModalOpen(false);
   };
+
+  useEffect(() => {
+    fetchCart(1);
+  }, []);
 
   return (
     <div
@@ -157,16 +163,20 @@ export default function NavBar({ isAuthenticated }: IProps) {
             </TabGroup>
 
             <div className="space-y-6 border-t border-gray-200 px-4 py-6">
-              {NAVIGATION_LIST.pages.map((page) => (
-                <div key={page.name} className="flow-root">
-                  <a
-                    href={page.href}
-                    className="-m-2 block p-2 font-medium text-gray-900"
-                  >
-                    {page.name}
-                  </a>
-                </div>
-              ))}
+              {NAVIGATION_LIST.pages.map((page) => {
+                if (page.name !== "Trang chủ") {
+                  return (
+                    <div key={page.name} className="flow-root">
+                      <a
+                        href={page.href}
+                        className="-m-2 block p-2 font-medium text-gray-900"
+                      >
+                        {page.name}
+                      </a>
+                    </div>
+                  );
+                }
+              })}
             </div>
 
             <div className="space-y-6 border-t border-gray-200 px-4 py-6">
@@ -184,7 +194,7 @@ export default function NavBar({ isAuthenticated }: IProps) {
                 <>
                   <div className="flow-root">
                     <Link
-                      href="login"
+                      href="/login"
                       className="-m-2 block p-2 font-medium text-gray-900"
                     >
                       Đăng nhập
@@ -218,6 +228,13 @@ export default function NavBar({ isAuthenticated }: IProps) {
             <div className="flex h-16 items-center justify-between">
               <button
                 type="button"
+                onClick={() => router.push("/")}
+                className="relative rounded-md bg-white p-2 text-gray-400 lg:hidden"
+              >
+                <HomeIcon aria-hidden="true" className="h-6 w-6" />
+              </button>{" "}
+              <button
+                type="button"
                 onClick={() => setOpen(!open)}
                 className="relative rounded-md bg-white p-2 text-gray-400 lg:hidden"
               >
@@ -225,10 +242,18 @@ export default function NavBar({ isAuthenticated }: IProps) {
                 <span className="sr-only">Mở</span>
                 <Bars3Icon aria-hidden="true" className="h-6 w-6" />
               </button>
-
               {/* Flyout menus */}
               <PopoverGroup className="lg:ml-8 lg:block lg:self-stretch lg:block hidden ml-5">
                 <div className="flex h-full space-x-8">
+                  {NAVIGATION_LIST.pages.map((page) => (
+                    <Link
+                      key={page.name}
+                      href={page.href}
+                      className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800"
+                    >
+                      {page.name}
+                    </Link>
+                  ))}
                   {NAVIGATION_LIST.categories.map((category, index) => (
                     <Popover key={category.name} className="flex">
                       <div className="relative flex">
@@ -309,19 +334,8 @@ export default function NavBar({ isAuthenticated }: IProps) {
                       </PopoverPanel>
                     </Popover>
                   ))}
-
-                  {NAVIGATION_LIST.pages.map((page) => (
-                    <a
-                      key={page.name}
-                      href={page.href}
-                      className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800"
-                    >
-                      {page.name}
-                    </a>
-                  ))}
                 </div>
               </PopoverGroup>
-
               <div className="ml-auto flex items-center">
                 <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
                   {isAuthenticated ? (
@@ -367,12 +381,15 @@ export default function NavBar({ isAuthenticated }: IProps) {
                 </div>
                 {/* User */}
                 <div className="ml-4 flow-root lg:ml-6 ml-3">
-                  <a href="#" className="group -m-2 flex items-center p-2">
+                  <Link
+                    href={`${isAuthenticated ? "/profile" : "/login"}`}
+                    className="group -m-2 flex items-center p-2"
+                  >
                     <UserIcon
                       aria-hidden="true"
                       className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
                     />
-                  </a>
+                  </Link>
                 </div>
                 {/* Cart */}
                 <div className="ml-4 flow-root lg:ml-6 ml-3">
@@ -387,7 +404,7 @@ export default function NavBar({ isAuthenticated }: IProps) {
                       className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
                     />
                     <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
-                      0
+                      {total}
                     </span>
                     <span className="sr-only">items in cart, view bag</span>
                   </div>
@@ -409,7 +426,9 @@ export default function NavBar({ isAuthenticated }: IProps) {
         </nav>
       </header>
       <div
-        className={`${showSearch ? "nav-enter" : "nav-exit h-0 hidden"} bg-transparent`}
+        className={`${
+          showSearch ? "nav-enter" : "nav-exit h-0 hidden"
+        } bg-transparent`}
       >
         <AutoCompleteSearch
           categories={CATEGORIES}

@@ -19,7 +19,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [total, setTotal] = useState<number>(0);
   const [pag, setPag] = useState<number>(1);
   const token = Cookies.get("authToken");
-  const { addToast } = useToast(); // Sử dụng addToast từ toastContext để thông báo
+  const { addToast } = useToast();
 
   const fetchCart = async (page: number) => {
     if (!token) {
@@ -49,6 +49,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       if (response.success) {
         setCart((prevCart) => [...prevCart, item]);
         addToast("Item added to cart!", "success");
+        fetchCart(1);
       } else {
         addToast("Failed to add item to cart.", "error");
       }

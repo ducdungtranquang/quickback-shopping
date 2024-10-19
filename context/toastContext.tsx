@@ -28,7 +28,6 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
   const addToast = (message: string, type: "success" | "error" | "warning") => {
     setToasts((prev) => [...prev, { message, type }]);
   };
-console.log(toasts);
   const removeToast = (index: number) => {
     setToasts((prev) => prev.filter((_, i) => i !== index));
   };

@@ -205,6 +205,7 @@ body {
 
 .at--convert-link-box {
   display: flex;
+  flex-wrap: wrap;
   gap: var(--padding-sm);
   width: 100%;
 }

@@ -60,7 +60,7 @@ const treeList: TreeItem[] = [
 
 const canWaterTree = (lastWateredAt: string, plantAt = "1/1/1"): boolean => {
   const lastWateredTime = new Date(lastWateredAt).getTime();
-  const plantAtTime = new Date(lastWateredAt).getTime();
+  const plantAtTime = new Date(plantAt).getTime();
   const currentTime = Date.now();
   return (
     (currentTime - lastWateredTime) / (1000 * 60 * 60) >= 24 ||
@@ -188,7 +188,7 @@ export default function GardenLayout({
       {!isToastHidden && (
         <Toast
           type="error"
-          content="Đây là thông báo thành công!"
+          content="Tưới cây thất bại!"
           isHidden={isToastHidden}
           onClose={hideToast}
         />
