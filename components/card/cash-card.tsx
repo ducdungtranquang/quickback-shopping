@@ -35,10 +35,9 @@ const CashbackCard: React.FC<CashbackCardProps> = ({
         </div>
         <div className="flex justify-between items-center mb-6">
           <p className="text-2xl font-bold">{totalCashback}</p>
-          <p className="text-2xl font-bold">{availableBalance}</p>
         </div>
-        <div className="flex justify-between items-center">
-          <p className="text-sm">Số dư khả dụng:</p>
+        <div className="flex justify-between items-center flex-wrap">
+          <p className="text-sm">Số dư khả dụng: {availableBalance}</p>
           <button
             onClick={onWithdraw}
             className="bg-white text-blue-700 font-bold py-2 px-4 rounded-lg shadow"

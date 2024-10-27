@@ -1,4 +1,5 @@
 "use client";
+import React, { useEffect, useState } from "react";
 import CashbackCard from "@/components/card/cash-card";
 import HelpCard from "@/components/card/help-card";
 import InfoCard from "@/components/card/info-card";
@@ -6,11 +7,14 @@ import BaseModal from "@/components/modals/base-modal";
 import useAuth from "@/hook/useAuth";
 import NavBar from "@/layout/navbar";
 import { logout } from "@/ultils/func/api";
-import React, { useState } from "react";
+import Cookies from "js-cookie";
+import { getProfile, IProfileResponse } from "@/ultils/api/profile";
+import Spinner from "@/components/spinner/spinner";
 
 const App = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const isAuthenticated = useAuth(true);
+  const [profile, setProfile] = useState<IProfileResponse | null>(null);
 
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
@@ -24,12 +28,30 @@ const App = () => {
   };
 
   if (isAuthenticated === null) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <Spinner />
+      </div>
+    );
   }
 
-  if (!isAuthenticated) {
-    return null;
-  }
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const token = Cookies.get("authToken");
+      if (token) {
+        try {
+          const profileData = await getProfile(token);
+          setProfile(profileData);
+        } catch (error) {
+          console.error("Error fetching profile:", error);
+        }
+      }
+    };
+
+    if (!!isAuthenticated) {
+      fetchProfile();
+    }
+  }, []);
 
   return (
     <>
@@ -37,8 +59,8 @@ const App = () => {
       <div className="mt-[120px] h-full min-h-screen lg:overflow-hidden bg-gray-100 flex flex-col justify-start items-center p-5 pt-0">
         <br />
         <CashbackCard
-          totalCashback="0đ"
-          availableBalance="0đ"
+          totalCashback={`${profile?.money}đ`}
+          availableBalance={`${profile?.money}đ`}
           onWithdraw={handleWithdraw}
         />
         <div className="mt-4 w-full">
@@ -93,7 +115,10 @@ const App = () => {
         </div>
 
         <div className="flex flex-col sm:flex-row justify-around items-center w-full sm:gap-[10px]">
-          <InfoCard message={"Thông tin cá nhân"} link="/profile/123" />
+          <InfoCard
+            message={"Thông tin cá nhân"}
+            link={`/profile/${profile?._id}`}
+          />
           <InfoCard
             message={"Hỗ trợ"}
             link="/"

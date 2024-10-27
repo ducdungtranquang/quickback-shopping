@@ -4,11 +4,82 @@ import ShopCard from "@/components/card/shop-card";
 import Slider from "@/components/slider/slider";
 import useAuth from "@/hook/useAuth";
 import NavBar from "@/layout/navbar";
+import { getShops, IShopArr, IShopQuery, IShops } from "@/ultils/api/shop";
+import { useSearchParams } from "next/navigation";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export default function ShopPage() {
   const { isAuthenticated } = useAuth(false);
+  const [shop, setShop] = useState<IShopArr[]>([]);
+  const [page, setPage] = useState<number>(1);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [hasMore, setHasMore] = useState<boolean>(true);
+  const observerRef = useRef<HTMLDivElement | null>(null);
+  const searchParams = useSearchParams();
+  const search = searchParams.get("search") || "";
 
-  const test = Array(5).fill("test");
+  const fetchMoreProducts = useCallback(async () => {
+    if (loading || !hasMore) return;
+
+    setLoading(true);
+    const query: IShopQuery = {
+      page,
+      limit: 20,
+      searchTerm: search,
+    };
+
+    const data = await getShops(query);
+    if (data.shops.length === 0) {
+      setHasMore(false);
+    } else {
+      setShop((prev) => [...prev, ...data.shops]);
+      setPage((prevPage) => prevPage + 1);
+    }
+    setLoading(false);
+  }, [loading, hasMore, page, search]);
+
+  useEffect(() => {
+    setPage(1);
+    setShop([]);
+    setHasMore(true);
+    fetchMoreProducts();
+  }, [search]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      async (entries) => {
+        if (entries[0].isIntersecting && !loading) {
+          await fetchMoreProducts();
+        }
+      },
+      { threshold: 1.0 }
+    );
+
+    if (observerRef.current) {
+      observer.observe(observerRef.current);
+    }
+
+    return () => {
+      if (observerRef.current) {
+        observer.unobserve(observerRef.current);
+      }
+    };
+  }, [fetchMoreProducts, loading]);
+
+  const updateURLParams = (key: string, value: string) => {
+    const params = new URLSearchParams(window.location.search);
+    if (value) {
+      params.set(key, value);
+    } else {
+      params.delete(key);
+    }
+    window.history.replaceState(
+      {},
+      "",
+      `${window.location.pathname}?${params.toString()}`
+    );
+  };
+
   const slides = [
     <div
       className="bg-blue-500 h-[200px] sm:h-[400px] flex items-center justify-center text-white"
@@ -66,19 +137,27 @@ export default function ShopPage() {
             Ưu đãi Hoàn Tiền nổi bật
           </h2>
           <div className="flex overflow-x-auto custom-scrollbar pb-[5px]">
-            {test?.map((item, i) => (
-              <ShopCard
-                key={i}
-                name={"Test Product"}
-                src={"https://via.placeholder.com/150"}
-                commission={0}
-              />
-            ))}
+            {shop?.map((item, i) => {
+              {
+                if (i < 5) {
+                  return (
+                    <ShopCard
+                      key={i}
+                      name={item.shop}
+                      src={item.firstProductImg}
+                      commission={item.firstProductCommission}
+                      link={`/product?shopName=${item.shop}`}
+                      buttonText="Xem"
+                    />
+                  );
+                }
+              }
+            })}
           </div>
         </div>
 
         {/* Pagination */}
-        <div className="flex justify-between items-center mt-8 mb-[20px] px-2">
+        {/* <div className="flex justify-between items-center mt-8 mb-[20px] px-2">
           <button className="py-2 px-4 bg-gray-200 text-black rounded">
             Trước
           </button>
@@ -88,16 +167,17 @@ export default function ShopPage() {
               Tiếp
             </button>
           </div>
-        </div>
+        </div> */}
 
         {/* Shop Grid */}
         <div className="flex flex-wrap justify-around sm:justify-left gap-2 sm:gap-4">
-          {test?.map((item, i) => (
+          {shop?.map((item, i) => (
             <ShopCard
               key={i}
-              name={"Test Product"}
-              src={"https://via.placeholder.com/150"}
-              commission={0}
+              name={item.shop}
+              src={item.firstProductImg}
+              commission={item.firstProductCommission}
+              link={`/product?shopName=${item.shop}`}
             />
           ))}
         </div>

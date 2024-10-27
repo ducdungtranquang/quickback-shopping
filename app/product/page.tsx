@@ -25,6 +25,7 @@ export default function ProductListPage() {
   const observerRef = useRef<HTMLDivElement | null>(null);
   const searchParams = useSearchParams();
   const search = searchParams.get("search") || "";
+  const shopName = searchParams.get("shopName") || "";
   const sort = searchParams.get("sort") || "sales";
 
   const fetchMoreProducts = useCallback(async () => {
@@ -36,6 +37,7 @@ export default function ProductListPage() {
       limit: 20,
       searchTerm: search,
       sort: sort as "price-desc" | "price-asc" | "sales" | "newest",
+      shopName: shopName
     };
 
     const data = await getProduct(query);
