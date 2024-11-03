@@ -15,6 +15,7 @@ import AccesstradeWidget from "@/components/acesstrade/accesstradeWidget";
 import { getProduct, IProduct, IProductQuery } from "@/ultils/api/product";
 import Spinner from "@/components/spinner/spinner";
 import { useSearchParams } from "next/navigation";
+import MediaMartWidget from "@/components/acesstrade/mediaMartWidget";
 
 export default function ProductListPage() {
   const { isAuthenticated } = useAuth(false);
@@ -154,15 +155,9 @@ export default function ProductListPage() {
           <AccesstradeWidget />
         </div>
 
-        {/* <div className="mx-auto px-2 max-w-7xl lg:px-8 mt-[50px]">
-          <input
-            type="text"
-            placeholder="Tìm kiếm sản phẩm..."
-            value={search}
-            onChange={handleSearchChange}
-            className="w-full p-2 border border-gray-300 rounded mb-4"
-          />
-        </div> */}
+        <div className="my-4">
+          <MediaMartWidget />
+        </div>
 
         <div className="flex overflow-x-auto custom-scrollbar pb-[5px] mb-[20px]">
           <button

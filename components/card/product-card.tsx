@@ -49,7 +49,7 @@ const ProductCard = (props: IProductCard) => {
             {props.shop}
           </div>
         </div>
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-start md:justify-center mb-[20px] md:flex-row">
+        <div className="flex flex-col items-start justify-start md:justify-between flex-wrap mb-[20px] md:flex-row">
           <span className="text-sm font-bold text-gray-900 dark:text-white">
             {props.commission}%
           </span>

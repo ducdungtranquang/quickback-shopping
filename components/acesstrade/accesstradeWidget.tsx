@@ -50,7 +50,7 @@ const AccesstradeWidget: React.FC = () => {
               <img class="at--cps-campaign-thumb" src="https://content.accesstrade.vn/adv/1728028141_avatar_1728028141.gif"/>
             </div>
             <div class="at--cps-item">
-              <a style="font-size: 18px;" rel="nofollow" target="_blank">Shopee Việt Nam Smartlink cho tất cả thiết bị</a>
+              <a style="font-size: 18px;" rel="nofollow" target="_blank">Mua sắm thả ga với Shopee</a>
               <b style="font-size: 20px;">Hoàn tiền không giới hạn</b>
             </div>
           </div>

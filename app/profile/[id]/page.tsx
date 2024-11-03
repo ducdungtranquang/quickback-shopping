@@ -163,7 +163,7 @@ const UserDetailInfo = () => {
 
             <div>
               <InputSection
-                label="Tổng số xu"
+                label="Tổng số tiền"
                 value={formData.coinsEarned}
                 onChange={handleInputChange}
                 disabled={!isEditing}

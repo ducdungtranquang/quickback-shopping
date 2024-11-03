@@ -58,8 +58,8 @@ const LoginPage = () => {
   return (
     <>
       <section
-        className={`bg-gray-50 dark:bg-gray-900 mt-[100px] mb-[100px] h-full min-h-screen ${
-          isAnimating ? "page-exit-active" : "page-enter-active"
+        className={`bg-gray-50 dark:bg-gray-900 md:pt-[50px] mb-[100px] h-full min-h-screen ${
+          isAnimating ? "page-exit-active" : "page-enter-active" 
         }`}
       >
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen mb-[50px] lg:mt-[50px] lg:py-0">
