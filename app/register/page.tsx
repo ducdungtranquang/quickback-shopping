@@ -34,11 +34,9 @@ const RegisterPage = () => {
 
     try {
       const response = await register({ email, password, name });
-      Cookies.set('authToken', response.token);
-      Cookies.set('email', response.email);
-      Cookies.set('id', response._id);
-      Cookies.set('user_name', name);
-      router.push("/profile");
+      if(response?.success){
+      router.push('/verify-account')
+    }
     } catch (err) {
       setError("Đăng ký không thành công. Vui lòng thử lại.");
     } finally {

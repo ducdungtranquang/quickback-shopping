@@ -8,7 +8,9 @@ import InputSection from "@/components/input/input";
 import Link from "next/link";
 import useAnimateNavigation from "@/hook/useAnimateNavigation";
 import Cookies from "js-cookie";
-import { login } from "@/ultils/api/auth";
+import { login, resendVerify } from "@/ultils/api/auth";
+import BaseModal from "@/components/modals/base-modal";
+import Toast from "@/components/toast/toast";
 
 const LoginPage = () => {
   const { isAnimating, handleNavigation } = useAnimateNavigation("/register");
@@ -19,6 +21,26 @@ const LoginPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [googleError, setGoogleError] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isToastHidden, setIsToastHidden] = useState(true);
+
+  const showToast = () => {
+    setIsToastHidden(false);
+  };
+  const hideToast = () => {
+    setIsToastHidden(true);
+  };
+  const handleOpenModal = () => setIsModalOpen(true);
+  const handleCloseModal = () => setIsModalOpen(false);
+  const handleConfirm = async () => {
+    const { message } = await resendVerify(email);
+    if (message === "Verification code resent successfully.") {
+      router.push("/verify-account");
+    } else {
+      showToast();
+    }
+    setIsModalOpen(false);
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -31,13 +53,20 @@ const LoginPage = () => {
         token,
         _id,
         name,
+        message,
       } = await login({ email, password });
       if (token) {
         Cookies.set("authToken", token);
         Cookies.set("email", emailLogin);
         Cookies.set("id", _id);
         Cookies.set("user_name", name);
-        router.push("/profile");
+        router.push("/product");
+      } else {
+        if (message === "Please verify your email first.") {
+          handleOpenModal();
+        } else {
+          showToast();
+        }
       }
     } catch (err) {
       setError("Đăng nhập không thành công. Vui lòng kiểm tra lại thông tin.");
@@ -59,9 +88,30 @@ const LoginPage = () => {
     <>
       <section
         className={`bg-gray-50 dark:bg-gray-900 md:pt-[50px] mb-[100px] h-full min-h-screen ${
-          isAnimating ? "page-exit-active" : "page-enter-active" 
+          isAnimating ? "page-exit-active" : "page-enter-active"
         }`}
       >
+        {isModalOpen && (
+          <BaseModal
+            isOpen={isModalOpen}
+            onClose={handleCloseModal}
+            title="Đăng nhập thất bại"
+            onConfirm={handleConfirm}
+          >
+            <p>
+              Xác thực email ngay (Tối đa 2 lần/ngày, vui lòng kiểm tra email
+              của bạn nếu như đã gửi mã trước đó.)
+            </p>
+          </BaseModal>
+        )}
+        {!isToastHidden && (
+          <Toast
+            type="error"
+            content="Thất bại"
+            isHidden={isToastHidden}
+            onClose={hideToast}
+          />
+        )}
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen mb-[50px] lg:mt-[50px] lg:py-0">
           <LogoComponent />
           <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">

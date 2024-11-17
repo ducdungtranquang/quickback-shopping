@@ -14,7 +14,12 @@ interface LoginResponse {
   token: string;
   email: string;
   _id: string;
+  message: string;
   name: string;
+}
+
+interface RegisResponse {
+  success: boolean;
 }
 
 export const login = async (
@@ -46,8 +51,8 @@ export const googleLogin = async (
 
 export const register = async (
   credentials: RegisterCredentials
-): Promise<LoginResponse> => {
-  const response = await apiCall<LoginResponse>(
+): Promise<RegisResponse> => {
+  const response = await apiCall<RegisResponse>(
     "/api/auth/register",
     "POST",
     credentials
@@ -66,6 +71,24 @@ export const verifyToken = async (token: string): Promise<boolean> => {
   } catch (error) {
     return false;
   }
+};
+
+export const verifyAccount = async (token: string): Promise<LoginResponse> => {
+  const response = await apiCall<LoginResponse>(
+    "/api/auth/verify-account",
+    "POST",
+    { token }
+  );
+  return response;
+};
+
+export const resendVerify = async (email: string): Promise<LoginResponse> => {
+  const response = await apiCall<LoginResponse>(
+    "/api/auth/resend-verify",
+    "POST",
+    { email }
+  );
+  return response;
 };
 
 export const logoutAccount = async (token: string): Promise<boolean> => {
