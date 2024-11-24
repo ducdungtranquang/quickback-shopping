@@ -25,9 +25,9 @@ export interface IProfileResponse {
   _id: string;
   name: string;
   email: string;
-  googleId: string;
+  googleId?: string;
   __v: number;
-  password: string;
+  password?: string;
   money: number;
   trees: Tree[];
   updatedAt: string;
@@ -36,6 +36,12 @@ export interface IProfileResponse {
   secretBoxesCollected: number;
   spinStartTime: string;
   spinToken: string;
+  accountBank?: string;
+  bankName?:string;
+  phoneNumber?: string;
+  address?: string;
+  city?: string;
+  inviteCode?: string[];
 }
 
 export const getProfile = async (token: string): Promise<IProfileResponse> => {

@@ -5,22 +5,26 @@ import InputSection from "@/components/input/input";
 import Spinner from "@/components/spinner/spinner";
 import useAuth from "@/hook/useAuth";
 import NavBar from "@/layout/navbar";
-import { HTMLAttributes, useState } from "react";
+import { getProfile, IProfileResponse } from "@/ultils/api/profile";
+import { HTMLAttributes, useEffect, useState } from "react";
+import Cookies from "js-cookie";
 
 const UserDetailInfo = () => {
   const isAuthenticated = useAuth(true);
   const [isEditing, setIsEditing] = useState(false);
+  const [profile, setProfile] = useState<IProfileResponse | null>(null);
   const [formData, setFormData] = useState<any>({
-    fullName: "John Doe",
-    email: "john.doe@example.com",
-    phone: "+123456789",
-    age: "18",
-    address: "123 Main St",
-    city: "New York",
+    fullName: "",
+    email: "",
+    phone: "",
+    age: "",
+    address: "",
+    city: "",
     password: "",
     currentPassword: "",
-    bankAccount: "0123456789",
-    coinsEarned: "500",
+    bankAccount: "",
+    bankName:"",
+    coinsEarned: "",
     confirmPassword: "",
   });
 
@@ -47,10 +51,41 @@ const UserDetailInfo = () => {
     return null;
   }
 
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const token = Cookies.get("authToken");
+      if (token) {
+        try {
+          const profileData = await getProfile(token);
+          setFormData({
+            fullName: profileData.name || "",
+            email: profileData.email || "",
+            phone: profileData.phoneNumber || "",
+            age: "",
+            address: profileData.address || "",
+            city: profileData.city || "",
+            password: "",
+            currentPassword: "",
+            bankAccount: profileData.accountBank || "",
+            bankName: profileData.bankName || "",
+            coinsEarned: profileData.money.toString() || "0",
+            confirmPassword: "",
+          });
+        } catch (error) {
+          console.error("Error fetching profile:", error);
+        }
+      }
+    };
+
+    if (!!isAuthenticated) {
+      fetchProfile();
+    }
+  }, []);
+
   return (
     <div className="container">
       <NavBar isAuthenticated={isAuthenticated.isAuthenticated} />
-      <div className="container mx-auto p-4 px-6 mt-[100px] h-full min-h-screen">
+      <div className="container mx-auto p-4 px-6 mt-[120px] h-full min-h-screen">
         <div className="flex flex-col md:flex-row gap-4">
           {/* Profile Card */}
           <div className="w-full md:w-1/3 bg-white rounded-lg shadow p-4">
@@ -93,7 +128,7 @@ const UserDetailInfo = () => {
                     type={name === "password" ? "password" : "text"}
                     label={label}
                     name={name}
-                    placeholder={formData[name]}
+                    placeholder={formData[name]|| "Không có dữ liệu"}
                     value={formData[name]}
                     onChange={handleInputChange}
                     disabled={!isEditing}
@@ -149,15 +184,17 @@ const UserDetailInfo = () => {
                 onChange={handleInputChange}
                 disabled={!isEditing}
                 styleInput={styleInput}
+                placeholder={formData.bankAccount || "Không có dữ liệu"}
               />
             </div>
             <div>
               <InputSection
                 label="Ngân hàng"
-                value={formData.bankAccount}
+                value={formData.bankName}
                 onChange={handleInputChange}
                 disabled={!isEditing}
                 styleInput={styleInput}
+                placeholder={formData.bankName || "Không có dữ liệu"}
               />
             </div>
 
@@ -168,6 +205,7 @@ const UserDetailInfo = () => {
                 onChange={handleInputChange}
                 disabled={!isEditing}
                 styleInput={styleInput}
+                placeholder={formData.coinsEarned || "0đ"}
               />
             </div>
 
