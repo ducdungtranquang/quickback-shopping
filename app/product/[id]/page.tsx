@@ -29,7 +29,7 @@ export default function ProductPage() {
       {loading ? (
         <Spinner />
       ) : (
-        <>
+        <div className="container">
           <NavBar isAuthenticated={isAuthenticated} />
           <div className="bg-gray-100 dark:bg-gray-800 py-8 mt-[100px] h-full min-h-screen p-4">
             <div className="max-w-full mx-auto px-4 md:px-2 sm:px-6 lg:px-8">
@@ -114,7 +114,7 @@ export default function ProductPage() {
               </div>
             </div>
           </div>
-        </>
+        </div>
       )}
     </>
   );

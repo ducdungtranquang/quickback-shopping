@@ -48,7 +48,7 @@ const UserDetailInfo = () => {
   }
 
   return (
-    <>
+    <div className="container">
       <NavBar isAuthenticated={isAuthenticated.isAuthenticated} />
       <div className="container mx-auto p-4 px-6 mt-[100px] h-full min-h-screen">
         <div className="flex flex-col md:flex-row gap-4">
@@ -192,7 +192,7 @@ const UserDetailInfo = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

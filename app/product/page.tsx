@@ -38,7 +38,7 @@ export default function ProductListPage() {
       limit: 20,
       searchTerm: search,
       sort: sort as "price-desc" | "price-asc" | "sales" | "newest",
-      shopName: shopName
+      shopName: shopName,
     };
 
     const data = await getProduct(query);
@@ -145,86 +145,88 @@ export default function ProductListPage() {
 
   return (
     <Suspense fallback={loading}>
-      <NavBar isAuthenticated={isAuthenticated} />
-      <section className="py-6 px-4 bg-gray-100 h-full min-h-screen overflow-hidden overflow-y-scroll mt-[100px]">
-        <div className="mx-auto mt-[20px]">
-          <Slider slides={slides} loop={true} autoPlay={true} />
-        </div>
-
-        <div className="my-4">
-          <AccesstradeWidget />
-        </div>
-
-        <div className="my-4">
-          <MediaMartWidget />
-        </div>
-
-        <div className="flex overflow-x-auto custom-scrollbar pb-[5px] mb-[20px]">
-          <button
-            className={`flex-shrink-0 py-2 px-4 ${
-              sort === "newest"
-                ? "bg-primary-600 text-white"
-                : "bg-gray-200 text-black"
-            } rounded`}
-            onClick={() => handleSortChange("newest")}
-          >
-            Mới nhất
-          </button>
-          <button
-            className={`flex-shrink-0 py-2 px-4 ${
-              sort === "sales"
-                ? "bg-primary-600 text-white"
-                : "bg-gray-200 text-black"
-            } rounded`}
-            onClick={() => handleSortChange("sales")}
-          >
-            Bán chạy
-          </button>
-          <button
-            className={`flex-shrink-0 py-2 px-4 ${
-              sort === "price-asc"
-                ? "bg-primary-600 text-white"
-                : "bg-gray-200 text-black"
-            } rounded`}
-            onClick={() => handleSortChange("price-asc")}
-          >
-            Giá rẻ nhất
-          </button>
-          <button
-            className={`flex-shrink-0 py-2 px-4 ${
-              sort === "price-desc"
-                ? "bg-primary-600 text-white"
-                : "bg-gray-200 text-black"
-            } rounded`}
-            onClick={() => handleSortChange("price-desc")}
-          >
-            Giá cao nhất
-          </button>
-        </div>
-
-        <div className="flex flex-wrap justify-around sm:justify-left gap-2 sm:gap-4 mt-2">
-          {products.map((item, i) => (
-            <ProductCard
-              key={i}
-              cost={item.price}
-              name={item.name}
-              shop={item.shop}
-              link={item.link}
-              src={item.img || "/img_no_img.jpg"}
-              commission={item.commission}
-            />
-          ))}
-        </div>
-
-        {loading && (
-          <div className="flex justify-center items-center flex-col mt-4">
-            <Spinner />
-            <p className="p-4">Đang tải sản phẩm...</p>
+      <div className="container">
+        <NavBar isAuthenticated={isAuthenticated} />
+        <section className="py-6 px-4 bg-gray-100 h-full min-h-screen overflow-hidden overflow-y-scroll mt-[100px]">
+          <div className="mx-auto mt-[20px]">
+            <Slider slides={slides} loop={true} autoPlay={true} />
           </div>
-        )}
 
-        <div ref={observerRef} className="h-10"></div>
-      </section>
+          <div className="my-4">
+            <AccesstradeWidget />
+          </div>
+
+          <div className="my-4">
+            <MediaMartWidget />
+          </div>
+
+          <div className="flex overflow-x-auto custom-scrollbar pb-[5px] mb-[20px]">
+            <button
+              className={`flex-shrink-0 py-2 px-4 ${
+                sort === "newest"
+                  ? "bg-primary-600 text-white"
+                  : "bg-gray-200 text-black"
+              } rounded`}
+              onClick={() => handleSortChange("newest")}
+            >
+              Mới nhất
+            </button>
+            <button
+              className={`flex-shrink-0 py-2 px-4 ${
+                sort === "sales"
+                  ? "bg-primary-600 text-white"
+                  : "bg-gray-200 text-black"
+              } rounded`}
+              onClick={() => handleSortChange("sales")}
+            >
+              Bán chạy
+            </button>
+            <button
+              className={`flex-shrink-0 py-2 px-4 ${
+                sort === "price-asc"
+                  ? "bg-primary-600 text-white"
+                  : "bg-gray-200 text-black"
+              } rounded`}
+              onClick={() => handleSortChange("price-asc")}
+            >
+              Giá rẻ nhất
+            </button>
+            <button
+              className={`flex-shrink-0 py-2 px-4 ${
+                sort === "price-desc"
+                  ? "bg-primary-600 text-white"
+                  : "bg-gray-200 text-black"
+              } rounded`}
+              onClick={() => handleSortChange("price-desc")}
+            >
+              Giá cao nhất
+            </button>
+          </div>
+
+          <div className="flex flex-wrap justify-around sm:justify-left gap-2 sm:gap-4 mt-2">
+            {products.map((item, i) => (
+              <ProductCard
+                key={i}
+                cost={item.price}
+                name={item.name}
+                shop={item.shop}
+                link={item.link}
+                src={item.img || "/img_no_img.jpg"}
+                commission={item.commission}
+              />
+            ))}
+          </div>
+
+          {loading && (
+            <div className="flex justify-center items-center flex-col mt-4">
+              <Spinner />
+              <p className="p-4">Đang tải sản phẩm...</p>
+            </div>
+          )}
+
+          <div ref={observerRef} className="h-10"></div>
+        </section>
+      </div>
     </Suspense>
   );
 }

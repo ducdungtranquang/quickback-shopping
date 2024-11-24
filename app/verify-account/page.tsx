@@ -24,7 +24,7 @@ const App = () => {
   }
 
   return (
-    <div className="flex flex-col items-center p-5 gap-3 h-full min-h-screen max-w-[992px]">
+    <div className="container flex flex-col items-center p-5 gap-3 h-full min-h-screen max-w-[1024px]">
       <LogoComponent />
       <p className="text-sm text-center">
         Vui lòng xác thực tài khoản của bạn (Reload trang nếu bạn đã xác thực)

@@ -54,7 +54,7 @@ const ChatPage: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="container flex flex-col h-screen">
       <div className="flex justify-between items-center p-4 bg-gray-200">
         <div className="text-xl font-semibold">Messenger</div>
       </div>

@@ -102,7 +102,7 @@ export default function ShopPage() {
   ];
 
   return (
-    <>
+    <div className="container">
       <NavBar isAuthenticated={isAuthenticated} />
       <section className="py-6 px-4 bg-gray-100 h-full min-h-screen overflow-hidden overflow-y-scroll mt-[100px]">
         <div className="mx-auto mt[20px]">
@@ -182,6 +182,6 @@ export default function ShopPage() {
           ))}
         </div>
       </section>
-    </>
+    </div>
   );
 }

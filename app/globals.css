@@ -27,7 +27,6 @@
 body {
   overflow-x: hidden;
   color: rgb(var(--foreground-rgb));
-  max-width: 992px;
   margin: auto;
   display: block;
 }
@@ -62,6 +61,12 @@ body {
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: rgb(45, 93, 227);
+}
+
+.container {
+  width: 100%;
+  max-width: 1024px;
+  margin: auto;
 }
 
 /* animation */

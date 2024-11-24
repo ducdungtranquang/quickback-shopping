@@ -55,10 +55,10 @@ const RegisterPage = () => {
 
   return (
     <section
-      className={`bg-gray-50 dark:bg-gray-900 h-full min-h-screen mb-[350px] ${isAnimating ? "page-exit-active" : "page-enter-active"
+      className={`container bg-blue-400 dark:bg-gray-900 h-full py-5 ${isAnimating ? "page-exit-active" : "page-enter-active"
         }`}
     >
-      <div className="flex flex-col items-center justify-center sm:justify-start px-6 py-8 mx-auto md:h-screen">
+      <div className="flex flex-col items-center sm:justify-start px-6 mx-auto">
         <LogoComponent />
         <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">

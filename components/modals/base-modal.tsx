@@ -44,7 +44,7 @@ const BaseModal = ({
     <div
       id="default-modal"
       tabIndex={-1}
-      className="fixed top-0 left-0 right-0 z-[999999] flex justify-center items-center w-full h-full min-h-screen overflow-hidden bg-black bg-opacity-50"
+      className="fixed top-0 left-0 z-[999999] flex justify-center items-center w-full h-full overflow-hidden bg-black bg-opacity-50"
     >
       <div ref={modalRef} className="relative p-4 w-full max-w-2xl max-h-full">
         <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">

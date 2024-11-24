@@ -72,7 +72,7 @@ const MessengerPage: React.FC = () => {
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="container flex h-screen">
       <ChatList
         conversations={conversations}
         selectedChatId={selectedChatId}

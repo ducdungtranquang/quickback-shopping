@@ -58,7 +58,7 @@ export default function PolicyPgae() {
   };
 
   return (
-    <div>
+    <div className="container">
       <NavBar isAuthenticated={isAuthenticated} />
       <div className="bg-gray-100 dark:bg-gray-800 py-8 mt-[100px] px-4 h-full min-h-screen">
         <h2 className="mt-[20px] text-center">

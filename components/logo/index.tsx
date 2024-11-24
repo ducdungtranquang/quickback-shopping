@@ -5,9 +5,9 @@ export default function LogoComponent() {
   return (
     <Link
       href="/"
-      className="flex items-center mb-6 text-xl font-semibold text-gray-900 dark:text-white"
+      className="flex flex-col items-center mb-6 text-xl font-semibold text-gray-900 dark:text-white"
     >
-      <div className="rounded-full mb-2">
+      <div className="rounded-full mb-2 w-[250px] h-[250px]">
         <Image
           className="object-cover"
           src="/logo_img.png"

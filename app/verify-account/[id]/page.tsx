@@ -41,7 +41,7 @@ const App = () => {
   }
 
   return (
-    <div className="flex flex-col items-center p-5 gap-2 h-full min-h-screen max-w-[992px]">
+    <div className="container flex flex-col items-center p-5 gap-2 h-full min-h-screen max-w-[1024px]">
       <LogoComponent />
       <BasicButton
         text={loading ? "Loading..." : "Xác thực ngay"}

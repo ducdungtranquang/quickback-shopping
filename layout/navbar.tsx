@@ -56,7 +56,7 @@ export default function NavBar({ isAuthenticated }: IProps) {
 
   return (
     <div
-      style={{ maxWidth: "992px" }}
+      style={{ maxWidth: "1024px" }}
       className="bg-white dark:bg-gray-800 fixed z-[99999] top-0 w-full"
     >
       {/* Mobile menu */}
