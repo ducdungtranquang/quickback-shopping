@@ -52,7 +52,7 @@ export default function Home() {
     </div>,
   ];
   return (
-    <div>
+    <div className="container">
       <NavBar isAuthenticated={isAuthenticated} />
       <section className="py-6 px-4 bg-gray-100 h-full min-h-screen overflow-hidden overflow-y-scroll mt-[100px]">
         <div className="mt-[10px]">
