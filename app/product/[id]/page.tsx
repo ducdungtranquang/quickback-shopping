@@ -1,8 +1,12 @@
 "use client";
 import Spinner from "@/components/spinner/spinner";
+import { useCart } from "@/context/cartContext";
+import { useToast } from "@/context/toastContext";
 import useAuth from "@/hook/useAuth";
 import NavBar from "@/layout/navbar";
+import { CartItem } from "@/ultils/api/cart";
 import { getProductById, IProduct } from "@/ultils/api/product";
+import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -12,6 +16,26 @@ export default function ProductPage() {
   const [product, setProduct] = useState<IProduct>();
   const [loading, setLoading] = useState(false);
   const { id } = useParams();
+  const { addToast } = useToast();
+  const { addItem } = useCart();
+
+  const handleAddToCart = async () => {
+    const data: CartItem = {
+      productId: id as string,
+      price: product?.price as string,
+      productName: product?.name as string,
+      productLink: product?.link as string,
+      quantity: 1,
+      cashbackPercentage: Number(product?.commission),
+    };
+
+    try {
+      await addItem(data);
+      addToast("Sản phẩm đã được thêm vào giỏ hàng!", "success");
+    } catch (error) {
+      addToast("Thêm sản phẩm vào giỏ hàng thất bại.", "error");
+    }
+  };
 
   useEffect(() => {
     const fetchProductById = async () => {
@@ -44,12 +68,17 @@ export default function ProductPage() {
                   </div>
                   <div className="flex -mx-2 mb-4">
                     <div className="w-1/2 px-2">
-                      <button className="text-[16px] w-full bg-gray-900 dark:bg-gray-600 text-white py-2 px-4 rounded-full font-bold hover:bg-gray-800 dark:hover:bg-gray-700">
-                        Mua
-                      </button>
+                      <Link href={`${product?.link}`} target="blank">
+                        <button className="text-[16px] w-full bg-gray-900 dark:bg-gray-600 text-white py-2 px-4 rounded-full font-bold hover:bg-gray-800 dark:hover:bg-gray-700">
+                          Mua
+                        </button>
+                      </Link>
                     </div>
                     <div className="w-1/2 px-2">
-                      <button className="text-[16px] w-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white py-2 px-4 rounded-full font-bold hover:bg-gray-300 dark:hover:bg-gray-600">
+                      <button
+                        onClick={handleAddToCart}
+                        className="text-[16px] w-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white py-2 px-4 rounded-full font-bold hover:bg-gray-300 dark:hover:bg-gray-600"
+                      >
                         Lưu
                       </button>
                     </div>

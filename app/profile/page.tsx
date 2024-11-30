@@ -121,7 +121,7 @@ const App = () => {
           />
           <InfoCard
             message={"Hỗ trợ"}
-            link="/"
+            link="/support"
             icon={
               <svg
                 className="flex-shrink-0 inline w-4 h-4 me-3"
