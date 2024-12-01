@@ -1,12 +1,11 @@
 import React, { createContext, useState, useContext, ReactNode } from "react";
 import { CartItem, getCart, addToCart, editCart } from "@/ultils/api/cart";
 import Cookies from "js-cookie";
-import { useToast } from "./toastContext"; // Import the toastContext for notifications
 
 interface CartContextType {
   cart: CartItem[];
   total: number;
-  pag: number;
+  page: number;
   fetchCart: (page: number) => Promise<void>;
   addItem: (item: CartItem) => Promise<void>;
   updateItem: (productId: string, quantity: number) => Promise<void>;
@@ -17,7 +16,7 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [total, setTotal] = useState<number>(0);
-  const [pag, setPag] = useState<number>(1);
+  const [page, setPage] = useState<number>(1);
   const token = Cookies.get("authToken");
 
   const fetchCart = async (page: number) => {
@@ -29,7 +28,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       const response = await getCart(token, page);
       setCart(response.cartItems);
       setTotal(response.total);
-      setPag(response.pag);
+      setPage(response.pag);
     } catch (error) {
       console.error("Failed to fetch cart:", error);
     }
@@ -42,9 +41,9 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
     try {
       const response = await addToCart(item, token);
-      if (response.success) {
+      if (response) {
         setCart((prevCart) => [...prevCart, item]);
-        fetchCart(1);
+        await fetchCart(1);
       }
     } catch (error) {
       console.error("Failed to add item:", error);
@@ -72,7 +71,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <CartContext.Provider
-      value={{ cart, total, pag, fetchCart, addItem, updateItem }}
+      value={{ cart, total, page, fetchCart, addItem, updateItem }}
     >
       {children}
     </CartContext.Provider>

@@ -8,6 +8,7 @@ import NavBar from "@/layout/navbar";
 import { getProfile, IProfileResponse } from "@/ultils/api/profile";
 import { HTMLAttributes, useEffect, useState } from "react";
 import Cookies from "js-cookie";
+import Footer from "@/layout/footer";
 
 const UserDetailInfo = () => {
   const isAuthenticated = useAuth(true);
@@ -23,7 +24,7 @@ const UserDetailInfo = () => {
     password: "",
     currentPassword: "",
     bankAccount: "",
-    bankName:"",
+    bankName: "",
     coinsEarned: "",
     confirmPassword: "",
   });
@@ -128,7 +129,7 @@ const UserDetailInfo = () => {
                     type={name === "password" ? "password" : "text"}
                     label={label}
                     name={name}
-                    placeholder={formData[name]|| "Không có dữ liệu"}
+                    placeholder={formData[name] || "Không có dữ liệu"}
                     value={formData[name]}
                     onChange={handleInputChange}
                     disabled={!isEditing}
@@ -202,8 +203,7 @@ const UserDetailInfo = () => {
               <InputSection
                 label="Tổng số tiền"
                 value={formData.coinsEarned}
-                onChange={handleInputChange}
-                disabled={!isEditing}
+                disabled={true}
                 styleInput={styleInput}
                 placeholder={formData.coinsEarned || "0đ"}
               />
@@ -230,6 +230,7 @@ const UserDetailInfo = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

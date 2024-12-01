@@ -7,6 +7,7 @@ export interface CartItem {
   price: number | string;
   productLink: string;
   cashbackPercentage: number;
+  userId?: string;
 }
 
 export interface GetCartResponse {
@@ -21,7 +22,7 @@ export const getCart = async (
   signal?: AbortSignal
 ): Promise<GetCartResponse> => {
   return apiCall<GetCartResponse>(
-    `/api/cart?pag=${page}`,
+    `/api/cart?page=${page}`,
     "GET",
     undefined,
     token,

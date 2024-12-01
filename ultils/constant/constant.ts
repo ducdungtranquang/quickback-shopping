@@ -124,6 +124,7 @@ export const NAVIGATION_LIST = {
     { name: "Trang chủ", href: "/" },
     { name: "Về chúng tôi", href: "/our" },
     { name: "Hỗ trợ", href: "/support" },
+    { name: "Sản phẩm", href: "/product" },
   ],
 };
 

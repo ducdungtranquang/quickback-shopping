@@ -3,6 +3,7 @@ import Spinner from "@/components/spinner/spinner";
 import { useCart } from "@/context/cartContext";
 import { useToast } from "@/context/toastContext";
 import useAuth from "@/hook/useAuth";
+import Footer from "@/layout/footer";
 import NavBar from "@/layout/navbar";
 import { CartItem } from "@/ultils/api/cart";
 import { getProductById, IProduct } from "@/ultils/api/product";
@@ -143,6 +144,7 @@ export default function ProductPage() {
               </div>
             </div>
           </div>
+          <Footer />
         </div>
       )}
     </>

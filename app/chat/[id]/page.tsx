@@ -12,7 +12,7 @@ interface Message {
 }
 
 const ChatPage: React.FC = () => {
-  const currentUser = "Jane Smith"; // Tên người dùng hiện tại (giả định)
+  const currentUser = "Jane Smith";
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
@@ -56,7 +56,7 @@ const ChatPage: React.FC = () => {
   return (
     <div className="container flex flex-col h-screen">
       <div className="flex justify-between items-center p-4 bg-gray-200">
-        <div className="text-xl font-semibold">Messenger</div>
+        <div className="text-xl font-semibold">Tư vấn trực tiếp</div>
       </div>
 
       <div className="flex-grow p-4 overflow-y-auto">
@@ -68,13 +68,12 @@ const ChatPage: React.FC = () => {
               time={msg.time}
               message={msg.message}
               status={msg.status}
-              isCurrentUser={msg.name === currentUser} // Kiểm tra nếu là tin nhắn của người dùng hiện tại
+              isCurrentUser={msg.name === currentUser}
             />
           </div>
         ))}
       </div>
 
-      {/* Phần nhập tin nhắn */}
       <div className="flex items-center p-4 border-t border-gray-300">
         <input
           className="flex-grow p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -82,13 +81,13 @@ const ChatPage: React.FC = () => {
           placeholder="Type your message..."
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && handleSendMessage()} // Nhấn Enter để gửi tin nhắn
+          onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
         />
         <button
           className="ml-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300"
           onClick={handleSendMessage}
         >
-          Send
+          Gửi
         </button>
       </div>
     </div>

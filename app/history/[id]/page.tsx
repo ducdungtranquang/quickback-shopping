@@ -4,7 +4,9 @@
 import Spinner from "@/components/spinner/spinner";
 import DataTable from "@/components/table/table";
 import Tabs from "@/components/tabs/tabs";
+import useAuth from "@/hook/useAuth";
 import { useFetchDataForTab } from "@/hook/useFetchDataForTab";
+import Footer from "@/layout/footer";
 import NavBar from "@/layout/navbar";
 import { getCart } from "@/ultils/api/cart";
 import { getPurchase } from "@/ultils/api/purchase";
@@ -14,6 +16,7 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function HistoryPage() {
+  const { isAuthenticated } = useAuth(true);
   const token = Cookies.get("authToken");
   const searchParam = useSearchParams();
   const activeId = searchParam.get("activeId");
@@ -25,6 +28,7 @@ export default function HistoryPage() {
     error: cartError,
   } = useFetchDataForTab(
     activeTab === "cart" ? activeTab : "",
+    isAuthenticated,
     async (signal) => getCart(token!, 1, signal)
   );
 
@@ -32,8 +36,10 @@ export default function HistoryPage() {
     data: buyData,
     loading: buyLoading,
     error: buyError,
-  } = useFetchDataForTab(activeTab === "buy" ? activeTab : "", async (signal) =>
-    getPurchase(token!, 1, signal)
+  } = useFetchDataForTab(
+    activeTab === "buy" ? activeTab : "",
+    isAuthenticated,
+    async (signal) => getPurchase(token!, 1, signal)
   );
 
   const {
@@ -42,6 +48,7 @@ export default function HistoryPage() {
     error: withdrawError,
   } = useFetchDataForTab(
     activeTab === "withdraw" ? activeTab : "",
+    isAuthenticated,
     async (signal) => getWithdraw(token!, signal)
   );
 
@@ -136,7 +143,7 @@ export default function HistoryPage() {
 
   return (
     <div className="container">
-      <NavBar isAuthenticated={true} />
+      <NavBar isAuthenticated={isAuthenticated} />
       <div className="bg-gray-100 dark:bg-gray-800 py-8 mt-[100px] px-4 h-full min-h-screen">
         <h2 className="mt-[20px] text-center">Lịch sử</h2>
         <Tabs
@@ -146,6 +153,7 @@ export default function HistoryPage() {
           setActiveTab={setActiveTab}
         />
       </div>
+      <Footer />
     </div>
   );
 }

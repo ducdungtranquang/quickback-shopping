@@ -2,6 +2,7 @@
 import Accordion from "@/components/accordion/accordion";
 import InfoCard from "@/components/card/info-card";
 import useAuth from "@/hook/useAuth";
+import Footer from "@/layout/footer";
 import NavBar from "@/layout/navbar";
 
 export default function SupportPage() {
@@ -88,9 +89,13 @@ export default function SupportPage() {
           <h2 className="text-normal font-medium text-black sm:text-xl px-1 sm:text-center my-2">
             Tư vấn và hỗ trợ trực tiếp
           </h2>
-          <InfoCard message={"Thông tin cá nhân"} link="/profile/123" />
-          <InfoCard message={"Hỗ trợ"} link="/" />
+          <div className="flex flex-wrap gap-[10px]">
+            <InfoCard message={"Thông tin cá nhân"} link="/profile/123" />
+            <InfoCard message={"Liên hệ trực tiếp"} link="/" />
+          </div>
         </div>
+
+        <Footer />
       </div>
     </div>
   );

@@ -5,6 +5,7 @@ import GridGallery from "@/components/gallery/grid-gallery";
 import Hero from "@/components/hero/hero";
 import Slider from "@/components/slider/slider";
 import useAuth from "@/hook/useAuth";
+import Footer from "@/layout/footer";
 import NavBar from "@/layout/navbar";
 
 export default function Home() {
@@ -14,11 +15,7 @@ export default function Home() {
       className="bg-blue-500 h-[200px] sm:h-[400px] flex items-center justify-center text-white"
       key={0}
     >
-      <img
-        className="h-full object-fit w-full"
-        src="/home_banner.jpg"
-        alt=""
-      />
+      <img className="h-full object-fit w-full" src="/home_banner.jpg" alt="" />
     </div>,
     <div
       className="bg-green-500 h-[200px] sm:h-[400px] flex items-center justify-center text-white"
@@ -34,21 +31,13 @@ export default function Home() {
       className="bg-red-500 h-[200px] sm:h-[400px] flex items-center justify-center text-white"
       key={2}
     >
-      <img
-        className="h-full object-fit w-full"
-        src="/my_pham.jpg"
-        alt=""
-      />
+      <img className="h-full object-fit w-full" src="/my_pham.jpg" alt="" />
     </div>,
     <div
       className="bg-red-500 h-[200px] sm:h-[400px] flex items-center justify-center text-white"
       key={3}
     >
-      <img
-        className="h-full object-fit w-full"
-        src="/slider_4.jpg"
-        alt=""
-      />
+      <img className="h-full object-fit w-full" src="/slider_4.jpg" alt="" />
     </div>,
   ];
   return (
@@ -72,6 +61,8 @@ export default function Home() {
         </h2>
         <GridGallery />
       </section>
+
+      <Footer />
     </div>
   );
 }
