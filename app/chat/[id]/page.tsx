@@ -16,15 +16,23 @@ const ChatPage: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
-      avatarUrl: "/images/avatar1.jpg",
-      name: "John Doe",
+      avatarUrl: "/Sunflower_05.svg",
+      name: "Admin",
       time: "10:30 AM",
       message: "Hello! How are you?",
       status: "Delivered",
     },
     {
       id: 2,
-      avatarUrl: "/images/avatar2.jpg",
+      avatarUrl: "/Sunflower_05.svg",
+      name: "Admin",
+      time: "10:30 AM",
+      message: "How can I help you?",
+      status: "Delivered",
+    },
+    {
+      id: 3,
+      avatarUrl: "/Lotus_05.svg",
       name: "Jane Smith",
       time: "10:31 AM",
       message: "I am good, thank you! How about you?",
@@ -39,7 +47,7 @@ const ChatPage: React.FC = () => {
 
     const newMsg: Message = {
       id: messages.length + 1,
-      avatarUrl: "/images/avatar1.jpg",
+      avatarUrl: "/Lotus_05.svg",
       name: currentUser,
       time: new Date().toLocaleTimeString([], {
         hour: "2-digit",
@@ -63,7 +71,7 @@ const ChatPage: React.FC = () => {
         {messages.map((msg) => (
           <div key={msg.id} className="mb-4">
             <ChatBubble
-              avatarUrl={msg.avatarUrl}
+              avatarUrl={msg.avatarUrl || "/img_no_img.jpg"}
               name={msg.name}
               time={msg.time}
               message={msg.message}

@@ -5,12 +5,12 @@ import HelpCard from "@/components/card/help-card";
 import InfoCard from "@/components/card/info-card";
 import BaseModal from "@/components/modals/base-modal";
 import useAuth from "@/hook/useAuth";
-import NavBar from "@/layout/navbar";
+import NavBar from "@/layout/app/navbar";
 import { logout } from "@/ultils/func/api";
 import Cookies from "js-cookie";
 import { getProfile, IProfileResponse } from "@/ultils/api/profile";
 import Spinner from "@/components/spinner/spinner";
-import Footer from "@/layout/footer";
+import Footer from "@/layout/app/footer";
 
 const App = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

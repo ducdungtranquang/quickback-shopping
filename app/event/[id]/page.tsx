@@ -4,7 +4,7 @@ import CashbackCard from "@/components/card/cash-card";
 import HelpCard from "@/components/card/help-card";
 import Slider from "@/components/slider/slider";
 import useAuth from "@/hook/useAuth";
-import NavBar from "@/layout/navbar";
+import NavBar from "@/layout/app/navbar";
 import { getProfile, IProfileResponse } from "@/ultils/api/profile";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";

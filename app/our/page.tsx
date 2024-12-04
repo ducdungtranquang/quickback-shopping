@@ -1,5 +1,5 @@
 "use client";
-import NavBar from "@/layout/navbar";
+import NavBar from "@/layout/app/navbar";
 import useAuth from "@/hook/useAuth";
 import {
   blogPostsOur,
@@ -7,7 +7,7 @@ import {
   teamOur,
   valuesOur,
 } from "@/ultils/constant/constant";
-import Footer from "@/layout/footer";
+import Footer from "@/layout/app/footer";
 
 export default function LandingPage() {
   const { isAuthenticated } = useAuth(false);

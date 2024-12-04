@@ -4,11 +4,11 @@ import BasicButton from "@/components/button/basic-button";
 import InputSection from "@/components/input/input";
 import Spinner from "@/components/spinner/spinner";
 import useAuth from "@/hook/useAuth";
-import NavBar from "@/layout/navbar";
+import NavBar from "@/layout/app/navbar";
 import { getProfile, IProfileResponse } from "@/ultils/api/profile";
 import { HTMLAttributes, useEffect, useState } from "react";
 import Cookies from "js-cookie";
-import Footer from "@/layout/footer";
+import Footer from "@/layout/app/footer";
 
 const UserDetailInfo = () => {
   const isAuthenticated = useAuth(true);

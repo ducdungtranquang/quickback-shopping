@@ -5,8 +5,8 @@ import GridGallery from "@/components/gallery/grid-gallery";
 import Hero from "@/components/hero/hero";
 import Slider from "@/components/slider/slider";
 import useAuth from "@/hook/useAuth";
-import Footer from "@/layout/footer";
-import NavBar from "@/layout/navbar";
+import Footer from "@/layout/app/footer";
+import NavBar from "@/layout/app/navbar";
 
 export default function Home() {
   const { isAuthenticated } = useAuth(false);

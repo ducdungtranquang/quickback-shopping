@@ -3,9 +3,9 @@
 import React, { useEffect, useMemo, useState } from "react";
 import Spinner from "@/components/spinner/spinner";
 import useAuth from "@/hook/useAuth";
-import GardenLayout from "@/layout/garden";
-import LuckyWheelLayout from "@/layout/lucky-wheel";
-import NavBar from "@/layout/navbar";
+import GardenLayout from "@/layout/app/garden";
+import LuckyWheelLayout from "@/layout/app/lucky-wheel";
+import NavBar from "@/layout/app/navbar";
 import { useParams } from "next/navigation";
 import Cookies from "js-cookie";
 import { getProfile, IProfileResponse } from "@/ultils/api/profile";

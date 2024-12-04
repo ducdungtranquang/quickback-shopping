@@ -3,7 +3,7 @@ import ProductCard from "@/components/card/product-card";
 import ShopCard from "@/components/card/shop-card";
 import Slider from "@/components/slider/slider";
 import useAuth from "@/hook/useAuth";
-import NavBar from "@/layout/navbar";
+import NavBar from "@/layout/app/navbar";
 import { getShops, IShopArr, IShopQuery, IShops } from "@/ultils/api/shop";
 import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";

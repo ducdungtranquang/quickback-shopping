@@ -1,4 +1,4 @@
-import NavBar from "@/layout/navbar";
+import NavBar from "@/layout/app/navbar";
 import React from "react";
 
 interface CashbackCardProps {

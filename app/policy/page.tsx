@@ -3,7 +3,7 @@
 
 import Tabs from "@/components/tabs/tabs";
 import useAuth from "@/hook/useAuth";
-import NavBar from "@/layout/navbar";
+import NavBar from "@/layout/app/navbar";
 import { useEffect, useState } from "react";
 
 export default function PolicyPgae() {

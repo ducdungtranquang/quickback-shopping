@@ -2,8 +2,8 @@
 import Accordion from "@/components/accordion/accordion";
 import InfoCard from "@/components/card/info-card";
 import useAuth from "@/hook/useAuth";
-import Footer from "@/layout/footer";
-import NavBar from "@/layout/navbar";
+import Footer from "@/layout/app/footer";
+import NavBar from "@/layout/app/navbar";
 
 export default function SupportPage() {
   const { isAuthenticated } = useAuth(false);

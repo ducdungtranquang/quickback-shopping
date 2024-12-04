@@ -9,7 +9,7 @@ import React, {
 } from "react";
 import ProductCard from "@/components/card/product-card";
 import Slider from "@/components/slider/slider";
-import NavBar from "@/layout/navbar";
+import NavBar from "@/layout/app/navbar";
 import useAuth from "@/hook/useAuth";
 import AccesstradeWidget from "@/components/acesstrade/accesstradeWidget";
 import { getProduct, IProduct, IProductQuery } from "@/ultils/api/product";
