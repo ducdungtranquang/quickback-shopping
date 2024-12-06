@@ -49,7 +49,7 @@ const App = () => {
       }
     };
 
-    if (!!isAuthenticated) {
+    if (!!isAuthenticated && !profile) {
       fetchProfile();
     }
   }, [isAuthenticated]);
@@ -195,11 +195,11 @@ const App = () => {
           <p className="text-gray-500 dark:text-gray-400 bottom-0 pt-2 relative">
             Cảm ơn quý khách đã sử dụng dịch vụ
           </p>
+          <Footer />
         </div>
       ) : (
         <Spinner />
       )}
-      <Footer />
     </div>
   );
 };

@@ -5,15 +5,19 @@ import InputSection from "@/components/input/input";
 import Spinner from "@/components/spinner/spinner";
 import useAuth from "@/hook/useAuth";
 import NavBar from "@/layout/app/navbar";
-import { getProfile, IProfileResponse } from "@/ultils/api/profile";
+import {
+  editProfile,
+  getProfile,
+  IProfileResponse,
+} from "@/ultils/api/profile";
 import { HTMLAttributes, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import Footer from "@/layout/app/footer";
 
 const UserDetailInfo = () => {
+  const token = Cookies.get("authToken");
   const isAuthenticated = useAuth(true);
   const [isEditing, setIsEditing] = useState(false);
-  const [profile, setProfile] = useState<IProfileResponse | null>(null);
   const [formData, setFormData] = useState<any>({
     fullName: "",
     email: "",
@@ -33,6 +37,41 @@ const UserDetailInfo = () => {
     cursor: !isEditing ? "not-allowed" : "",
     background: isEditing ? "white" : "rgb(249 250 251)",
   } as HTMLAttributes<HTMLInputElement>;
+
+  const handleSave = async () => {
+    if (!isEditing) {
+      return;
+    }
+
+    if (!formData.password) {
+      try {
+        const updatedData = {
+          name: formData.fullName,
+          email: formData.email,
+          phoneNumber: formData.phone,
+          address: formData.address,
+          city: formData.city,
+          accountBank: formData.bankAccount,
+          bankName: formData.bankName,
+          password: formData.password || undefined,
+          currentPassword: formData.currentPassword || undefined,
+        };
+
+        const response = await editProfile(updatedData, token!);
+        if (response) {
+          setIsEditing(false);
+        } else {
+        }
+      } catch (error) {
+        console.error("Error saving profile:", error);
+      }
+    } else {
+      if (formData.password && formData.password !== formData.confirmPassword) {
+        alert("Mật khẩu và mật khẩu xác nhận không khớp!");
+        return;
+      }
+    }
+  };
 
   const handleInputChange = (e: {
     target: { name: string; value: string };
@@ -78,7 +117,7 @@ const UserDetailInfo = () => {
       }
     };
 
-    if (!!isAuthenticated) {
+    if (!!isAuthenticated && !formData.email) {
       fetchProfile();
     }
   }, []);
@@ -107,12 +146,22 @@ const UserDetailInfo = () => {
           <div className="w-full md:w-2/3 bg-white rounded-lg shadow p-4">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-semibold">Thông tin chi tiết</h3>
-              <button
-                onClick={() => setIsEditing(!isEditing)}
-                className="text-sm text-blue-600"
-              >
-                {isEditing ? "Save" : "Edit"}
-              </button>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setIsEditing(!isEditing)}
+                  className="text-sm text-blue-600"
+                >
+                  {isEditing ? "Bỏ" : "Sửa"}
+                </button>
+                <button
+                  onClick={handleSave}
+                  className={`text-sm text-green-600 ${
+                    isEditing ? "block" : "hidden"
+                  }`}
+                >
+                  Lưu
+                </button>
+              </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

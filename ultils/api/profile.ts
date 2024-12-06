@@ -37,7 +37,7 @@ export interface IProfileResponse {
   spinStartTime: string;
   spinToken: string;
   accountBank?: string;
-  bankName?:string;
+  bankName?: string;
   phoneNumber?: string;
   address?: string;
   city?: string;
@@ -49,12 +49,10 @@ export const getProfile = async (token: string): Promise<IProfileResponse> => {
 };
 
 export const editProfile = async (
-  name: string,
-  email: string,
+  data: any,
   token: string
 ): Promise<EditProfileResponse> => {
-  const data = { name, email };
-  return apiCall<EditProfileResponse>("/api/profile", "PUT", data, token);
+  return apiCall<EditProfileResponse>("/api/user/profile", "PUT", data, token);
 };
 
 interface ChangePasswordResponse {
