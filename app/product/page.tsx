@@ -42,7 +42,7 @@ export default function ProductListPage() {
     };
 
     const data = await getProduct(query);
-    if (data.data.length === 0) {
+    if (data.data.length < 20) {
       setHasMore(false);
     } else {
       setProducts((prev) => [...prev, ...data.data]);
@@ -91,14 +91,6 @@ export default function ProductListPage() {
       "",
       `${window.location.pathname}?${params.toString()}`
     );
-  };
-
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const searchTerm = event.target.value;
-    updateURLParams("search", searchTerm);
-    setPage(1);
-    setProducts([]);
-    fetchMoreProducts();
   };
 
   const handleSortChange = (sortOption: string) => {
@@ -204,17 +196,24 @@ export default function ProductListPage() {
           </div>
 
           <div className="flex flex-wrap justify-around sm:justify-left gap-2 sm:gap-4 mt-2">
-            {products.map((item, i) => (
-              <ProductCard
-                key={i}
-                cost={item.price}
-                name={item.name}
-                shop={item.shop}
-                link={item.link}
-                src={item.img || "/img_no_img.jpg"}
-                commission={item.commission}
-              />
-            ))}
+            {products ? (
+              products?.map((item, i) => (
+                <ProductCard
+                  key={i}
+                  cost={item.price}
+                  name={item.name}
+                  shop={item.shop}
+                  link={item.link}
+                  src={item.img || "/img_no_img.jpg"}
+                  commission={item.commission}
+                />
+              ))
+            ) : (
+              <div className="flex justify-center items-center flex-col mt-4">
+                <Spinner />
+                <p className="p-4">Đang tải sản phẩm...</p>
+              </div>
+            )}
           </div>
 
           {loading && (

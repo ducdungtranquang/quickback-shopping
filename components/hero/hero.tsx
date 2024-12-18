@@ -1,5 +1,6 @@
 import { useRouter } from "next/navigation";
 import BasicButton from "../button/basic-button";
+import Link from "next/link";
 
 export default function Hero() {
   const router = useRouter();
@@ -48,13 +49,12 @@ export default function Hero() {
           </label>
           <div className="relative">
             <div className="inset-y-0 rtl:inset-x-0 flex items-center ps-3.5">
-              <BasicButton
-                text="Tham gia ngay"
-                variant="basic"
-                onClick={() => {
-                  router.push("/product");
-                }}
-              />
+              <Link href={"/product"} className="w-full">
+                <BasicButton
+                  text="Tham gia ngay"
+                  variant="basic"
+                />
+              </Link>
             </div>
           </div>
         </form>
