@@ -42,6 +42,7 @@ export interface IProfileResponse {
   address?: string;
   city?: string;
   inviteCode?: string[];
+  image?: string;
 }
 
 export const getProfile = async (token: string): Promise<IProfileResponse> => {
@@ -66,7 +67,7 @@ export const changePassword = async (
 ): Promise<ChangePasswordResponse> => {
   const data = { oldPassword, newPassword };
   return apiCall<ChangePasswordResponse>(
-    "/api/change-password",
+    "/api/user/change-password",
     "PUT",
     data,
     token

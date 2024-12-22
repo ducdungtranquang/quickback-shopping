@@ -5,19 +5,24 @@ import InputSection from "@/components/input/input";
 import Spinner from "@/components/spinner/spinner";
 import useAuth from "@/hook/useAuth";
 import NavBar from "@/layout/app/navbar";
-import {
-  editProfile,
-  getProfile,
-  IProfileResponse,
-} from "@/ultils/api/profile";
+import { changePassword, editProfile, getProfile } from "@/ultils/api/profile";
 import { HTMLAttributes, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import Footer from "@/layout/app/footer";
+import { avaList } from "@/ultils/constant/constant";
+import BaseModal from "@/components/modals/base-modal";
+import { useToast } from "@/context/toastContext";
+import Link from "next/link";
 
 const UserDetailInfo = () => {
   const token = Cookies.get("authToken");
+  const { addToast } = useToast();
   const isAuthenticated = useAuth(true);
   const [isEditing, setIsEditing] = useState(false);
+  const [money, setMoney] = useState(50000);
+  const [error, setError] = useState(false);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isOpenModalWithDraw, setIsOpenModalWithDraw] = useState(false);
   const [formData, setFormData] = useState<any>({
     fullName: "",
     email: "",
@@ -30,6 +35,7 @@ const UserDetailInfo = () => {
     bankAccount: "",
     bankName: "",
     coinsEarned: "",
+    image: "",
     confirmPassword: "",
   });
 
@@ -43,32 +49,65 @@ const UserDetailInfo = () => {
       return;
     }
 
-    if (!formData.password) {
-      try {
-        const updatedData = {
-          name: formData.fullName,
-          email: formData.email,
-          phoneNumber: formData.phone,
-          address: formData.address,
-          city: formData.city,
-          accountBank: formData.bankAccount,
-          bankName: formData.bankName,
-          password: formData.password || undefined,
-          currentPassword: formData.currentPassword || undefined,
-        };
+    try {
+      const updatedData = {
+        name: formData.fullName,
+        email: formData.email,
+        phoneNumber: formData.phone,
+        address: formData.address,
+        city: formData.city,
+        accountBank: formData.bankAccount,
+        bankName: formData.bankName,
+        password: formData.password || "",
+        currentPassword: formData.currentPassword || "",
+        image: formData.image || "",
+      };
 
-        const response = await editProfile(updatedData, token!);
-        if (response) {
-          setIsEditing(false);
-        } else {
-        }
-      } catch (error) {
-        console.error("Error saving profile:", error);
+      const response = await editProfile(updatedData, token!);
+      if (response) {
+        setIsEditing(false);
+        addToast("Cập nhật thông tin thành công!", "success");
+      } else {
+        addToast("Cập nhật thông tin thất bại!", "error");
       }
+    } catch (error) {
+      console.error("Error saving profile:", error);
+    }
+
+    if (formData.password && formData.confirmPassword) {
+      if (
+        formData.password?.toString() === formData.confirmPassword?.toString()
+      ) {
+        const res = await changePassword(
+          formData.password,
+          formData.currentPassword,
+          token!
+        );
+        if (res.success) {
+          addToast("Đổi mật khẩu thành công!", "success");
+        } else {
+          addToast("Đổi mật khẩu thất bại!", "error");
+        }
+      } else {
+        addToast("Mật khẩu và mật khẩu xác nhận không khớp!", "error");
+      }
+    }
+  };
+
+  const handleWithdraw = () => {
+    if (
+      !formData.bankAccount ||
+      !formData.bankName ||
+      Number(formData.coinsEarned) < 50000
+    ) {
+      setIsOpenModalWithDraw(false);
     } else {
-      if (formData.password && formData.password !== formData.confirmPassword) {
-        alert("Mật khẩu và mật khẩu xác nhận không khớp!");
-        return;
+      if (money >= 50000) {
+        alert("Thành công");
+        setIsOpenModalWithDraw(false);
+        setError(false);
+      } else {
+        setError(true);
       }
     }
   };
@@ -81,6 +120,14 @@ const UserDetailInfo = () => {
       ...formData,
       [name]: value,
     });
+  };
+
+  const handleAvatarChange = (newAvatarUrl: string) => {
+    setFormData({
+      ...formData,
+      image: newAvatarUrl,
+    });
+    setIsPopupOpen(false);
   };
 
   if (isAuthenticated === null) {
@@ -110,6 +157,8 @@ const UserDetailInfo = () => {
             bankName: profileData.bankName || "",
             coinsEarned: profileData.money.toString() || "0",
             confirmPassword: "",
+            image: profileData.image || "",
+            id: profileData._id,
           });
         } catch (error) {
           console.error("Error fetching profile:", error);
@@ -133,13 +182,17 @@ const UserDetailInfo = () => {
               <div className="flex flex-col items-center">
                 <img
                   className="w-24 h-24 rounded-full"
-                  src="https://via.placeholder.com/100"
+                  src={formData["image"] || "https://via.placeholder.com/100"}
                   alt="User Avatar"
                 />
                 <h2 className="mt-4 text-xl font-semibold">
                   {formData.fullName}
                 </h2>
-                <BasicButton text="Cập nhật ảnh" variant="basic" />
+                <BasicButton
+                  text="Cập nhật ảnh"
+                  variant="basic"
+                  onClick={() => setIsPopupOpen(true)}
+                />
               </div>
             </div>
 
@@ -192,7 +245,7 @@ const UserDetailInfo = () => {
                     <InputSection
                       type={"password"}
                       label={"Nhập mật khẩu hiện tại"}
-                      name={"confirm psw"}
+                      name={"currentPassword"}
                       placeholder={"*****"}
                       value={formData.currentPassword}
                       onChange={handleInputChange}
@@ -201,7 +254,7 @@ const UserDetailInfo = () => {
                     <InputSection
                       type={"password"}
                       label={"Mật khẩu mới"}
-                      name={"confirm psw"}
+                      name={"password"}
                       placeholder={"*****"}
                       value={formData.password}
                       onChange={handleInputChange}
@@ -210,7 +263,7 @@ const UserDetailInfo = () => {
                     <InputSection
                       type={"password"}
                       label={"Nhập lại mật khẩu"}
-                      name={"confirm psw"}
+                      name={"confirmPassword"}
                       placeholder={"*****"}
                       value={formData.confirmPassword}
                       onChange={handleInputChange}
@@ -232,6 +285,7 @@ const UserDetailInfo = () => {
                 <InputSection
                   label="Số tài khoản"
                   value={formData.bankAccount}
+                  name="bankAccount"
                   onChange={handleInputChange}
                   disabled={!isEditing}
                   styleInput={styleInput}
@@ -242,6 +296,7 @@ const UserDetailInfo = () => {
                 <InputSection
                   label="Ngân hàng"
                   value={formData.bankName}
+                  name="bankName"
                   onChange={handleInputChange}
                   disabled={!isEditing}
                   styleInput={styleInput}
@@ -260,25 +315,89 @@ const UserDetailInfo = () => {
               </div>
 
               <div className="md:col-span-2 flex justify-end">
-                <BasicButton
-                  text="Lịch sử"
-                  styles={
-                    {
-                      maxWidth: "175px",
-                      marginRight: "10px",
-                    } as HTMLAttributes<HTMLButtonElement>
-                  }
-                />
+                <Link
+                  className="max-w-[175px] mr-2.5"
+                  href={`/history/${formData.id}?activeId=withdraw`}
+                >
+                  <BasicButton text="Lịch sử" />
+                </Link>
                 <BasicButton
                   text="Rút"
                   variant="success"
                   styles={
                     { maxWidth: "175px" } as HTMLAttributes<HTMLButtonElement>
                   }
+                  onClick={() => setIsOpenModalWithDraw(true)}
                 />
               </div>
             </div>
           </div>
+
+          {isPopupOpen && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[99999]">
+              <div className="bg-white p-6 rounded-lg shadow-lg">
+                <h2 className="text-lg font-semibold mb-4">Chọn ảnh mới</h2>
+                <div className="grid grid-cols-3 gap-4">
+                  {avaList.map((url) => (
+                    <img
+                      key={url}
+                      src={url}
+                      alt="Avatar Option"
+                      className="w-24 h-24 rounded-full cursor-pointer border hover:border-blue-500"
+                      onClick={() => handleAvatarChange(url)}
+                    />
+                  ))}
+                </div>
+                <button
+                  className="mt-4 bg-red-500 text-white px-4 py-2 rounded"
+                  onClick={() => setIsPopupOpen(false)}
+                >
+                  Đóng
+                </button>
+              </div>
+            </div>
+          )}
+
+          {isOpenModalWithDraw && (
+            <BaseModal
+              isOpen={isOpenModalWithDraw}
+              onClose={() => setIsOpenModalWithDraw(false)}
+              title={
+                !formData.bankAccount ||
+                !formData.bankName ||
+                Number(formData.coinsEarned) < 50000
+                  ? "Thất bại"
+                  : "Xác nhận rút tiền"
+              }
+              onConfirm={handleWithdraw}
+            >
+              <div>
+                {!formData.bankAccount ||
+                !formData.bankName ||
+                Number(formData.coinsEarned) < 50000 ? (
+                  <p>Bạn không đủ điều kiện hoặc thiếu thông tin rút tiền</p>
+                ) : (
+                  <div>
+                    <InputSection
+                      label="Số tiền rút"
+                      value={money.toString()}
+                      onChange={(el) => {
+                        setMoney(Number(el?.target.value));
+                      }}
+                      placeholder={money.toString() || "50000"}
+                    />
+
+                    {error && (
+                      <p className="mt-4 text-center text-red-500">
+                        Số tiền tối thiểu phải là 50000Đ và không được lớn hơn
+                        số tiền trong ví
+                      </p>
+                    )}
+                  </div>
+                )}
+              </div>
+            </BaseModal>
+          )}
         </div>
       ) : (
         <Spinner />

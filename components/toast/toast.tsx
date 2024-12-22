@@ -40,7 +40,7 @@ export default function Toast(props: IToast) {
 
   return (
     <div
-      className={`min-w-[240px] fixed z-[999999] bottom-4 right-4 flex items-center p-4 mb-4 rounded-lg shadow ${
+      className={`min-w-[240px] flex items-center p-4 mb-4 rounded-lg shadow ${
         isExiting ? "toast-exit" : "toast-enter"
       } ${getTypeStyles()}`}
       role="alert"

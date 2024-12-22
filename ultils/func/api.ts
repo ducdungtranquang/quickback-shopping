@@ -8,7 +8,7 @@ export async function apiCall<T>(
   data?: any,
   token?: string,
   signal?: AbortSignal
-): Promise<T | undefined> {
+): Promise<T | any> {
   const headers: HeadersInit = {
     "Content-Type": "application/json",
   };

@@ -17,8 +17,7 @@ export const NAVIGATION_LIST = {
           name: "Giá tốt nhất",
           href: "/product?sort=price-asc",
           imageSrc: "trainer.jpg",
-          imageAlt:
-            "Giá.",
+          imageAlt: "Giá.",
         },
       ],
       sections: [
@@ -73,8 +72,7 @@ export const NAVIGATION_LIST = {
           name: "Giá tốt nhất",
           href: "/product?sort=price-asc",
           imageSrc: "bag.jpg",
-          imageAlt:
-            "Giá tốt",
+          imageAlt: "Giá tốt",
         },
       ],
       sections: [
@@ -210,6 +208,7 @@ export const teamOur = [
       "https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80",
   },
 ];
+
 export const blogPostsOur = [
   {
     id: 1,
@@ -227,4 +226,18 @@ export const blogPostsOur = [
         "https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
     },
   },
+];
+
+export const avaList = [
+  "/ava2.svg",
+  "/ava3.svg",
+  "/ava4.svg",
+  "/ava5.svg",
+  "/ava6.svg",
+  "/ava7.svg",
+  "/ava8.svg",
+  "/ava9.svg",
+  "/ava10.svg",
+  "/ava11.svg",
+  "/ava12.svg",
 ];

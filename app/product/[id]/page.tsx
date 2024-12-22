@@ -51,8 +51,11 @@ export default function ProductPage() {
 
   return (
     <>
-      {loading ? (
-        <Spinner />
+      {loading || !product ? (
+        <div>
+          <Spinner />
+          <p className="text-center">Đang tải, chờ xíu nhé ...</p>
+        </div>
       ) : (
         <div className="container">
           <NavBar isAuthenticated={isAuthenticated} />
@@ -63,7 +66,7 @@ export default function ProductPage() {
                   <div className="md:h-[360px] h-[300px] rounded-lg bg-gray-300 dark:bg-gray-700 mb-4">
                     <img
                       className="w-full h-full object-cover"
-                      src={product?.img}
+                      src={product?.img || "/img_no_img.jpg"}
                       alt="Product Image"
                     />
                   </div>
@@ -80,7 +83,7 @@ export default function ProductPage() {
                         onClick={handleAddToCart}
                         className="text-[16px] w-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white py-2 px-4 rounded-full font-bold hover:bg-gray-300 dark:hover:bg-gray-600"
                       >
-                        Lưu
+                        Thêm giỏ hàng
                       </button>
                     </div>
                   </div>
@@ -130,14 +133,20 @@ export default function ProductPage() {
                       Lưu ý:
                     </span>
                     <p className="text-gray-600 dark:text-gray-300 text-sm mt-2">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                      Sed sed ante justo. Integer euismod libero id mauris
-                      malesuada tincidunt. Vivamus commodo nulla ut lorem
-                      rhoncus aliquet. Duis dapibus augue vel ipsum pretium, et
-                      venenatis sem blandit. Quisque ut erat vitae nisi ultrices
-                      placerat non eget velit. Integer ornare mi sed ipsum
-                      lacinia, non sagittis mauris blandit. Morbi fermentum
-                      libero vel nisl suscipit, nec tincidunt mi consectetur.
+                      Các đơn vị bị hủy/đổi trả/hoàn đơn hoặc đặt tại Shopee
+                      Livestream/Video hoặc thêm sản phẩm từ Livestream/Video sẽ
+                      không được hoàn tiền
+                    </p>
+                    <p className="text-gray-600 dark:text-gray-300 text-sm mt-2">
+                      Giao dịch sử dụng thẻ quà tặng hoặc Giftcard trừ trường
+                      hợp có quy định được nêu trước đó.
+                    </p>
+                    <p className="text-gray-600 dark:text-gray-300 text-sm mt-2">
+                      Dán link cửa hàng (shop) không được áp dụng hoàn tiền ưu
+                      đãi
+                    </p>
+                    <p className="text-gray-600 dark:text-gray-300 text-sm mt-2">
+                      Tiền sẽ về ví bạn từ 5-7 ngày sau khi hoàn tất đơn hàng
                     </p>
                   </div>
                 </div>

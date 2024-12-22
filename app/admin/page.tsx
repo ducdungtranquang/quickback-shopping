@@ -29,7 +29,7 @@ import {
 } from "@heroicons/react/20/solid";
 import { viewAdmin } from "@/ultils/func/admin";
 
-const navigation = [
+const navigationList = [
   {
     name: "Dashboard",
     href: "#",
@@ -101,10 +101,16 @@ function classNames(...classes: string[]) {
 export default function Admin() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [typeAdmin, setTypeAdmin] = useState("dashboard");
+  const [navigation, setNavigation] = useState(navigationList);
 
   const handleClickNav = (type: string) => {
-    console.log(type);
     setTypeAdmin(type);
+    const updatedNavigation = navigation.map((item) => ({
+      ...item,
+      current: item.type === type,
+    }));
+
+    setNavigation(updatedNavigation);
   };
 
   return (
