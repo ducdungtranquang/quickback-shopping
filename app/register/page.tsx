@@ -133,12 +133,12 @@ const RegisterPage = () => {
                     className="font-light text-gray-500 dark:text-gray-300"
                   >
                     Tôi đồng ý{" "}
-                    <a
+                    <Link
                       className="font-medium text-primary-600 hover:underline dark:text-primary-500"
-                      href="#"
+                      href="/policy"
                     >
                       Chính sách và Điều kiện
-                    </a>
+                    </Link>
                   </label>
                 </div>
               </div>
@@ -154,11 +154,11 @@ const RegisterPage = () => {
                 variant="basic"
                 onClick={handleGoogleLoginSuccess}
               />
-              <BasicButton
+              {/* <BasicButton
                 text="Đăng nhập bằng Telegram"
                 type="submit"
                 variant="plain"
-              />
+              /> */}
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Đã có tài khoản?{" "}
                 <Link

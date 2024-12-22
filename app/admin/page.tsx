@@ -86,7 +86,7 @@ const teams = [
   {
     id: 3,
     name: "Hướng dẫn",
-    href: "#",
+    href: "/policy",
     initial: "H",
     current: false,
     type: "",

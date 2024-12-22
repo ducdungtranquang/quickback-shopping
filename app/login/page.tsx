@@ -189,12 +189,11 @@ const LoginPage = () => {
                 onClick={handleGoogleLoginSuccess}
               />
 
-              <BasicButton
+              {/* <BasicButton
                 text="Đăng nhập bằng Telegram"
                 type="button"
                 variant="plain"
-                // Thêm logic đăng nhập Telegram sau nếu cần
-              />
+              /> */}
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Chưa có tài khoản?{" "}
                 <Link
