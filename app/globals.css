@@ -26,9 +26,13 @@
 
 body {
   overflow-x: hidden;
-  color: rgb(var(--foreground-rgb));
+  color: #374151;
   margin: auto;
   display: block;
+}
+
+a {
+  color: #374151;
 }
 
 ::-webkit-scrollbar {

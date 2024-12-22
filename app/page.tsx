@@ -1,5 +1,6 @@
 "use client";
 
+import BasicButton from "@/components/button/basic-button";
 import Gallery from "@/components/gallery/gallery";
 import GridGallery from "@/components/gallery/grid-gallery";
 import Hero from "@/components/hero/hero";
@@ -7,6 +8,7 @@ import Slider from "@/components/slider/slider";
 import useAuth from "@/hook/useAuth";
 import Footer from "@/layout/app/footer";
 import NavBar from "@/layout/app/navbar";
+import Link from "next/link";
 
 export default function Home() {
   const { isAuthenticated } = useAuth(false);
@@ -55,11 +57,17 @@ export default function Home() {
           Thương hiệu nổi bật
         </h2>
         <Gallery />
+        <Link href={"/shop"} className="pt-4 block max-w-[400px] mx-auto">
+          <BasicButton text="Xem thêm" variant="basic"/>
+        </Link>
 
         <h2 className="text-xl font-bold text-black sm:text-xl md:text-2xl mt-[20px] md:mt-[40px] text-center py-4">
           Sản phẩm nổi bật
         </h2>
         <GridGallery />
+        <Link href={"/shop"} className="pt-4 block max-w-[400px] mx-auto">
+          <BasicButton text="Xem thêm" variant="basic" />
+        </Link>
       </section>
 
       <Footer />

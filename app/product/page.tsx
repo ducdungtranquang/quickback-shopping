@@ -42,10 +42,10 @@ export default function ProductListPage() {
     };
 
     const data = await getProduct(query);
-    if (data.data.length < 20) {
+    if ( !data?.data || data?.data?.length < 20) {
       setHasMore(false);
     } else {
-      setProducts((prev) => [...prev, ...data.data]);
+      setProducts((prev) => [...prev, ...(data?.data || [])]);
       setPage((prevPage) => prevPage + 1);
     }
     setLoading(false);
@@ -196,7 +196,7 @@ export default function ProductListPage() {
           </div>
 
           <div className="flex flex-wrap justify-around sm:justify-left gap-2 sm:gap-4 mt-2">
-            {products ? (
+            {products && products?.length ? (
               products?.map((item, i) => (
                 <ProductCard
                   key={i}
@@ -210,8 +210,7 @@ export default function ProductListPage() {
               ))
             ) : (
               <div className="flex justify-center items-center flex-col mt-4">
-                <Spinner />
-                <p className="p-4">Đang tải sản phẩm...</p>
+                <p className="p-2 text-black">Không tìm thấy sản phẩm</p>
               </div>
             )}
           </div>
@@ -219,7 +218,7 @@ export default function ProductListPage() {
           {loading && (
             <div className="flex justify-center items-center flex-col mt-4">
               <Spinner />
-              <p className="p-4">Đang tải sản phẩm...</p>
+              <p className="p-2 text-black">Đang tải sản phẩm...</p>
             </div>
           )}
 

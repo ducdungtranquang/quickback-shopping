@@ -11,7 +11,7 @@ export default function SupportPage() {
   const accordionItems = [
     {
       id: "1",
-      title: "What is Flowbite?",
+      title: "Điều kiện hoàn tiền là gì?",
       content: (
         <div>
           <p className="mb-2 text-gray-500 dark:text-gray-400">
@@ -35,7 +35,7 @@ export default function SupportPage() {
     },
     {
       id: "2",
-      title: "Is there a Figma file available?",
+      title: "Tại sao tôi không rút được tiền dù đạt yêu cầu",
       content: (
         <div>
           <p className="mb-2 text-gray-500 dark:text-gray-400">
@@ -59,7 +59,7 @@ export default function SupportPage() {
     },
     {
       id: "3",
-      title: "What are the differences between Flowbite and Tailwind UI?",
+      title: "Thời gian nhận tiền là bao lâu?",
       content: (
         <div>
           <p className="mb-2 text-gray-500 dark:text-gray-400">

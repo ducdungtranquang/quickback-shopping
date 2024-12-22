@@ -2,6 +2,7 @@
 import ProductCard from "@/components/card/product-card";
 import ShopCard from "@/components/card/shop-card";
 import Slider from "@/components/slider/slider";
+import Spinner from "@/components/spinner/spinner";
 import useAuth from "@/hook/useAuth";
 import NavBar from "@/layout/app/navbar";
 import { getShops, IShopArr, IShopQuery, IShops } from "@/ultils/api/shop";
@@ -29,7 +30,7 @@ export default function ShopPage() {
     };
 
     const data = await getShops(query);
-    if (data.shops.length === 0) {
+    if (!data?.shops || data?.shops?.length < 20) {
       setHasMore(false);
     } else {
       setShop((prev) => [...prev, ...data.shops]);
@@ -85,19 +86,33 @@ export default function ShopPage() {
       className="bg-blue-500 h-[200px] sm:h-[400px] flex items-center justify-center text-white"
       key={0}
     >
-      Slide 1
+      <img
+        className="h-full object-cover w-full"
+        src="/home_banner.jpg"
+        alt=""
+      />
     </div>,
     <div
       className="bg-green-500 h-[200px] sm:h-[400px] flex items-center justify-center text-white"
       key={1}
     >
-      Slide 2
+      <img className="h-full object-cover w-full" src="/giay_dep.jpg" alt="" />
     </div>,
     <div
       className="bg-red-500 h-[200px] sm:h-[400px] flex items-center justify-center text-white"
       key={2}
     >
-      Slide 3
+      <img className="h-full object-cover w-full" src="/my_pham.jpg" alt="" />
+    </div>,
+    <div
+      className="bg-red-500 h-[200px] sm:h-[400px] flex items-center justify-center text-white"
+      key={3}
+    >
+      <img
+        className="h-full object-cover w-full"
+        src="/home_banner1.jpg"
+        alt=""
+      />
     </div>,
   ];
 
@@ -107,29 +122,6 @@ export default function ShopPage() {
       <section className="py-6 px-4 bg-gray-100 h-full min-h-screen overflow-hidden overflow-y-scroll mt-[100px]">
         <div className="mx-auto mt[20px]">
           <Slider slides={slides} loop={true} autoPlay={true} />
-        </div>
-
-        {/* Header */}
-        <div className="mx-auto px-2 max-w-7xl mt-[50px]">
-          <div className="flex flex-col sm:flex-row justify-between items-center mb-4 space-y-2 sm:space-y-0">
-            <h2 className="text-xl font-bold text-black sm:text-xl md:text-2xl">
-              Cửa hàng
-            </h2>
-            <div className="flex overflow-x-auto custom-scrollbar pb-[5px]">
-              <button className="flex-shrink-0 py-2 px-4 bg-red-500 text-white rounded">
-                Phổ biến
-              </button>
-              <button className="flex-shrink-0 py-2 px-4 bg-gray-200 text-black rounded">
-                Mới nhất
-              </button>
-              <button className="flex-shrink-0 py-2 px-4 bg-gray-200 text-black rounded">
-                Bán chạy
-              </button>
-              <button className="flex-shrink-0 py-2 px-4 bg-gray-200 text-black rounded">
-                Giá
-              </button>
-            </div>
-          </div>
         </div>
 
         <div>
@@ -171,15 +163,22 @@ export default function ShopPage() {
 
         {/* Shop Grid */}
         <div className="flex flex-wrap justify-around sm:justify-left gap-2 sm:gap-4">
-          {shop?.map((item, i) => (
-            <ShopCard
-              key={i}
-              name={item.shop}
-              src={item.firstProductImg}
-              commission={item.firstProductCommission}
-              link={`/product?shopName=${item.shop}`}
-            />
-          ))}
+          {!loading && shop?.length ? (
+            shop?.map((item, i) => (
+              <ShopCard
+                key={i}
+                name={item.shop}
+                src={item.firstProductImg}
+                commission={item.firstProductCommission}
+                link={`/product?shopName=${item.shop}`}
+              />
+            ))
+          ) : (
+            <div className="mx-auto">
+              <Spinner />
+              <p className="text-center">Đang tải ...</p>
+            </div>
+          )}
         </div>
       </section>
     </div>
