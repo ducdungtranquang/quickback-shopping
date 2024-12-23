@@ -62,6 +62,6 @@ export const getProductById = async (
 export const getCount = async (
   token: string,
   signal?: AbortSignal
-): Promise<IProduct> => {
-  return apiCall<IProduct>(`/api/admin-product`, "GET", token);
+): Promise<any> => {
+  return apiCall<any>(`/api/product/admin-product`, "GET", undefined, token);
 };

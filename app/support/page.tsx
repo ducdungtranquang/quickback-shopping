@@ -90,7 +90,7 @@ export default function SupportPage() {
             Tư vấn và hỗ trợ trực tiếp
           </h2>
           <div className="flex flex-wrap gap-[10px]">
-            <InfoCard message={"Thông tin cá nhân"} link="/profile/123" />
+            <InfoCard message={"Thông tin cá nhân"} link="/profile" />
             <InfoCard message={"Liên hệ trực tiếp"} link="/" />
           </div>
         </div>

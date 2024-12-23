@@ -60,6 +60,20 @@ const AutoCompleteSearch = (props: IAutoComplete) => {
     props.onChange?.(event);
   };
 
+  const handleClickCate = (val: string) => {
+    const currentUrl = new URL(window.location.href);
+    const isOnProductPage = currentUrl.pathname === "/product";
+
+    const params = new URLSearchParams(currentUrl.search);
+    params.set("sheetName", val.trim());
+
+    if (isOnProductPage) {
+      router.replace(`/product?${params.toString()}`);
+    } else {
+      router.push(`/product?${params.toString()}`);
+    }
+  };
+
   useEffect(() => {
     document.addEventListener("click", handleClickOutside);
     return () => {
@@ -107,7 +121,13 @@ const AutoCompleteSearch = (props: IAutoComplete) => {
                   aria-labelledby="dropdown-button"
                 >
                   {props.categories?.map((item, i) => (
-                    <li className="cursor-pointer underline" key={i}>
+                    <li
+                      className="cursor-pointer underline"
+                      key={i}
+                      onClick={() => {
+                        handleClickCate(item);
+                      }}
+                    >
                       <div className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                         {item}
                       </div>

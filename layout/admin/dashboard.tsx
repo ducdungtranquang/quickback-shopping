@@ -1,31 +1,57 @@
+import { getCount } from "@/ultils/api/product";
+import Cookies from "js-cookie";
 import {
   CursorArrowRaysIcon,
   EnvelopeOpenIcon,
   UsersIcon,
 } from "@heroicons/react/24/outline";
-
-const stats = [
-  {
-    id: 1,
-    name: "Tổng số người dùng",
-    stat: "71,897",
-    icon: UsersIcon,
-  },
-  {
-    id: 2,
-    name: "Cửa hàng",
-    stat: "100",
-    icon: EnvelopeOpenIcon,
-  },
-  {
-    id: 3,
-    name: "Số sản phẩm",
-    stat: "240",
-    icon: CursorArrowRaysIcon,
-  },
-];
+import { useEffect, useState } from "react";
 
 export default function Dashboard() {
+  const [stats, setStats] = useState([
+    {
+      id: 1,
+      name: "Tổng số người dùng",
+      stat: "10",
+      icon: UsersIcon,
+    },
+    {
+      id: 2,
+      name: "Cửa hàng",
+      stat: "25",
+      icon: EnvelopeOpenIcon,
+    },
+    {
+      id: 3,
+      name: "Số sản phẩm",
+      stat: "255",
+      icon: CursorArrowRaysIcon,
+    },
+  ]);
+
+  const token = Cookies.get("authToken");
+
+  const fetchData = async () => {
+    try {
+      const data = await getCount(token!);
+      setStats((prevStats) =>
+        prevStats.map((item) =>
+          item.id === 3
+            ? { ...item, stat: data?.productCount || "255" }
+            : item.id === 2
+            ? { ...item, stat: data?.shopCount || "25" }
+            : { ...item, stat: data?.userCount || "10" }
+        )
+      );
+    } catch (error) {
+      console.error("Error fetching product count:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData(); 
+  }, []);
+
   return (
     <div>
       <h3 className="text-base font-semibold text-gray-900">Tổng quát</h3>

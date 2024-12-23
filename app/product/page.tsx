@@ -27,6 +27,7 @@ export default function ProductListPage() {
   const searchParams = useSearchParams();
   const search = searchParams.get("search") || "";
   const shopName = searchParams.get("shopName") || "";
+  const sheetName = searchParams.get("sheetName") || "";
   const sort = searchParams.get("sort") || "sales";
 
   const fetchMoreProducts = useCallback(async () => {
@@ -39,6 +40,7 @@ export default function ProductListPage() {
       searchTerm: search,
       sort: sort as "price-desc" | "price-asc" | "sales" | "newest",
       shopName: shopName,
+      sheetName,
     };
 
     const data = await getProduct(query);

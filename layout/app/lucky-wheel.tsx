@@ -45,7 +45,6 @@ export default function LuckyWheelLayout({
       handleOpenModal();
     }, 300);
   };
-  console.log(profile);
   return (
     <div className="">
       {profile ? (

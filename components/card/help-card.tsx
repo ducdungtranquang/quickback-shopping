@@ -19,7 +19,7 @@ const HelpCard: React.FC<HelpCardProps> = ({
     <div className="max-w-[1024px] w-full p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
       <div className="flex items-center gap-[10px]">
         {imgContent}
-        <a href="#">
+        <a href={guidelineLink || "#"}>
           <h5 className="mb-3 font-semibold tracking-tight text-gray-900 dark:text-white">
             {title}
           </h5>

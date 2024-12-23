@@ -13,6 +13,7 @@ import { avaList } from "@/ultils/constant/constant";
 import BaseModal from "@/components/modals/base-modal";
 import { useToast } from "@/context/toastContext";
 import Link from "next/link";
+import { requestWithdraw, verifyRequestWithdraw } from "@/ultils/api/withdraw";
 
 const UserDetailInfo = () => {
   const token = Cookies.get("authToken");
@@ -20,14 +21,15 @@ const UserDetailInfo = () => {
   const isAuthenticated = useAuth(true);
   const [isEditing, setIsEditing] = useState(false);
   const [money, setMoney] = useState(50000);
+  const [verifyCode, setVerifyCode] = useState("");
   const [error, setError] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isOpenModalWithDraw, setIsOpenModalWithDraw] = useState(false);
+  const [isOpenVerifyCode, setIsOpenVerifyCode] = useState(false);
   const [formData, setFormData] = useState<any>({
     fullName: "",
     email: "",
     phone: "",
-    age: "",
     address: "",
     city: "",
     password: "",
@@ -43,6 +45,32 @@ const UserDetailInfo = () => {
     cursor: !isEditing ? "not-allowed" : "",
     background: isEditing ? "white" : "rgb(249 250 251)",
   } as HTMLAttributes<HTMLInputElement>;
+
+  const fetchProfile = async () => {
+    const token = Cookies.get("authToken");
+    if (token) {
+      try {
+        const profileData = await getProfile(token);
+        setFormData({
+          fullName: profileData.name || "",
+          email: profileData.email || "",
+          phone: profileData.phoneNumber || "",
+          address: profileData.address || "",
+          city: profileData.city || "",
+          password: "",
+          currentPassword: "",
+          bankAccount: profileData.accountBank || "",
+          bankName: profileData.bankName || "",
+          coinsEarned: profileData.money.toString() || "0",
+          confirmPassword: "",
+          image: profileData.image || "",
+          id: profileData._id,
+        });
+      } catch (error) {
+        console.error("Error fetching profile:", error);
+      }
+    }
+  };
 
   const handleSave = async () => {
     if (!isEditing) {
@@ -94,7 +122,7 @@ const UserDetailInfo = () => {
     }
   };
 
-  const handleWithdraw = () => {
+  const handleWithdraw = async () => {
     if (
       !formData.bankAccount ||
       !formData.bankName ||
@@ -103,12 +131,32 @@ const UserDetailInfo = () => {
       setIsOpenModalWithDraw(false);
     } else {
       if (money >= 50000) {
-        alert("Thành công");
+        const userId = formData.id;
+        const dataUser = {
+          userId,
+          amount: money,
+        };
+        await requestWithdraw(token!, dataUser);
         setIsOpenModalWithDraw(false);
+        setIsOpenVerifyCode(true);
         setError(false);
       } else {
         setError(true);
       }
+    }
+  };
+
+  const handleVerify = async () => {
+    const data = {
+      userId: formData.id,
+      verificationCode: verifyCode,
+    };
+    const res = await verifyRequestWithdraw(token!, data);
+    if (res?.status) {
+      await fetchProfile();
+      setIsOpenVerifyCode(false);
+      addToast("Yêu cầu rút tiền thành công", "success");
+      setVerifyCode('')
     }
   };
 
@@ -139,33 +187,6 @@ const UserDetailInfo = () => {
   }
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      const token = Cookies.get("authToken");
-      if (token) {
-        try {
-          const profileData = await getProfile(token);
-          setFormData({
-            fullName: profileData.name || "",
-            email: profileData.email || "",
-            phone: profileData.phoneNumber || "",
-            age: "",
-            address: profileData.address || "",
-            city: profileData.city || "",
-            password: "",
-            currentPassword: "",
-            bankAccount: profileData.accountBank || "",
-            bankName: profileData.bankName || "",
-            coinsEarned: profileData.money.toString() || "0",
-            confirmPassword: "",
-            image: profileData.image || "",
-            id: profileData._id,
-          });
-        } catch (error) {
-          console.error("Error fetching profile:", error);
-        }
-      }
-    };
-
     if (!!isAuthenticated && !formData.email) {
       fetchProfile();
     }
@@ -384,6 +405,7 @@ const UserDetailInfo = () => {
                       onChange={(el) => {
                         setMoney(Number(el?.target.value));
                       }}
+                      type="number"
                       placeholder={money.toString() || "50000"}
                     />
 
@@ -395,6 +417,28 @@ const UserDetailInfo = () => {
                     )}
                   </div>
                 )}
+              </div>
+            </BaseModal>
+          )}
+
+          {isOpenVerifyCode && (
+            <BaseModal
+              isOpen={isOpenVerifyCode}
+              onClose={() => setIsOpenVerifyCode(false)}
+              title={"Nhập mã xác thực"}
+              onConfirm={handleVerify}
+            >
+              <div>
+                <InputSection
+                  label="Mã xác thực đã gửi về email của bạn, vui lòng kiểm tra và nhập tại đây"
+                  value={verifyCode}
+                  onChange={(el) => {
+                    setVerifyCode(el.target.value);
+                  }}
+                  placeholder={"Mã xác thực"}
+                />
+
+                <p className="mt-4"> Số lần gửi yêu cầu tối đa là 2 lần </p>
               </div>
             </BaseModal>
           )}

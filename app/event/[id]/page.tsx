@@ -56,9 +56,10 @@ export default function EventPage() {
       <NavBar isAuthenticated={isAuthenticated} />
       <div className="py-6 px-4 bg-gray-100 h-full min-h-screen overflow-hidden overflow-y-scroll mt-[120px]">
         <CashbackCard
-          totalCashback="0đ"
-          availableBalance="0đ"
+          totalCashback={profile?.total?.toString()!}
+          availableBalance={profile?.money?.toString()!}
           onWithdraw={() => {}}
+          userId={profile?._id!}
         />
         <div className="mt-4 w-full">
           <HelpCard

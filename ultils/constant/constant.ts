@@ -16,7 +16,7 @@ export const NAVIGATION_LIST = {
         {
           name: "Giá tốt nhất",
           href: "/product?sort=price-asc",
-          imageSrc: "trainer.jpg",
+          imageSrc: "/trainer.jpg",
           imageAlt: "Giá.",
         },
       ],
@@ -64,14 +64,14 @@ export const NAVIGATION_LIST = {
         {
           name: "Tất cả",
           href: "/",
-          imageSrc: "shoe.jpg",
+          imageSrc: "/shoe.jpg",
           imageAlt:
             "Drawstring top with elastic loop closure and textured interior padding.",
         },
         {
           name: "Giá tốt nhất",
           href: "/product?sort=price-asc",
-          imageSrc: "bag.jpg",
+          imageSrc: "/bag.jpg",
           imageAlt: "Giá tốt",
         },
       ],

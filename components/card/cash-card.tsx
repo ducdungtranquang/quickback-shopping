@@ -1,16 +1,18 @@
-import NavBar from "@/layout/app/navbar";
+import Link from "next/link";
 import React from "react";
 
 interface CashbackCardProps {
   totalCashback: string;
   availableBalance: string;
   onWithdraw: () => void;
+  userId: string;
 }
 
 const CashbackCard: React.FC<CashbackCardProps> = ({
   totalCashback,
   availableBalance,
   onWithdraw,
+  userId,
 }) => {
   return (
     <>
@@ -38,12 +40,12 @@ const CashbackCard: React.FC<CashbackCardProps> = ({
         </div>
         <div className="flex justify-between items-center flex-wrap">
           <p className="text-sm">Số dư khả dụng: {availableBalance}</p>
-          <button
-            onClick={onWithdraw}
+          <Link
+            href={`/profile/${userId}`}
             className="bg-white text-blue-700 font-bold py-2 px-4 rounded-lg shadow"
           >
             Rút Tiền
-          </button>
+          </Link>
         </div>
       </div>
     </>

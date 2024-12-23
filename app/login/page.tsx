@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import LogoComponent from "@/components/logo";
 import BasicButton from "@/components/button/basic-button";
@@ -11,9 +11,11 @@ import Cookies from "js-cookie";
 import { login, resendVerify } from "@/ultils/api/auth";
 import BaseModal from "@/components/modals/base-modal";
 import Toast from "@/components/toast/toast";
+import useAuth from "@/hook/useAuth";
 
 const LoginPage = () => {
   const { isAnimating, handleNavigation } = useAnimateNavigation("/register");
+  const {isAuthenticated} = useAuth()
   const router = useRouter();
 
   const [email, setEmail] = useState("");
@@ -83,6 +85,12 @@ const LoginPage = () => {
       setGoogleError("Đăng nhập bằng Google không thành công.");
     }
   };
+
+  useEffect(()=>{
+    if(isAuthenticated){
+      router.push("/product")
+    }
+  }, [isAuthenticated])
 
   return (
     <section

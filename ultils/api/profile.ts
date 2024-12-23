@@ -29,6 +29,7 @@ export interface IProfileResponse {
   __v: number;
   password?: string;
   money: number;
+  total?: number;
   trees: Tree[];
   updatedAt: string;
   freeSpins: number;
@@ -43,6 +44,7 @@ export interface IProfileResponse {
   city?: string;
   inviteCode?: string[];
   image?: string;
+  role?: number;
 }
 
 export const getProfile = async (token: string): Promise<IProfileResponse> => {

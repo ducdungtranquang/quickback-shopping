@@ -6,14 +6,15 @@ import InputSection from "@/components/input/input";
 import useAnimateNavigation from "@/hook/useAnimateNavigation";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { register } from "@/ultils/api/auth";
+import useAuth from "@/hook/useAuth";
 
 const RegisterPage = () => {
   const { isAnimating, handleNavigation } = useAnimateNavigation("/login");
   const router = useRouter();
-
+  const { isAuthenticated } = useAuth();
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
@@ -34,9 +35,9 @@ const RegisterPage = () => {
 
     try {
       const response = await register({ email, password, name });
-      if(response?.success){
-      router.push('/verify-account')
-    }
+      if (response?.success) {
+        router.push("/verify-account");
+      }
     } catch (err) {
       setError("Đăng ký không thành công. Vui lòng thử lại.");
     } finally {
@@ -53,10 +54,17 @@ const RegisterPage = () => {
     }
   };
 
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.push("/product");
+    }
+  }, [isAuthenticated]);
+
   return (
     <section
-      className={`container bg-blue-200 dark:bg-gray-900 h-full py-5 ${isAnimating ? "page-exit-active" : "page-enter-active"
-        }`}
+      className={`container bg-blue-200 dark:bg-gray-900 h-full py-5 ${
+        isAnimating ? "page-exit-active" : "page-enter-active"
+      }`}
     >
       <div className="flex flex-col items-center sm:justify-start px-6 mx-auto">
         <LogoComponent />
@@ -106,7 +114,9 @@ const RegisterPage = () => {
                 label="Xác nhận mật khẩu"
                 value={confirmPassword}
                 onChange={(el) => setConfirmPassword(el.target.value)}
-                showError={confirmPassword !== password && confirmPassword.length > 0}
+                showError={
+                  confirmPassword !== password && confirmPassword.length > 0
+                }
                 contentError="Mật khẩu không khớp"
               />
               <InputSection

@@ -40,7 +40,7 @@ export default function EventPage() {
     } else if (event === "tree") {
       return <GardenLayout isAuthenticated={isAuthenticated} />;
     }
-  }, [event, isAuthenticated]);
+  }, [event, isAuthenticated, profile]);
 
   if (isAuthenticated === null) {
     return (
