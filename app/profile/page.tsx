@@ -28,14 +28,6 @@ const App = () => {
     alert("Rút tiền thành công!");
   };
 
-  if (isAuthenticated === null) {
-    return (
-      <div>
-        <Spinner />
-      </div>
-    );
-  }
-
   useEffect(() => {
     const fetchProfile = async () => {
       const token = Cookies.get("authToken");
@@ -53,6 +45,14 @@ const App = () => {
       fetchProfile();
     }
   }, [isAuthenticated]);
+
+  if (isAuthenticated === null) {
+    return (
+      <div>
+        <Spinner />
+      </div>
+    );
+  }
 
   return (
     <div className="container">

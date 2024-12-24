@@ -7,25 +7,28 @@ import {
 } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
 
-export default function Dashboard() {
+export default function Dashboard(props: any) {
   const [stats, setStats] = useState([
     {
       id: 1,
       name: "Tổng số người dùng",
       stat: "10",
       icon: UsersIcon,
+      type: "user",
     },
     {
       id: 2,
       name: "Cửa hàng",
       stat: "25",
       icon: EnvelopeOpenIcon,
+      type: "product",
     },
     {
       id: 3,
       name: "Số sản phẩm",
       stat: "255",
       icon: CursorArrowRaysIcon,
+      type: "product",
     },
   ]);
 
@@ -49,7 +52,7 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
-    fetchData(); 
+    fetchData();
   }, []);
 
   return (
@@ -76,12 +79,12 @@ export default function Dashboard() {
               </p>
               <div className="absolute inset-x-0 bottom-0 bg-gray-50 px-4 py-4 sm:px-6">
                 <div className="text-sm">
-                  <a
-                    href="#"
-                    className="font-medium text-indigo-600 hover:text-indigo-500"
+                  <div
+                    onClick={() => props.setTypeAdmin(item.type)}
+                    className="font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer"
                   >
                     Xem chi tiết<span className="sr-only"> {item.name}</span>
-                  </a>
+                  </div>
                 </div>
               </div>
             </dd>

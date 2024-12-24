@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogBackdrop,
@@ -113,6 +113,15 @@ export default function Admin() {
     setNavigation(updatedNavigation);
   };
 
+  useEffect(() => {
+    const updatedNavigation = navigation.map((item) => ({
+      ...item,
+      current: item.type === typeAdmin,
+    }));
+
+    setNavigation(updatedNavigation);
+  }, [typeAdmin]);
+
   return (
     <>
       <div>
@@ -160,6 +169,7 @@ export default function Admin() {
                       <ul role="list" className="-mx-2 space-y-1">
                         {navigation.map((item) => (
                           <li
+                            className="cursor-pointer"
                             key={item.name}
                             onClick={() => {
                               handleClickNav(item.type);
@@ -242,6 +252,7 @@ export default function Admin() {
                   <ul role="list" className="-mx-2 space-y-1">
                     {navigation.map((item) => (
                       <li
+                        className="cursor-pointer"
                         key={item.name}
                         onClick={() => {
                           handleClickNav(item.type);
@@ -393,7 +404,9 @@ export default function Admin() {
           </div>
 
           <main className="py-10">
-            <div className="px-4 sm:px-6 lg:px-8">{viewAdmin(typeAdmin)}</div>
+            <div className="px-4 sm:px-6 lg:px-8">
+              {viewAdmin(typeAdmin, setTypeAdmin)}
+            </div>
           </main>
         </div>
       </div>

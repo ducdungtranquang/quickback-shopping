@@ -178,6 +178,12 @@ const UserDetailInfo = () => {
     setIsPopupOpen(false);
   };
 
+  useEffect(() => {
+    if (!!isAuthenticated && !formData.email) {
+      fetchProfile();
+    }
+  }, [isAuthenticated]);
+
   if (isAuthenticated === null) {
     return <Spinner />;
   }
@@ -185,12 +191,6 @@ const UserDetailInfo = () => {
   if (!isAuthenticated) {
     return null;
   }
-
-  useEffect(() => {
-    if (!!isAuthenticated && !formData.email) {
-      fetchProfile();
-    }
-  }, []);
 
   return (
     <div className="container">
