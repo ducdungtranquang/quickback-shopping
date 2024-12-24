@@ -75,3 +75,26 @@ export const changePassword = async (
     token
   );
 };
+
+export const getAllUser = async (token: string): Promise<any> => {
+  return apiCall<any>("/api/user/admin-all-user", "GET", undefined, token);
+};
+
+export const updateUser = async (
+  token: string,
+  id: string,
+  data: any
+): Promise<any> => {
+  return apiCall<any>("/api/user/admin-all-user", "PUT", data, token);
+};
+
+export const addUser = async (
+  token: string,
+  data: any
+): Promise<any> => {
+  return apiCall<any>("/api/user/admin-all-user", "POST", data, token);
+};
+
+export const deleteUser = async (token: string, id: string): Promise<any> => {
+  return apiCall<any>("/api/user/admin-all-user", "DELETE", undefined, token);
+};
