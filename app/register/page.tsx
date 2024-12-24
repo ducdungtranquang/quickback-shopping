@@ -6,14 +6,15 @@ import InputSection from "@/components/input/input";
 import useAnimateNavigation from "@/hook/useAnimateNavigation";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { register } from "@/ultils/api/auth";
+import useAuth from "@/hook/useAuth";
 
 const RegisterPage = () => {
   const { isAnimating, handleNavigation } = useAnimateNavigation("/login");
   const router = useRouter();
-
+  const { isAuthenticated } = useAuth();
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
@@ -34,11 +35,9 @@ const RegisterPage = () => {
 
     try {
       const response = await register({ email, password, name });
-      Cookies.set('authToken', response.token);
-      Cookies.set('email', response.email);
-      Cookies.set('id', response._id);
-      Cookies.set('user_name', name);
-      router.push("/profile");
+      if (response?.success) {
+        router.push("/verify-account");
+      }
     } catch (err) {
       setError("Đăng ký không thành công. Vui lòng thử lại.");
     } finally {
@@ -55,12 +54,19 @@ const RegisterPage = () => {
     }
   };
 
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.push("/product");
+    }
+  }, [isAuthenticated]);
+
   return (
     <section
-      className={`bg-gray-50 dark:bg-gray-900 h-full min-h-screen mb-[350px] ${isAnimating ? "page-exit-active" : "page-enter-active"
-        }`}
+      className={`container bg-blue-200 dark:bg-gray-900 h-full py-5 ${
+        isAnimating ? "page-exit-active" : "page-enter-active"
+      }`}
     >
-      <div className="flex flex-col items-center justify-center sm:justify-start px-6 py-8 mx-auto md:h-screen">
+      <div className="flex flex-col items-center sm:justify-start px-6 mx-auto">
         <LogoComponent />
         <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
@@ -108,7 +114,9 @@ const RegisterPage = () => {
                 label="Xác nhận mật khẩu"
                 value={confirmPassword}
                 onChange={(el) => setConfirmPassword(el.target.value)}
-                showError={confirmPassword !== password && confirmPassword.length > 0}
+                showError={
+                  confirmPassword !== password && confirmPassword.length > 0
+                }
                 contentError="Mật khẩu không khớp"
               />
               <InputSection
@@ -135,12 +143,12 @@ const RegisterPage = () => {
                     className="font-light text-gray-500 dark:text-gray-300"
                   >
                     Tôi đồng ý{" "}
-                    <a
+                    <Link
                       className="font-medium text-primary-600 hover:underline dark:text-primary-500"
-                      href="#"
+                      href="/policy"
                     >
                       Chính sách và Điều kiện
-                    </a>
+                    </Link>
                   </label>
                 </div>
               </div>
@@ -156,11 +164,11 @@ const RegisterPage = () => {
                 variant="basic"
                 onClick={handleGoogleLoginSuccess}
               />
-              <BasicButton
+              {/* <BasicButton
                 text="Đăng nhập bằng Telegram"
                 type="submit"
                 variant="plain"
-              />
+              /> */}
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Đã có tài khoản?{" "}
                 <Link

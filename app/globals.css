@@ -26,10 +26,13 @@
 
 body {
   overflow-x: hidden;
-  color: rgb(var(--foreground-rgb));
-  max-width: 992px;
+  color: #374151;
   margin: auto;
   display: block;
+}
+
+a {
+  color: #374151;
 }
 
 ::-webkit-scrollbar {
@@ -62,6 +65,13 @@ body {
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: rgb(45, 93, 227);
+}
+
+.container {
+  width: 100%;
+  max-width: 1024px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* animation */
@@ -197,8 +207,8 @@ body {
 }
 
 .at--cps-campaign-thumb img {
-  width: 100px;
-  height: 100px;
+  width: 200px;
+  height: 200px;
   border-radius: var(--radius);
   object-fit: cover;
 }
@@ -207,11 +217,11 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: var(--padding-sm);
-  width: 100%;
+  /* width: 100%; */
 }
 
 .at--input-box {
-  flex-grow: 1;
+  /* flex-grow: 1; */
   padding: var(--padding-sm);
   border-radius: var(--radius);
   border: 1px solid var(--border-color);

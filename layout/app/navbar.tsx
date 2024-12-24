@@ -36,7 +36,7 @@ interface IProps {
 
 export default function NavBar({ isAuthenticated }: IProps) {
   const router = useRouter();
-  const { total, fetchCart } = useCart();
+  const { cart, total, fetchCart } = useCart();
   const [showSearch, setShowSearch] = useState(false);
   const [open, setOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -56,7 +56,7 @@ export default function NavBar({ isAuthenticated }: IProps) {
 
   return (
     <div
-      style={{ maxWidth: "992px" }}
+      style={{ maxWidth: "1024px" }}
       className="bg-white dark:bg-gray-800 fixed z-[99999] top-0 w-full"
     >
       {/* Mobile menu */}
@@ -397,7 +397,7 @@ export default function NavBar({ isAuthenticated }: IProps) {
                 <div className="ml-4 flow-root lg:ml-6 ml-3">
                   <div
                     onClick={() => {
-                      router.push("/history/123?activeId=cart");
+                      router.push(`/history/${cart?.[0]?.userId}?activeId=cart`);
                     }}
                     className="group -m-2 flex items-center p-2"
                   >

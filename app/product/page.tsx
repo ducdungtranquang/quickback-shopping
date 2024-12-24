@@ -9,12 +9,13 @@ import React, {
 } from "react";
 import ProductCard from "@/components/card/product-card";
 import Slider from "@/components/slider/slider";
-import NavBar from "@/layout/navbar";
+import NavBar from "@/layout/app/navbar";
 import useAuth from "@/hook/useAuth";
 import AccesstradeWidget from "@/components/acesstrade/accesstradeWidget";
 import { getProduct, IProduct, IProductQuery } from "@/ultils/api/product";
 import Spinner from "@/components/spinner/spinner";
 import { useSearchParams } from "next/navigation";
+import MediaMartWidget from "@/components/acesstrade/mediaMartWidget";
 
 export default function ProductListPage() {
   const { isAuthenticated } = useAuth(false);
@@ -25,6 +26,8 @@ export default function ProductListPage() {
   const observerRef = useRef<HTMLDivElement | null>(null);
   const searchParams = useSearchParams();
   const search = searchParams.get("search") || "";
+  const shopName = searchParams.get("shopName") || "";
+  const sheetName = searchParams.get("sheetName") || "";
   const sort = searchParams.get("sort") || "sales";
 
   const fetchMoreProducts = useCallback(async () => {
@@ -36,13 +39,15 @@ export default function ProductListPage() {
       limit: 20,
       searchTerm: search,
       sort: sort as "price-desc" | "price-asc" | "sales" | "newest",
+      shopName: shopName,
+      sheetName,
     };
 
     const data = await getProduct(query);
-    if (data.data.length === 0) {
+    if ( !data?.data || data?.data?.length < 20) {
       setHasMore(false);
     } else {
-      setProducts((prev) => [...prev, ...data.data]);
+      setProducts((prev) => [...prev, ...(data?.data || [])]);
       setPage((prevPage) => prevPage + 1);
     }
     setLoading(false);
@@ -90,14 +95,6 @@ export default function ProductListPage() {
     );
   };
 
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const searchTerm = event.target.value;
-    updateURLParams("search", searchTerm);
-    setPage(1);
-    setProducts([]);
-    fetchMoreProducts();
-  };
-
   const handleSortChange = (sortOption: string) => {
     updateURLParams("sort", sortOption);
     setPage(1);
@@ -142,92 +139,94 @@ export default function ProductListPage() {
 
   return (
     <Suspense fallback={loading}>
-      <NavBar isAuthenticated={isAuthenticated} />
-      <section className="py-6 px-4 bg-gray-100 h-full min-h-screen overflow-hidden overflow-y-scroll mt-[100px]">
-        <div className="mx-auto mt-[20px]">
-          <Slider slides={slides} loop={true} autoPlay={true} />
-        </div>
-
-        <div className="my-4">
-          <AccesstradeWidget />
-        </div>
-
-        {/* <div className="mx-auto px-2 max-w-7xl lg:px-8 mt-[50px]">
-          <input
-            type="text"
-            placeholder="Tìm kiếm sản phẩm..."
-            value={search}
-            onChange={handleSearchChange}
-            className="w-full p-2 border border-gray-300 rounded mb-4"
-          />
-        </div> */}
-
-        <div className="flex overflow-x-auto custom-scrollbar pb-[5px] mb-[20px]">
-          <button
-            className={`flex-shrink-0 py-2 px-4 ${
-              sort === "newest"
-                ? "bg-primary-600 text-white"
-                : "bg-gray-200 text-black"
-            } rounded`}
-            onClick={() => handleSortChange("newest")}
-          >
-            Mới nhất
-          </button>
-          <button
-            className={`flex-shrink-0 py-2 px-4 ${
-              sort === "sales"
-                ? "bg-primary-600 text-white"
-                : "bg-gray-200 text-black"
-            } rounded`}
-            onClick={() => handleSortChange("sales")}
-          >
-            Bán chạy
-          </button>
-          <button
-            className={`flex-shrink-0 py-2 px-4 ${
-              sort === "price-asc"
-                ? "bg-primary-600 text-white"
-                : "bg-gray-200 text-black"
-            } rounded`}
-            onClick={() => handleSortChange("price-asc")}
-          >
-            Giá rẻ nhất
-          </button>
-          <button
-            className={`flex-shrink-0 py-2 px-4 ${
-              sort === "price-desc"
-                ? "bg-primary-600 text-white"
-                : "bg-gray-200 text-black"
-            } rounded`}
-            onClick={() => handleSortChange("price-desc")}
-          >
-            Giá cao nhất
-          </button>
-        </div>
-
-        <div className="flex flex-wrap justify-around sm:justify-left gap-2 sm:gap-4 mt-2">
-          {products.map((item, i) => (
-            <ProductCard
-              key={i}
-              cost={item.price}
-              name={item.name}
-              shop={item.shop}
-              link={item.link}
-              src={item.img || "/img_no_img.jpg"}
-              commission={item.commission}
-            />
-          ))}
-        </div>
-
-        {loading && (
-          <div className="flex justify-center items-center flex-col mt-4">
-            <Spinner />
-            <p className="p-4">Đang tải sản phẩm...</p>
+      <div className="container">
+        <NavBar isAuthenticated={isAuthenticated} />
+        <section className="py-6 px-4 bg-gray-100 h-full min-h-screen overflow-hidden overflow-y-scroll mt-[100px]">
+          <div className="mx-auto mt-[20px]">
+            <Slider slides={slides} loop={true} autoPlay={true} />
           </div>
-        )}
 
-        <div ref={observerRef} className="h-10"></div>
-      </section>
+          <div className="my-4">
+            <AccesstradeWidget />
+          </div>
+
+          <div className="my-4">
+            <MediaMartWidget />
+          </div>
+
+          <div className="flex overflow-x-auto custom-scrollbar pb-[5px] mb-[20px]">
+            <button
+              className={`flex-shrink-0 py-2 px-4 ${
+                sort === "newest"
+                  ? "bg-primary-600 text-white"
+                  : "bg-gray-200 text-black"
+              } rounded`}
+              onClick={() => handleSortChange("newest")}
+            >
+              Mới nhất
+            </button>
+            <button
+              className={`flex-shrink-0 py-2 px-4 ${
+                sort === "sales"
+                  ? "bg-primary-600 text-white"
+                  : "bg-gray-200 text-black"
+              } rounded`}
+              onClick={() => handleSortChange("sales")}
+            >
+              Bán chạy
+            </button>
+            <button
+              className={`flex-shrink-0 py-2 px-4 ${
+                sort === "price-asc"
+                  ? "bg-primary-600 text-white"
+                  : "bg-gray-200 text-black"
+              } rounded`}
+              onClick={() => handleSortChange("price-asc")}
+            >
+              Giá rẻ nhất
+            </button>
+            <button
+              className={`flex-shrink-0 py-2 px-4 ${
+                sort === "price-desc"
+                  ? "bg-primary-600 text-white"
+                  : "bg-gray-200 text-black"
+              } rounded`}
+              onClick={() => handleSortChange("price-desc")}
+            >
+              Giá cao nhất
+            </button>
+          </div>
+
+          <div className="flex flex-wrap justify-around sm:justify-left gap-2 sm:gap-4 mt-2">
+            {products && products?.length ? (
+              products?.map((item, i) => (
+                <ProductCard
+                  key={i}
+                  cost={item.price}
+                  name={item.name}
+                  shop={item.shop}
+                  link={item.link}
+                  src={item.img || "/img_no_img.jpg"}
+                  commission={item.commission}
+                />
+              ))
+            ) : (
+              <div className="flex justify-center items-center flex-col mt-4">
+                <p className="p-2 text-black">Không tìm thấy sản phẩm</p>
+              </div>
+            )}
+          </div>
+
+          {loading && (
+            <div className="flex justify-center items-center flex-col mt-4">
+              <Spinner />
+              <p className="p-2 text-black">Đang tải sản phẩm...</p>
+            </div>
+          )}
+
+          <div ref={observerRef} className="h-10"></div>
+        </section>
+      </div>
     </Suspense>
   );
 }

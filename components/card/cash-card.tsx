@@ -1,20 +1,22 @@
-import NavBar from "@/layout/navbar";
+import Link from "next/link";
 import React from "react";
 
 interface CashbackCardProps {
   totalCashback: string;
   availableBalance: string;
   onWithdraw: () => void;
+  userId: string;
 }
 
 const CashbackCard: React.FC<CashbackCardProps> = ({
   totalCashback,
   availableBalance,
   onWithdraw,
+  userId,
 }) => {
   return (
     <>
-      <div className="max-w-[992px] w-full p-6 bg-gradient-to-r from-blue-500 to-blue-700 rounded-xl shadow-md text-white">
+      <div className="max-w-[1024px] w-full p-6 bg-gradient-to-r from-blue-500 to-blue-700 rounded-xl shadow-md text-white">
         <div className="flex justify-between items-center mb-4 gap-[20px]">
           <div className="flex items-center space-x-2">
             <svg
@@ -35,16 +37,15 @@ const CashbackCard: React.FC<CashbackCardProps> = ({
         </div>
         <div className="flex justify-between items-center mb-6">
           <p className="text-2xl font-bold">{totalCashback}</p>
-          <p className="text-2xl font-bold">{availableBalance}</p>
         </div>
-        <div className="flex justify-between items-center">
-          <p className="text-sm">Số dư khả dụng:</p>
-          <button
-            onClick={onWithdraw}
+        <div className="flex justify-between items-center flex-wrap">
+          <p className="text-sm">Số dư khả dụng: {availableBalance}</p>
+          <Link
+            href={`/profile/${userId}`}
             className="bg-white text-blue-700 font-bold py-2 px-4 rounded-lg shadow"
           >
             Rút Tiền
-          </button>
+          </Link>
         </div>
       </div>
     </>

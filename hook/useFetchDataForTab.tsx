@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 
 export function useFetchDataForTab(
   activeTab: string,
+  isAuthenticated: boolean | null,
   fetchDataFn: (signal: AbortSignal) => Promise<any>
 ) {
   const [data, setData] = useState<any>(null);
@@ -11,13 +12,14 @@ export function useFetchDataForTab(
   useEffect(() => {
     const controller = new AbortController();
 
-    if (activeTab) {
+    if (activeTab && !!isAuthenticated) {
       const fetchData = async () => {
         try {
           setLoading(true);
           const result = await fetchDataFn(controller.signal);
           setData(result);
           setError(null);
+          setLoading(false);
         } catch (error: any) {
           if (error.name === "AbortError") {
             console.log("Request was cancelled");
@@ -35,7 +37,7 @@ export function useFetchDataForTab(
     return () => {
       controller.abort();
     };
-  }, [activeTab]);
+  }, [activeTab, isAuthenticated]);
 
   return { data, loading, error };
 }

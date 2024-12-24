@@ -2,7 +2,8 @@
 import Accordion from "@/components/accordion/accordion";
 import InfoCard from "@/components/card/info-card";
 import useAuth from "@/hook/useAuth";
-import NavBar from "@/layout/navbar";
+import Footer from "@/layout/app/footer";
+import NavBar from "@/layout/app/navbar";
 
 export default function SupportPage() {
   const { isAuthenticated } = useAuth(false);
@@ -10,7 +11,7 @@ export default function SupportPage() {
   const accordionItems = [
     {
       id: "1",
-      title: "What is Flowbite?",
+      title: "Điều kiện hoàn tiền là gì?",
       content: (
         <div>
           <p className="mb-2 text-gray-500 dark:text-gray-400">
@@ -34,7 +35,7 @@ export default function SupportPage() {
     },
     {
       id: "2",
-      title: "Is there a Figma file available?",
+      title: "Tại sao tôi không rút được tiền dù đạt yêu cầu",
       content: (
         <div>
           <p className="mb-2 text-gray-500 dark:text-gray-400">
@@ -58,7 +59,7 @@ export default function SupportPage() {
     },
     {
       id: "3",
-      title: "What are the differences between Flowbite and Tailwind UI?",
+      title: "Thời gian nhận tiền là bao lâu?",
       content: (
         <div>
           <p className="mb-2 text-gray-500 dark:text-gray-400">
@@ -72,7 +73,7 @@ export default function SupportPage() {
   ];
 
   return (
-    <>
+    <div className="container">
       <NavBar isAuthenticated={isAuthenticated} />
       <div className="py-6 px-4 bg-gray-100 h-full min-h-screen overflow-hidden overflow-y-scroll mt-[100px]">
         <h1 className="text-xl font-medium text-black sm:text-xl md:text-2xl text-center mt-4">
@@ -88,10 +89,14 @@ export default function SupportPage() {
           <h2 className="text-normal font-medium text-black sm:text-xl px-1 sm:text-center my-2">
             Tư vấn và hỗ trợ trực tiếp
           </h2>
-          <InfoCard message={"Thông tin cá nhân"} link="/profile/123" />
-          <InfoCard message={"Hỗ trợ"} link="/" />
+          <div className="flex flex-wrap gap-[10px]">
+            <InfoCard message={"Thông tin cá nhân"} link="/profile" />
+            <InfoCard message={"Liên hệ trực tiếp"} link="/" />
+          </div>
         </div>
+
+        <Footer />
       </div>
-    </>
+    </div>
   );
 }

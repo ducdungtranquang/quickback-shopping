@@ -3,6 +3,7 @@ import BasicButton from "../button/basic-button";
 import Link from "next/link";
 import { removeHttps } from "@/ultils/func/helper";
 import { useCart } from "@/context/cartContext";
+import { useToast } from "@/context/toastContext";
 
 interface IProductCard {
   cost: string;
@@ -15,6 +16,7 @@ interface IProductCard {
 
 const ProductCard = (props: IProductCard) => {
   const { addItem } = useCart();
+  const { addToast } = useToast(); 
 
   const handleAddToCart = async () => {
     const data: CartItem = {
@@ -25,7 +27,13 @@ const ProductCard = (props: IProductCard) => {
       quantity: 1,
       cashbackPercentage: Number(props.commission),
     };
-    await addItem(data);
+
+    try {
+      await addItem(data);
+      addToast("Sản phẩm đã được thêm vào giỏ hàng!", "success");
+    } catch (error) {
+      addToast("Thêm sản phẩm vào giỏ hàng thất bại.", "error");
+    }
   };
 
   return (
@@ -39,7 +47,7 @@ const ProductCard = (props: IProductCard) => {
         <div>
           <div>
             <Link
-              href={`/product/${props.link}` || "#"}
+              href={`/product/${removeHttps(props.link)}` || "#"}
               className="block h-[120px] font-semibold tracking-tight text-gray-900 dark:text-white overflow-hidden hover:underline"
             >
               {props.name}
@@ -49,7 +57,7 @@ const ProductCard = (props: IProductCard) => {
             {props.shop}
           </div>
         </div>
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-start md:justify-center mb-[20px] md:flex-row">
+        <div className="flex flex-col items-start justify-start md:justify-between flex-wrap mb-[20px] md:flex-row">
           <span className="text-sm font-bold text-gray-900 dark:text-white">
             {props.commission}%
           </span>
@@ -59,12 +67,13 @@ const ProductCard = (props: IProductCard) => {
         </div>
         <div className="flex items-center justify-between flex-col md:flex-row gap-2 md:gap-4">
           <BasicButton variant="success" text="Lưu" onClick={handleAddToCart} />
-          <a
-            href={`/product/${props.link}` || "#"}
+          <Link
+            href={`/product/${removeHttps(props.link)}` || "#"}
+            target="blank"
             className="w-full h-[40px] flex items-center justify-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           >
             Mua
-          </a>
+          </Link>
         </div>
       </div>
     </div>

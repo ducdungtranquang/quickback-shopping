@@ -1,8 +1,13 @@
 "use client";
 import Spinner from "@/components/spinner/spinner";
+import { useCart } from "@/context/cartContext";
+import { useToast } from "@/context/toastContext";
 import useAuth from "@/hook/useAuth";
-import NavBar from "@/layout/navbar";
+import Footer from "@/layout/app/footer";
+import NavBar from "@/layout/app/navbar";
+import { CartItem } from "@/ultils/api/cart";
 import { getProductById, IProduct } from "@/ultils/api/product";
+import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -12,6 +17,26 @@ export default function ProductPage() {
   const [product, setProduct] = useState<IProduct>();
   const [loading, setLoading] = useState(false);
   const { id } = useParams();
+  const { addToast } = useToast();
+  const { addItem } = useCart();
+
+  const handleAddToCart = async () => {
+    const data: CartItem = {
+      productId: id as string,
+      price: product?.price as string,
+      productName: product?.name as string,
+      productLink: product?.link as string,
+      quantity: 1,
+      cashbackPercentage: Number(product?.commission),
+    };
+
+    try {
+      await addItem(data);
+      addToast("Sản phẩm đã được thêm vào giỏ hàng!", "success");
+    } catch (error) {
+      addToast("Thêm sản phẩm vào giỏ hàng thất bại.", "error");
+    }
+  };
 
   useEffect(() => {
     const fetchProductById = async () => {
@@ -26,10 +51,13 @@ export default function ProductPage() {
 
   return (
     <>
-      {loading ? (
-        <Spinner />
+      {loading || !product ? (
+        <div>
+          <Spinner />
+          <p className="text-center">Đang tải, chờ xíu nhé ...</p>
+        </div>
       ) : (
-        <>
+        <div className="container">
           <NavBar isAuthenticated={isAuthenticated} />
           <div className="bg-gray-100 dark:bg-gray-800 py-8 mt-[100px] h-full min-h-screen p-4">
             <div className="max-w-full mx-auto px-4 md:px-2 sm:px-6 lg:px-8">
@@ -38,19 +66,24 @@ export default function ProductPage() {
                   <div className="md:h-[360px] h-[300px] rounded-lg bg-gray-300 dark:bg-gray-700 mb-4">
                     <img
                       className="w-full h-full object-cover"
-                      src={product?.img}
+                      src={product?.img || "/img_no_img.jpg"}
                       alt="Product Image"
                     />
                   </div>
                   <div className="flex -mx-2 mb-4">
                     <div className="w-1/2 px-2">
-                      <button className="text-[16px] w-full bg-gray-900 dark:bg-gray-600 text-white py-2 px-4 rounded-full font-bold hover:bg-gray-800 dark:hover:bg-gray-700">
-                        Mua
-                      </button>
+                      <Link href={`${product?.link}`} target="blank">
+                        <button className="text-[16px] w-full bg-gray-900 dark:bg-gray-600 text-white py-2 px-4 rounded-full font-bold hover:bg-gray-800 dark:hover:bg-gray-700">
+                          Mua
+                        </button>
+                      </Link>
                     </div>
                     <div className="w-1/2 px-2">
-                      <button className="text-[16px] w-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white py-2 px-4 rounded-full font-bold hover:bg-gray-300 dark:hover:bg-gray-600">
-                        Lưu
+                      <button
+                        onClick={handleAddToCart}
+                        className="text-[16px] w-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white py-2 px-4 rounded-full font-bold hover:bg-gray-300 dark:hover:bg-gray-600"
+                      >
+                        Thêm giỏ hàng
                       </button>
                     </div>
                   </div>
@@ -100,21 +133,28 @@ export default function ProductPage() {
                       Lưu ý:
                     </span>
                     <p className="text-gray-600 dark:text-gray-300 text-sm mt-2">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                      Sed sed ante justo. Integer euismod libero id mauris
-                      malesuada tincidunt. Vivamus commodo nulla ut lorem
-                      rhoncus aliquet. Duis dapibus augue vel ipsum pretium, et
-                      venenatis sem blandit. Quisque ut erat vitae nisi ultrices
-                      placerat non eget velit. Integer ornare mi sed ipsum
-                      lacinia, non sagittis mauris blandit. Morbi fermentum
-                      libero vel nisl suscipit, nec tincidunt mi consectetur.
+                      Các đơn vị bị hủy/đổi trả/hoàn đơn hoặc đặt tại Shopee
+                      Livestream/Video hoặc thêm sản phẩm từ Livestream/Video sẽ
+                      không được hoàn tiền
+                    </p>
+                    <p className="text-gray-600 dark:text-gray-300 text-sm mt-2">
+                      Giao dịch sử dụng thẻ quà tặng hoặc Giftcard trừ trường
+                      hợp có quy định được nêu trước đó.
+                    </p>
+                    <p className="text-gray-600 dark:text-gray-300 text-sm mt-2">
+                      Dán link cửa hàng (shop) không được áp dụng hoàn tiền ưu
+                      đãi
+                    </p>
+                    <p className="text-gray-600 dark:text-gray-300 text-sm mt-2">
+                      Tiền sẽ về ví bạn từ 5-7 ngày sau khi hoàn tất đơn hàng
                     </p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </>
+          <Footer />
+        </div>
       )}
     </>
   );

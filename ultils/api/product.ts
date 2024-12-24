@@ -58,3 +58,10 @@ export const getProductById = async (
     signal
   );
 };
+
+export const getCount = async (
+  token: string,
+  signal?: AbortSignal
+): Promise<any> => {
+  return apiCall<any>(`/api/product/admin-product`, "GET", undefined, token);
+};
