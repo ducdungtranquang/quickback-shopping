@@ -47,7 +47,7 @@ const RegisterPage = () => {
 
   const handleGoogleLoginSuccess = async () => {
     try {
-      router.push("http://localhost:5000/api/auth/google");
+      router.push("https://cashback-server-1.onrender.com/api/auth/google");
     } catch (error) {
       console.error("Google login failed:", error);
       setGoogleError("Đăng nhập bằng Google không thành công.");
