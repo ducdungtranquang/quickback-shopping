@@ -159,7 +159,7 @@ export default function Admin() {
                 <div className="flex h-16 shrink-0 items-center">
                   <img
                     alt="Your Company"
-                    src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=500"
+                    src="/ava8.svg"
                     className="h-8 w-auto"
                   />
                 </div>
@@ -242,7 +242,7 @@ export default function Admin() {
             <div className="flex h-16 shrink-0 items-center">
               <img
                 alt="Your Company"
-                src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=500"
+                src="/ava8.svg"
                 className="h-8 w-auto"
               />
             </div>
@@ -367,7 +367,7 @@ export default function Admin() {
                     <span className="sr-only">Mở menu</span>
                     <img
                       alt=""
-                      src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                      src="/ava8.svg"
                       className="size-8 rounded-full bg-gray-50"
                     />
                     <span className="hidden lg:flex lg:items-center">

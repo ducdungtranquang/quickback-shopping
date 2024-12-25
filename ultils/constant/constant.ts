@@ -1,4 +1,4 @@
-export const URL_API = "http://localhost:5000";
+export const URL_API = "https://cashback-server-1.onrender.com";
 
 export const NAVIGATION_LIST = {
   categories: [

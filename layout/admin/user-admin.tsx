@@ -1,231 +1,212 @@
 "use client";
 
-import { useLayoutEffect, useRef, useState } from "react";
-
-const people = [
-  {
-    name: "Lindsay Walton",
-    title: "Front-end Developer",
-    email: "lindsay.walton@example.com",
-    role: "Member",
-  },
-];
+// import {
+//   getAllUser,
+//   addUser,
+//   updateUser,
+//   deleteUser,
+// } from "@/utils/api/profile";
+import { getAllUser, updateUser, addUser, deleteUser } from "@/ultils/api/profile";
+import Cookies from "js-cookie";
+import { useEffect, useState, useRef } from "react";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function UserAdmin() {
-  const checkbox = useRef<any>();
+  const token = Cookies.get("authToken");
+  const [people, setPeople] = useState<any[]>([]);
+  const [selectedPeople, setSelectedPeople] = useState<any[]>([]);
+  const [formData, setFormData] = useState<any>({
+    name: "",
+    email: "",
+    password: "",
+    accountBank: "",
+    bankName: "",
+    role: 0,
+    total: 0,
+    phoneNumber: "",
+    address: "",
+    city: "",
+    image: "",
+    inviteCode: [],
+    money: 0,
+  });
+  const [editingUser, setEditingUser] = useState<any>(null);
   const [checked, setChecked] = useState(false);
   const [indeterminate, setIndeterminate] = useState(false);
-  const [selectedPeople, setSelectedPeople] = useState<any>([]);
+  const checkbox = useRef<any>();
 
-  useLayoutEffect(() => {
+  const fetchUser = async () => {
+    const data = await getAllUser(token!);
+    if (data) {
+      setPeople(data);
+    }
+  };
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
+
+  useEffect(() => {
     const isIndeterminate =
       selectedPeople.length > 0 && selectedPeople.length < people.length;
     setChecked(selectedPeople.length === people.length);
     setIndeterminate(isIndeterminate);
-    (checkbox.current as any).indeterminate = isIndeterminate;
+    if (checkbox.current) {
+      checkbox.current.indeterminate = isIndeterminate;
+    }
   }, [selectedPeople]);
 
-  function toggleAll() {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (editingUser) {
+      await updateUser(token!, editingUser._id, formData);
+    } else {
+      await addUser(token!, formData);
+    }
+    fetchUser();
+    setEditingUser(null);
+    setFormData({
+      name: "",
+      email: "",
+      password: "",
+      accountBank: "",
+      bankName: "",
+      role: 0,
+      total: 0,
+      phoneNumber: "",
+      address: "",
+      city: "",
+      image: "",
+      inviteCode: [],
+      money: 0,
+    });
+  };
+
+  const handleDelete = async (id: string) => {
+    await deleteUser(token!, id);
+    fetchUser();
+  };
+
+  const handleEdit = (person: any) => {
+    setEditingUser(person);
+    setFormData(person);
+  };
+
+  const toggleAll = () => {
     setSelectedPeople(checked || indeterminate ? [] : people);
     setChecked(!checked && !indeterminate);
     setIndeterminate(false);
-  }
+  };
 
   return (
     <div className="px-4 sm:px-6 lg:px-8">
-      <div className="sm:flex sm:items-center">
-        <div className="sm:flex-auto">
-          <h1 className="text-base font-semibold text-gray-900">Users</h1>
-          <p className="mt-2 text-sm text-gray-700">
-            A list of all the users in your account including their name, title,
-            email and role.
-          </p>
-        </div>
-        <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-          <button
-            type="button"
-            className="block rounded-md bg-indigo-600 px-3 py-1.5 text-center text-sm/6 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-          >
-            Add user
-          </button>
-        </div>
-      </div>
-      <div className="mt-8 flow-root">
-        <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-          <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-            <div className="relative">
-              {selectedPeople.length > 0 && (
-                <div className="absolute left-14 top-0 flex h-12 items-center space-x-3 bg-white sm:left-12">
-                  <button
-                    type="button"
-                    className="inline-flex items-center rounded bg-white px-2 py-1 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-white"
-                  >
-                    Bulk edit
-                  </button>
-                  <button
-                    type="button"
-                    className="inline-flex items-center rounded bg-white px-2 py-1 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-white"
-                  >
-                    Delete all
-                  </button>
-                </div>
-              )}
-              <table className="min-w-full table-fixed divide-y divide-gray-300">
-                <thead>
-                  <tr>
-                    <th scope="col" className="relative px-7 sm:w-12 sm:px-6">
-                      <div className="group absolute left-4 top-1/2 -mt-2 grid size-4 grid-cols-1">
-                        <input
-                          type="checkbox"
-                          className="col-start-1 row-start-1 appearance-none rounded border border-gray-300 bg-white checked:border-indigo-600 checked:bg-indigo-600 indeterminate:border-indigo-600 indeterminate:bg-indigo-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto"
-                          ref={checkbox}
-                          checked={checked}
-                          onChange={toggleAll}
-                        />
-                        <svg
-                          className="pointer-events-none col-start-1 row-start-1 size-3.5 self-center justify-self-center stroke-white group-has-[:disabled]:stroke-gray-950/25"
-                          viewBox="0 0 14 14"
-                          fill="none"
-                        >
-                          <path
-                            className="opacity-0 group-has-[:checked]:opacity-100"
-                            d="M3 8L6 11L11 3.5"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                          <path
-                            className="opacity-0 group-has-[:indeterminate]:opacity-100"
-                            d="M3 7H11"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      </div>
-                    </th>
-                    <th
-                      scope="col"
-                      className="min-w-[12rem] py-3.5 pr-3 text-left text-sm font-semibold text-gray-900"
-                    >
-                      Name
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                    >
-                      Title
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                    >
-                      Email
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                    >
-                      Role
-                    </th>
-                    <th
-                      scope="col"
-                      className="relative py-3.5 pl-3 pr-4 sm:pr-3"
-                    >
-                      <span className="sr-only">Edit</span>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200 bg-white">
-                  {people.map((person) => (
-                    <tr
-                      key={person.email}
-                      className={
-                        selectedPeople.includes(person)
-                          ? "bg-gray-50"
-                          : undefined
-                      }
-                    >
-                      <td className="relative px-7 sm:w-12 sm:px-6">
-                        {selectedPeople.includes(person) && (
-                          <div className="absolute inset-y-0 left-0 w-0.5 bg-indigo-600" />
-                        )}
-                        <div className="group absolute left-4 top-1/2 -mt-2 grid size-4 grid-cols-1">
-                          <input
-                            type="checkbox"
-                            className="col-start-1 row-start-1 appearance-none rounded border border-gray-300 bg-white checked:border-indigo-600 checked:bg-indigo-600 indeterminate:border-indigo-600 indeterminate:bg-indigo-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto"
-                            value={person.email}
-                            checked={selectedPeople.includes(person)}
-                            onChange={(e) =>
-                              setSelectedPeople(
-                                e.target.checked
-                                  ? [...selectedPeople, person]
-                                  : selectedPeople.filter(
-                                      (p: any) => p !== person
-                                    )
-                              )
-                            }
-                          />
-                          <svg
-                            className="pointer-events-none col-start-1 row-start-1 size-3.5 self-center justify-self-center stroke-white group-has-[:disabled]:stroke-gray-950/25"
-                            viewBox="0 0 14 14"
-                            fill="none"
-                          >
-                            <path
-                              className="opacity-0 group-has-[:checked]:opacity-100"
-                              d="M3 8L6 11L11 3.5"
-                              stroke-width="2"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            />
-                            <path
-                              className="opacity-0 group-has-[:indeterminate]:opacity-100"
-                              d="M3 7H11"
-                              stroke-width="2"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            />
-                          </svg>
-                        </div>
-                      </td>
-                      <td
-                        className={classNames(
-                          "whitespace-nowrap py-4 pr-3 text-sm font-medium",
-                          selectedPeople.includes(person)
-                            ? "text-indigo-600"
-                            : "text-gray-900"
-                        )}
-                      >
-                        {person.name}
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {person.title}
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {person.email}
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {person.role}
-                      </td>
-                      <td className="whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-3">
-                        <a
-                          href="#"
-                          className="text-indigo-600 hover:text-indigo-900"
-                        >
-                          Edit<span className="sr-only">, {person.name}</span>
-                        </a>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+      <h1 className="text-xl font-semibold mb-4">User Administration</h1>
+      <form onSubmit={handleSubmit} className="mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {Object.keys(formData).map((key) => (
+            <div key={key}>
+              <label
+                htmlFor={key}
+                className="block text-sm font-medium text-gray-700"
+              >
+                {key.charAt(0).toUpperCase() + key.slice(1)}
+              </label>
+              <input
+                id={key}
+                type="text"
+                value={formData[key] || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, [key]: e.target.value })
+                }
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              />
             </div>
-          </div>
+          ))}
         </div>
+        <button
+          type="submit"
+          className="mt-4 bg-indigo-600 text-white py-2 px-4 rounded-md"
+        >
+          {editingUser ? "Update User" : "Add User"}
+        </button>
+      </form>
+      <div className="overflow-hidden bg-white shadow sm:rounded-lg">
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-gray-50">
+            <tr>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Select
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Name
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Email
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Role
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {people.map((person) => (
+              <tr key={person._id}>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <input
+                    type="checkbox"
+                    className="h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                    checked={selectedPeople.includes(person)}
+                    onChange={() =>
+                      setSelectedPeople((prev) =>
+                        prev.includes(person)
+                          ? prev.filter((p) => p !== person)
+                          : [...prev, person]
+                      )
+                    }
+                  />
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">{person.name}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{person.email}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{person.role}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                  <button
+                    onClick={() => handleEdit(person)}
+                    className="text-indigo-600 hover:text-indigo-900 mr-4"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => handleDelete(person._id)}
+                    className="text-red-600 hover:text-red-900"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );
