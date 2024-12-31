@@ -1,5 +1,3 @@
-"use client";
-
 import InputSection from "@/components/input/input";
 import { useToast } from "@/context/toastContext";
 import {
@@ -30,7 +28,7 @@ const defaultData = {
   money: 0,
 };
 
-export default function UserAdmin() {
+export default function ProductAdmin() {
   const token = Cookies.get("authToken");
   const { addToast } = useToast();
   const [people, setPeople] = useState<any[]>([]);

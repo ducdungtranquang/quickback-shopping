@@ -28,6 +28,8 @@ import {
   MagnifyingGlassIcon,
 } from "@heroicons/react/20/solid";
 import { viewAdmin } from "@/ultils/func/admin";
+import BaseModal from "@/components/modals/base-modal";
+import { logout } from "@/ultils/func/api";
 
 const navigationList = [
   {
@@ -92,7 +94,7 @@ const teams = [
     type: "",
   },
 ];
-const userNavigation = [{ name: "Sign out", href: "#" }];
+const userNavigation = [{ name: "Đăng xuất" }];
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -102,6 +104,8 @@ export default function Admin() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [typeAdmin, setTypeAdmin] = useState("dashboard");
   const [navigation, setNavigation] = useState(navigationList);
+  const [open, setOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleClickNav = (type: string) => {
     setTypeAdmin(type);
@@ -111,6 +115,13 @@ export default function Admin() {
     }));
 
     setNavigation(updatedNavigation);
+  };
+
+  const handleOpenModal = () => setIsModalOpen(true);
+  const handleCloseModal = () => setIsModalOpen(false);
+  const handleConfirm = async () => {
+    await logout();
+    setIsModalOpen(false);
   };
 
   useEffect(() => {
@@ -240,11 +251,7 @@ export default function Admin() {
         <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
           <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 pb-4">
             <div className="flex h-16 shrink-0 items-center">
-              <img
-                alt="Your Company"
-                src="/ava8.svg"
-                className="h-8 w-auto"
-              />
+              <img alt="Your Company" src="/ava8.svg" className="h-8 w-auto" />
             </div>
             <nav className="flex flex-1 flex-col">
               <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -389,12 +396,15 @@ export default function Admin() {
                   >
                     {userNavigation.map((item) => (
                       <MenuItem key={item.name}>
-                        <a
-                          href={item.href}
+                        <div
+                          onClick={() => {
+                            handleOpenModal();
+                            setOpen(false);
+                          }}
                           className="block px-3 py-1 text-sm/6 text-gray-900 data-[focus]:bg-gray-50 data-[focus]:outline-none"
                         >
                           {item.name}
-                        </a>
+                        </div>
                       </MenuItem>
                     ))}
                   </MenuItems>
@@ -402,6 +412,17 @@ export default function Admin() {
               </div>
             </div>
           </div>
+
+          {isModalOpen ? (
+            <BaseModal
+              isOpen={isModalOpen}
+              onClose={handleCloseModal}
+              title="Đăng xuất"
+              onConfirm={handleConfirm}
+            >
+              <p>Bạn có chắc chắn muốn đăng xuất</p>
+            </BaseModal>
+          ) : null}
 
           <main className="py-10">
             <div className="px-4 sm:px-6 lg:px-8">

@@ -85,16 +85,16 @@ export const updateUser = async (
   id: string,
   data: any
 ): Promise<any> => {
-  return apiCall<any>("/api/user/admin-all-user", "PUT", data, token);
+  return apiCall<any>(`/api/user/admin-update-users/${id}`, "PUT", data, token);
 };
 
 export const addUser = async (
   token: string,
   data: any
 ): Promise<any> => {
-  return apiCall<any>("/api/user/admin-all-user", "POST", data, token);
+  return apiCall<any>("/api/user/admin-create-users", "POST", data, token);
 };
 
 export const deleteUser = async (token: string, id: string): Promise<any> => {
-  return apiCall<any>("/api/user/admin-all-user", "DELETE", undefined, token);
+  return apiCall<any>(`/api/user/admin-del-users/${id}`, "DELETE", undefined, token);
 };

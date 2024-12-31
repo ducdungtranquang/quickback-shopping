@@ -35,8 +35,11 @@ const RegisterPage = () => {
 
     try {
       const response = await register({ email, password, name });
-      if (response?.success) {
+      if (response) {
         router.push("/verify-account");
+      }
+      else{
+        
       }
     } catch (err) {
       setError("Đăng ký không thành công. Vui lòng thử lại.");
@@ -47,7 +50,7 @@ const RegisterPage = () => {
 
   const handleGoogleLoginSuccess = async () => {
     try {
-      router.push("https://cashback-server-1.onrender.com/api/auth/google");
+      router.push("http://localhost:5000/api/auth/google");
     } catch (error) {
       console.error("Google login failed:", error);
       setGoogleError("Đăng nhập bằng Google không thành công.");
