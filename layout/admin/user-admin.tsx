@@ -211,13 +211,7 @@ export default function UserAdmin() {
                 scope="col"
                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
-                Select
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Name
+                Tên
               </th>
               <th
                 scope="col"
@@ -229,49 +223,49 @@ export default function UserAdmin() {
                 scope="col"
                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
-                Role
+                Vai trò
               </th>
               <th
                 scope="col"
                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
-                Total
+                Tổng số tiền đã rút
               </th>
               <th
                 scope="col"
                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
-                Money
+                Số tiền
               </th>
               <th
                 scope="col"
                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
-                Bank
+                Ngân hàng
               </th>
               <th
                 scope="col"
                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
-                Bank Account
+                Tài khoản ngân hàng
               </th>
               <th
                 scope="col"
                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
-                Money from event
+               Tiền kiếm từ sự kiện
               </th>
               <th
                 scope="col"
                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
-                Phone
+                Số điện thoại
               </th>
               <th
                 scope="col"
                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
-                Is verify
+                Xác thực tài khoản
               </th>
               <th
                 scope="col"
@@ -286,20 +280,6 @@ export default function UserAdmin() {
               people?.length &&
               people?.map((person) => (
                 <tr key={person._id}>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <input
-                      type="checkbox"
-                      className="h-4 w-4 text-indigo-600 border-gray-300 rounded"
-                      checked={selectedPeople.includes(person)}
-                      onChange={() =>
-                        setSelectedPeople((prev) =>
-                          prev.includes(person)
-                            ? prev.filter((p) => p !== person)
-                            : [...prev, person]
-                        )
-                      }
-                    />
-                  </td>
                   <td className="px-6 py-4 whitespace-nowrap">{person.name}</td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     {person.email}

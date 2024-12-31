@@ -1,88 +1,67 @@
 import InputSection from "@/components/input/input";
 import { useToast } from "@/context/toastContext";
 import {
-  getAllUser,
-  updateUser,
-  addUser,
-  deleteUser,
-} from "@/ultils/api/profile";
+  addProduct,
+  delProduct,
+  getProduct,
+  updateProduct,
+} from "@/ultils/api/product";
+import { removeHttps } from "@/ultils/func/helper";
 import Cookies from "js-cookie";
 import { useEffect, useState, useRef } from "react";
 
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
-}
-
 const defaultData = {
   name: "",
-  email: "",
-  accountBank: "",
-  bankName: "",
-  role: 0,
-  total: 0,
-  phoneNumber: "",
-  address: "",
-  city: "",
-  image: "",
-  inviteCode: [],
-  money: 0,
+  link: "",
+  img: "",
+  commission: "",
+  sales: "",
+  price: "",
+  shop: "",
 };
 
-export default function ProductAdmin() {
+export default function ProductTable() {
   const token = Cookies.get("authToken");
   const { addToast } = useToast();
-  const [people, setPeople] = useState<any[]>([]);
-  const [selectedPeople, setSelectedPeople] = useState<any[]>([]);
+  const [product, setProduct] = useState<any[]>([]);
   const [formData, setFormData] = useState<any>(defaultData);
-  const [editingUser, setEditingUser] = useState<any>(null);
-  const [checked, setChecked] = useState(false);
-  const [indeterminate, setIndeterminate] = useState(false);
+  const [editingProduct, setEditingProduct] = useState<any>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalAction, setModalAction] = useState<"edit" | "delete" | null>(
     null
   );
-  const [modalUserId, setModalUserId] = useState<string | null>(null);
+  const [modalProductId, setModalProductId] = useState<string | null>(null);
 
-  const checkbox = useRef<any>();
-
-  const fetchUser = async () => {
-    const data = await getAllUser(token!);
+  const fetchProduct = async () => {
+    const data = await getProduct({ page: 1, limit: 10000 });
     if (data) {
-      setPeople(data);
+      setProduct(data?.data);
     }
   };
 
   useEffect(() => {
-    fetchUser();
+    fetchProduct();
   }, []);
 
-  useEffect(() => {
-    const isIndeterminate =
-      selectedPeople.length > 0 && selectedPeople.length < people.length;
-    setChecked(selectedPeople.length === people.length);
-    setIndeterminate(isIndeterminate);
-    if (checkbox.current) {
-      checkbox.current.indeterminate = isIndeterminate;
-    }
-  }, [selectedPeople]);
-
-  const openModal = (action: "edit" | "delete", userId: string) => {
+  const openModal = (action: "edit" | "delete", productId: string) => {
     setModalAction(action);
-    setModalUserId(userId);
+    setModalProductId(productId);
     setIsModalOpen(true);
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
     setModalAction(null);
-    setModalUserId(null);
+    setModalProductId(null);
   };
 
   const handleModalConfirm = async () => {
-    if (modalAction === "delete" && modalUserId) {
-      await handleDelete(modalUserId);
-    } else if (modalAction === "edit" && modalUserId) {
-      const user = people.find((person) => person._id === modalUserId);
+    if (modalAction === "delete" && modalProductId) {
+      await handleDelete(modalProductId);
+    } else if (modalAction === "edit" && modalProductId) {
+      const user = product.find(
+        (p) => removeHttps(editingProduct.link) === modalProductId
+      );
       if (user) handleEdit(user);
     }
     closeModal();
@@ -91,31 +70,26 @@ export default function ProductAdmin() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.email || !formData.name) {
-      alert("Thiếu trường");
-      return;
-    }
-    if (editingUser) {
-      await updateUser(token!, editingUser._id, formData);
+    if (editingProduct) {
+      await updateProduct(token!, removeHttps(editingProduct.link), formData);
       addToast("Thêm mới thành công", "success");
     } else {
-      await addUser(token!, formData);
+      await addProduct(token!, formData);
       addToast("Thêm mới thành công", "success");
     }
-    fetchUser();
-    setEditingUser(null);
+    fetchProduct();
+    setEditingProduct(null);
     setFormData(defaultData);
   };
 
   const handleDelete = async (id: string) => {
-    await deleteUser(token!, id);
-    fetchUser();
+    await delProduct(token!, id);
+    fetchProduct();
   };
 
-  const handleEdit = (person: any) => {
-    const { moneyByEvent, _id, __v, googleId, trees, isVerified, ...rest } =
-      person;
-    setEditingUser(person);
+  const handleEdit = (p: any) => {
+    const { _id, __v, ...rest } = p;
+    setEditingProduct(p);
     const restData = rest;
     const data = { ...defaultData, ...restData };
     setFormData(data);
@@ -126,8 +100,7 @@ export default function ProductAdmin() {
   };
 
   return (
-    <div className="px-4 sm:px-6 lg:px-8">
-      <h1 className="text-xl font-semibold mb-4">User Administration</h1>
+    <div className="mt-8 px-4 sm:px-6 lg:px-8">
       <form onSubmit={handleSubmit} className="mb-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {Object.keys(formData)?.map((key) => (
@@ -156,12 +129,12 @@ export default function ProductAdmin() {
           type="submit"
           className="mt-4 bg-indigo-600 text-white py-2 px-4 rounded-md"
         >
-          {editingUser ? "Sửa người dùng" : "Thêm người dùng"}
+          {editingProduct ? "Sửa sản phẩm" : "Thêm sản phẩm"}
         </button>
-        {editingUser && (
+        {editingProduct && (
           <button
             onClick={() => {
-              setEditingUser(null);
+              setEditingProduct(null);
               setFormData(defaultData);
             }}
             type="button"
@@ -170,6 +143,15 @@ export default function ProductAdmin() {
             Hủy
           </button>
         )}
+        <button
+          onClick={async () => {
+            await fetchProduct();
+          }}
+          type="button"
+          className="mt-4 ml-3 bg-green-600 text-white py-2 px-4 rounded-md"
+        >
+          Tải lại sản phẩm
+        </button>
       </form>
 
       {isModalOpen && (
@@ -180,8 +162,8 @@ export default function ProductAdmin() {
             </h2>
             <p>
               {modalAction === "delete"
-                ? "Bạn có chắc chắn muốn xóa người dùng này không?"
-                : "Bạn có chắc chắn muốn chỉnh sửa người dùng này không?"}
+                ? "Bạn có chắc chắn muốn xóa sản phẩm này không?"
+                : "Bạn có chắc chắn muốn chỉnh sửa sản phẩm này không?"}
             </p>
             <div className="flex justify-end mt-4">
               <button
@@ -209,67 +191,43 @@ export default function ProductAdmin() {
                 scope="col"
                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
-                Select
+                Tên
               </th>
               <th
                 scope="col"
                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
-                Name
+                Link
               </th>
               <th
                 scope="col"
                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
-                Email
+                Ảnh
               </th>
               <th
                 scope="col"
                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
-                Role
+                Giá
               </th>
               <th
                 scope="col"
                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
-                Total
+                Bán
               </th>
               <th
                 scope="col"
                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
-                Money
+                Cửa hàng
               </th>
               <th
                 scope="col"
                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
-                Bank
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Bank Account
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Money from event
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Phone
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Is verify
+                Hoa hồng
               </th>
               <th
                 scope="col"
@@ -280,63 +238,40 @@ export default function ProductAdmin() {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {people &&
-              people?.length &&
-              people?.map((person) => (
-                <tr key={person._id}>
+            {product &&
+              product?.length &&
+              product?.map((p) => (
+                <tr key={p.link}>
+                  <td className="px-6 py-4 min-w-[200px] max-w-[300px]">
+                    {p.name}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">{p.link}</td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <input
-                      type="checkbox"
-                      className="h-4 w-4 text-indigo-600 border-gray-300 rounded"
-                      checked={selectedPeople.includes(person)}
-                      onChange={() =>
-                        setSelectedPeople((prev) =>
-                          prev.includes(person)
-                            ? prev.filter((p) => p !== person)
-                            : [...prev, person]
-                        )
-                      }
+                    <img
+                      src={p.img || "/img_no_img.jpg"}
+                      alt="img"
+                      className="max-w-[120px]"
                     />
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">{person.name}</td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {person.email}
+                    {p.price + "Đ"}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">{person.role}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">{p.sales}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">{p.shop}</td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {person.total + "Đ"}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {person.money + "Đ"}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {person.bankName}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {person.accountBank}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {person.moneyByEvent.tree + person.moneyByEvent.wheel + "Đ"}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {person.phoneNumber}
-                  </td>
-                  <td
-                    className={`px-6 py-4 whitespace-nowrap ${
-                      person.isVerified ? "text-green-700" : "text-red-700"
-                    }`}
-                  >
-                    {person.isVerified ? "Đã xác thực" : "Chưa xác thực"}
+                    {p.commission + "%"}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <button
-                      onClick={() => handleEdit(person)}
+                      onClick={() => handleEdit(p)}
                       className="text-indigo-600 hover:text-indigo-900 mr-4"
                     >
                       Sửa
                     </button>
                     <button
-                      onClick={() => openModal("delete", person._id)}
+                      onClick={() =>
+                        openModal("delete", removeHttps(p.link))
+                      }
                       className="text-red-600 hover:text-red-900"
                     >
                       Xóa

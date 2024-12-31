@@ -65,3 +65,26 @@ export const getCount = async (
 ): Promise<any> => {
   return apiCall<any>(`/api/product/admin-product`, "GET", undefined, token);
 };
+
+export const addProduct = async (
+  token: string,
+  data?: any,
+): Promise<any> => {
+  return apiCall<any>(`/api/product/admin-add-product`, "POST", data, token);
+};
+
+export const updateProduct = async (
+  token: string,
+  id: string,
+  data: any,
+): Promise<any> => {
+  return apiCall<any>(`/api/product/admin-edit-product/${id}`, "PUT", data, token);
+};
+
+export const delProduct = async (
+  token: string,
+  id: string,
+  signal?: AbortSignal
+): Promise<any> => {
+  return apiCall<any>(`/api/product/admin-del-product/${id}`, "DELETE", undefined, token);
+};

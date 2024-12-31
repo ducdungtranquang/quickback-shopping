@@ -115,6 +115,7 @@ export default function Admin() {
     }));
 
     setNavigation(updatedNavigation);
+    setSidebarOpen(false);
   };
 
   const handleOpenModal = () => setIsModalOpen(true);

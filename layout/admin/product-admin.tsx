@@ -1,17 +1,18 @@
 import { EllipsisVerticalIcon } from "@heroicons/react/20/solid";
+import ProductTable from "./product-table";
 
 const projects = [
   {
     name: "Sản phẩm",
     initials: "SP",
-    href: "#",
-    members: 16,
+    href: "https://docs.google.com/spreadsheets/d/1OpWGJl7Kf67_XDQZtU20MaT9TJEs7noAju5oiYX7nE0/edit?gid=0#gid=0",
+    // members: 16,
     bgColor: "bg-pink-600",
   },
   {
     name: "Cửa hàng",
     initials: "Shop",
-    href: "#",
+    href: "https://docs.google.com/spreadsheets/d/1OpWGJl7Kf67_XDQZtU20MaT9TJEs7noAju5oiYX7nE0/edit?gid=0#gid=0",
     members: 12,
     bgColor: "bg-purple-600",
   },
@@ -19,14 +20,14 @@ const projects = [
     name: "Website",
     initials: "WEB",
     href: "#",
-    members: 0,
+    // members: 0,
     bgColor: "bg-yellow-500",
   },
   {
     name: "Khác",
     initials: "O",
     href: "#",
-    members: 0,
+    // members: 0,
     bgColor: "bg-green-500",
   },
 ];
@@ -60,11 +61,12 @@ export default function ProductAdmin() {
               <div className="flex-1 truncate px-4 py-2 text-sm">
                 <a
                   href={project.href}
+                  target="_blank"
                   className="font-medium text-gray-900 hover:text-gray-600"
                 >
                   {project.name}
                 </a>
-                <p className="text-gray-500">{project.members} sản phẩm</p>
+                {/* <p className="text-gray-500">{project.members} sản phẩm</p> */}
               </div>
               <div className="shrink-0 pr-2">
                 <button
@@ -79,7 +81,7 @@ export default function ProductAdmin() {
           </li>
         ))}
       </ul>
-      <ProductAdmin />
+      <ProductTable />
     </div>
   );
 }
