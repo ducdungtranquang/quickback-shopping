@@ -197,7 +197,7 @@ export default function ProductListPage() {
             </button>
           </div>
 
-          <div className="flex flex-wrap justify-around sm:justify-left gap-2 sm:gap-4 mt-2">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 sm:justify-left gap-2 sm:gap-4 mt-2">
             {products && products?.length ? (
               products?.map((item, i) => (
                 <ProductCard

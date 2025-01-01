@@ -23,6 +23,7 @@ const UserDetailInfo = () => {
   const [money, setMoney] = useState(50000);
   const [verifyCode, setVerifyCode] = useState("");
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isOpenModalWithDraw, setIsOpenModalWithDraw] = useState(false);
   const [isOpenVerifyCode, setIsOpenVerifyCode] = useState(false);
@@ -99,7 +100,7 @@ const UserDetailInfo = () => {
         addToast("Cập nhật thông tin thất bại!", "error");
       }
     } catch (error) {
-      console.error("Error saving profile:", error);
+      addToast("Cập nhật thông tin thất bại!", "error");
     }
 
     if (formData.password && formData.confirmPassword) {
@@ -136,9 +137,11 @@ const UserDetailInfo = () => {
           userId,
           amount: money,
         };
-        await requestWithdraw(token!, dataUser);
+        setLoading(true);
+        const res = await requestWithdraw(token!, dataUser);
         setIsOpenModalWithDraw(false);
         setIsOpenVerifyCode(true);
+        setLoading(false);
         setError(false);
       } else {
         setError(true);
@@ -151,12 +154,18 @@ const UserDetailInfo = () => {
       userId: formData.id,
       verificationCode: verifyCode,
     };
-    const res = await verifyRequestWithdraw(token!, data);
-    if (res?.status) {
-      await fetchProfile();
-      setIsOpenVerifyCode(false);
-      addToast("Yêu cầu rút tiền thành công", "success");
-      setVerifyCode('')
+    try {
+      const res = await verifyRequestWithdraw(token!, data);
+      if (res && res?.status) {
+        await fetchProfile();
+        setIsOpenVerifyCode(false);
+        addToast("Yêu cầu rút tiền thành công", "success");
+        setVerifyCode("");
+      } else {
+        addToast("Yêu cầu rút tiền thất bại", "error");
+      }
+    } catch (error) {
+      addToast("Yêu cầu rút tiền thất bại", "error");
     }
   };
 
@@ -398,24 +407,30 @@ const UserDetailInfo = () => {
                 Number(formData.coinsEarned) < 50000 ? (
                   <p>Bạn không đủ điều kiện hoặc thiếu thông tin rút tiền</p>
                 ) : (
-                  <div>
-                    <InputSection
-                      label="Số tiền rút"
-                      value={money.toString()}
-                      onChange={(el) => {
-                        setMoney(Number(el?.target.value));
-                      }}
-                      type="number"
-                      placeholder={money.toString() || "50000"}
-                    />
+                  <>
+                    {!loading ? (
+                      <div>
+                        <InputSection
+                          label="Số tiền rút"
+                          value={money.toString()}
+                          onChange={(el) => {
+                            setMoney(Number(el?.target.value));
+                          }}
+                          type="number"
+                          placeholder={money.toString() || "50000"}
+                        />
 
-                    {error && (
-                      <p className="mt-4 text-center text-red-500">
-                        Số tiền tối thiểu phải là 50000Đ và không được lớn hơn
-                        số tiền trong ví
-                      </p>
+                        {error && (
+                          <p className="mt-4 text-center text-red-500">
+                            Số tiền tối thiểu phải là 50000Đ và không được lớn
+                            hơn số tiền trong ví
+                          </p>
+                        )}
+                      </div>
+                    ) : (
+                      <Spinner />
                     )}
-                  </div>
+                  </>
                 )}
               </div>
             </BaseModal>

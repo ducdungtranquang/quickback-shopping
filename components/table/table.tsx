@@ -4,6 +4,7 @@ import React from "react";
 export type TableColumn = {
   header: string;
   key: string;
+  type?: string;
 };
 
 export type TableRow = {
@@ -62,7 +63,14 @@ const DataTable: React.FC<TableProps> = ({ columns, data, navigate }) => {
                   key={column.key}
                   className="px-6 py-4"
                 >
-                  {row[column.key]}
+                  {column?.type === "image" ? (
+                    <img
+                      className="min-w-[100px]"
+                      src={row[column.key]?.toString() || "/img_no_img.jpg"}
+                    />
+                  ) : (
+                    <>{row[column.key]}</>
+                  )}
                 </td>
               ))}
             </tr>

@@ -61,7 +61,7 @@ const RegisterPage = () => {
     if (isAuthenticated) {
       router.push("/product");
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, router]);
 
   return (
     <section

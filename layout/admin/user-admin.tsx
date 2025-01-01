@@ -88,7 +88,6 @@ export default function UserAdmin() {
       if (user) handleEdit(user);
     }
     closeModal();
-    addToast("Thành công", "success");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -98,11 +97,15 @@ export default function UserAdmin() {
       return;
     }
     if (editingUser) {
-      await updateUser(token!, editingUser._id, formData);
-      addToast("Thêm mới thành công", "success");
+      const res = await updateUser(token!, editingUser._id, formData);
+      if (res?.message?.includes("success")) {
+        addToast("Thành công", "success");
+      }
     } else {
-      await addUser(token!, formData);
-      addToast("Thêm mới thành công", "success");
+      const res = await addUser(token!, formData);
+      if (res?.message?.includes("success")) {
+        addToast("Thành công", "success");
+      }
     }
     fetchUser();
     setEditingUser(null);
@@ -110,7 +113,10 @@ export default function UserAdmin() {
   };
 
   const handleDelete = async (id: string) => {
-    await deleteUser(token!, id);
+    const res = await deleteUser(token!, id);
+    if (res?.message?.includes("success")) {
+      addToast("Thành công", "success");
+    }
     fetchUser();
   };
 
@@ -221,9 +227,9 @@ export default function UserAdmin() {
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[100px]"
               >
-                Vai trò
+                Ảnh
               </th>
               <th
                 scope="col"
@@ -253,7 +259,7 @@ export default function UserAdmin() {
                 scope="col"
                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
-               Tiền kiếm từ sự kiện
+                Tiền kiếm từ sự kiện
               </th>
               <th
                 scope="col"
@@ -284,7 +290,9 @@ export default function UserAdmin() {
                   <td className="px-6 py-4 whitespace-nowrap">
                     {person.email}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">{person.role}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <img src={person.image || "/img_no_img.jpg"} alt="" />
+                  </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     {person.total + "Đ"}
                   </td>

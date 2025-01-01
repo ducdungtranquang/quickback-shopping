@@ -16,14 +16,14 @@ export default function Toast(props: IToast) {
         setIsExiting(true);
         setTimeout(() => {
           props.onClose && props.onClose();
-        }, 500);
+        }, 1000);
       }, 3000);
 
       return () => clearTimeout(timer);
     }
 
     setIsExiting(true);
-  }, [props.isHidden, props.onClose]);
+  }, [props.isHidden, props.onClose, props.content]);
 
   const getTypeStyles = () => {
     switch (props.type) {

@@ -29,5 +29,39 @@ export const verifyRequestWithdraw = async (
   data: any,
   signal?: AbortSignal
 ): Promise<any> => {
-  return apiCall<any>("/api/withdraw/verify-withdraw", "POST", data, token, signal);
+  return apiCall<any>(
+    "/api/withdraw/verify-withdraw",
+    "POST",
+    data,
+    token,
+    signal
+  );
+};
+
+export const getAllWithdrawRequest = async (
+  token: string,
+  signal?: AbortSignal
+): Promise<any> => {
+  return apiCall<any>(
+    "/api/withdraw/admin-all-request",
+    "GET",
+    undefined,
+    token,
+    signal
+  );
+};
+
+export const approveRequestWithdraw = async (
+  token: string,
+  data: { status: string },
+  id: string,
+  signal?: AbortSignal
+): Promise<any> => {
+  return apiCall<any>(
+    `/api/withdraw/admin-approve-request/${id}`,
+    "PUT",
+    data,
+    token,
+    signal
+  );
 };

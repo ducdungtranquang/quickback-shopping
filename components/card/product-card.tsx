@@ -37,7 +37,7 @@ const ProductCard = (props: IProductCard) => {
   };
 
   return (
-    <div className="w-[45%] sm:w-[200px] sm:max-w-[250px] md:h-auto bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 h-full">
+    <div className="w-full sm:w-[200px] md:h-auto bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 h-full">
       <img
         className="rounded-t-lg object-cover h-[200px] mb-2 mx-auto"
         src={props.src}

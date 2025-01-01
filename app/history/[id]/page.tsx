@@ -76,6 +76,7 @@ export default function HistoryPage() {
     { header: "Id", key: "productId" },
     { header: "Tên", key: "productName" },
     { header: "Giá", key: "price" },
+    { header: "Ảnh", key: "productImg", type: "image" },
     { header: "Số lượng", key: "quantity" },
     { header: "Đường dẫn mua hàng", key: "productLink" },
     { header: "% Tiền hoàn", key: "cashbackPercentage" },
@@ -84,6 +85,7 @@ export default function HistoryPage() {
   const columnsBuy = [
     { header: "Tên", key: "productName" },
     { header: "Giá", key: "price" },
+    { header: "Ảnh", key: "img", type: "image" },
     { header: "Số lượng", key: "quantity" },
     { header: "Đường dẫn mua hàng", key: "productLink" },
     { header: "% Tiền hoàn", key: "cashbackPercentage" },

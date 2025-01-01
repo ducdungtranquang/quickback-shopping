@@ -370,7 +370,7 @@ export default function NavBar({ isAuthenticated }: IProps) {
                 </div>
 
                 {/* Search */}
-                <div className="ml-4 flow-root lg:ml-6 ml-3">
+                <div className="ml-4 flow-root lg:ml-6 ml-3 cursor-pointer">
                   <div
                     className="group -m-2 flex items-center p-2"
                     onClick={() => setShowSearch(!showSearch)}
@@ -394,7 +394,7 @@ export default function NavBar({ isAuthenticated }: IProps) {
                   </Link>
                 </div>
                 {/* Cart */}
-                <div className="ml-4 flow-root lg:ml-6 ml-3">
+                <div className="ml-4 flow-root lg:ml-6 ml-3 cursor-pointer">
                   <div
                     onClick={() => {
                       router.push(`/history/${cart?.[0]?.userId}?activeId=cart`);
