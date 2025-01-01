@@ -16,9 +16,11 @@ import { getProduct, IProduct, IProductQuery } from "@/ultils/api/product";
 import Spinner from "@/components/spinner/spinner";
 import { useSearchParams } from "next/navigation";
 import MediaMartWidget from "@/components/acesstrade/mediaMartWidget";
+import Cookies from "js-cookie";
 
 export default function ProductListPage() {
   const { isAuthenticated } = useAuth(false);
+  const userId = Cookies.get("id");
   const [products, setProducts] = useState<IProduct[]>([]);
   const [page, setPage] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
@@ -44,7 +46,7 @@ export default function ProductListPage() {
     };
 
     const data = await getProduct(query);
-    if ( !data?.data || data?.data?.length < 20) {
+    if (!data?.data || data?.data?.length < 20) {
       setHasMore(false);
     } else {
       setProducts((prev) => [...prev, ...(data?.data || [])]);
@@ -205,7 +207,7 @@ export default function ProductListPage() {
                   cost={item.price}
                   name={item.name}
                   shop={item.shop}
-                  link={item.link}
+                  link={`item.link?utm_source=${userId}`}
                   src={item.img || "/img_no_img.jpg"}
                   commission={item.commission}
                 />

@@ -29,7 +29,10 @@ import {
 } from "@heroicons/react/20/solid";
 import { viewAdmin } from "@/ultils/func/admin";
 import BaseModal from "@/components/modals/base-modal";
+import Cookies from "js-cookie";
 import { logout } from "@/ultils/func/api";
+import useAuth from "@/hook/useAuth";
+import Spinner from "@/components/spinner/spinner";
 
 const navigationList = [
   {
@@ -101,6 +104,7 @@ function classNames(...classes: string[]) {
 }
 
 export default function Admin() {
+  const { isAuthenticated, role } = useAuth(true);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [typeAdmin, setTypeAdmin] = useState("dashboard");
   const [navigation, setNavigation] = useState(navigationList);
@@ -133,6 +137,10 @@ export default function Admin() {
 
     setNavigation(updatedNavigation);
   }, [typeAdmin]);
+
+  if (role! < 1) {
+    return <Spinner />;
+  }
 
   return (
     <>

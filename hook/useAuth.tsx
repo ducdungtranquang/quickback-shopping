@@ -5,6 +5,7 @@ import { verifyToken } from "@/ultils/api/auth";
 
 const useAuth = (isNavigation?: boolean) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const [role, setRole] = useState<number | null>(null);
   const router = useRouter();
   const pathname = usePathname();
   const hasVerified = useRef(false);
@@ -24,8 +25,9 @@ const useAuth = (isNavigation?: boolean) => {
       const checkToken = async () => {
         try {
           const isValid = await verifyToken(token);
-          if (isValid) {
+          if (isValid.valid) {
             setIsAuthenticated(true);
+            setRole(isValid?.role!);
           } else {
             Cookies.remove("authToken");
             Cookies.remove("id");
@@ -48,7 +50,7 @@ const useAuth = (isNavigation?: boolean) => {
     }
   }, [pathname]);
 
-  return { isAuthenticated };
+  return { isAuthenticated, role };
 };
 
 export default useAuth;

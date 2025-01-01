@@ -60,16 +60,19 @@ export const register = async (
   return response;
 };
 
-export const verifyToken = async (token: string): Promise<boolean> => {
+export const verifyToken = async (
+  token: string
+): Promise<{ valid: boolean; role: number }> => {
   try {
-    const response = await apiCall<{ valid: boolean }>(
+    const response = await apiCall<{ valid: boolean; role: number }>(
       "/api/auth/verify-token",
       "POST",
-      { token }
+      { token },
+      token
     );
-    return response.valid;
+    return response;
   } catch (error) {
-    return false;
+    return { valid: false, role: 0 };
   }
 };
 
