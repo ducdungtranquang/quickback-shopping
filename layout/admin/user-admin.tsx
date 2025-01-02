@@ -305,7 +305,7 @@ export default function UserAdmin() {
                   <td className="px-6 py-4 whitespace-nowrap">
                     {person.accountBank}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td className="px-6 py-4 whitespace-nowrap min-w-[120px]">
                     {person.moneyByEvent.tree + person.moneyByEvent.wheel + "Đ"}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">

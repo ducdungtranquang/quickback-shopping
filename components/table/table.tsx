@@ -25,7 +25,7 @@ const DataTable: React.FC<TableProps> = ({ columns, data, navigate }) => {
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
             {columns.map((column) => (
-              <th scope="col" className="px-6 py-3" key={column.key}>
+              <th scope="col" className="px-6 py-3 text-center min-w-[100px]" key={column.key}>
                 {column.header}
               </th>
             ))}
@@ -61,11 +61,11 @@ const DataTable: React.FC<TableProps> = ({ columns, data, navigate }) => {
                     }
                   }}
                   key={column.key}
-                  className="px-6 py-4"
+                  className="px-6 py-4 min-w-[100px] text-center"
                 >
                   {column?.type === "image" ? (
                     <img
-                      className="min-w-[100px]"
+                      className="min-w-[100px] text-center"
                       src={row[column.key]?.toString() || "/img_no_img.jpg"}
                     />
                   ) : (

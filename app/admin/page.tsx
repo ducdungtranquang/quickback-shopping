@@ -75,7 +75,7 @@ const teams = [
   {
     id: 1,
     name: "Tin nhắn",
-    href: "#",
+    href: "http://localhost:3001",
     initial: "S",
     current: false,
     type: "",
@@ -83,7 +83,7 @@ const teams = [
   {
     id: 2,
     name: "Thông tin",
-    href: "#",
+    href: "/our",
     initial: "T",
     current: false,
     type: "info",
@@ -222,6 +222,7 @@ export default function Admin() {
                           <li key={team.name}>
                             <a
                               href={team.href}
+                              target="_blank"
                               className={classNames(
                                 team.current
                                   ? "bg-gray-800 text-white"
@@ -300,6 +301,7 @@ export default function Admin() {
                     {teams.map((team) => (
                       <li key={team.name}>
                         <a
+                          target="_blank"
                           href={team.href}
                           className={classNames(
                             team.current
