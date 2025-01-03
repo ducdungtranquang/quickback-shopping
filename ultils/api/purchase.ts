@@ -27,3 +27,16 @@ export const getPurchase = async (
     signal
   );
 };
+
+export const getReport = async (
+  token: string,
+  signal?: AbortSignal
+): Promise<any> => {
+  return apiCall<any>(
+    `/api/purchase-history/admin`,
+    "GET",
+    undefined,
+    token,
+    signal
+  );
+};

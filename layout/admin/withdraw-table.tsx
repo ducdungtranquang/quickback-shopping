@@ -5,19 +5,9 @@ import {
   approveRequestWithdraw,
   getAllWithdrawRequest,
 } from "@/ultils/api/withdraw";
-import { formatDate, removeHttps } from "@/ultils/func/helper";
+import { formatDate } from "@/ultils/func/helper";
 import Cookies from "js-cookie";
-import { useEffect, useState, useRef, HTMLAttributes } from "react";
-
-const defaultData = {
-  name: "",
-  link: "",
-  img: "",
-  commission: "",
-  sales: "",
-  price: "",
-  shop: "",
-};
+import { useEffect, useState, HTMLAttributes } from "react";
 
 export default function WithDrawTable() {
   const token = Cookies.get("authToken");

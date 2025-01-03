@@ -20,7 +20,6 @@ const defaultData = {
   email: "",
   accountBank: "",
   bankName: "",
-  role: 0,
   total: 0,
   phoneNumber: "",
   address: "",
@@ -121,7 +120,7 @@ export default function UserAdmin() {
   };
 
   const handleEdit = (person: any) => {
-    const { moneyByEvent, _id, __v, googleId, trees, isVerified, ...rest } =
+    const { moneyByEvent, _id, __v, googleId, trees, isVerified, role, inviteCode, ...rest } =
       person;
     setEditingUser(person);
     const restData = rest;

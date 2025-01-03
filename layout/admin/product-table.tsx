@@ -8,7 +8,7 @@ import {
 } from "@/ultils/api/product";
 import { removeHttps } from "@/ultils/func/helper";
 import Cookies from "js-cookie";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 
 const defaultData = {
   name: "",

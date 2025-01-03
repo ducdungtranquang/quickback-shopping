@@ -1,6 +1,7 @@
 import Dashboard from "@/layout/admin/dashboard";
 import InfoAdmin from "@/layout/admin/info-admin";
 import ProductAdmin from "@/layout/admin/product-admin";
+import ReportAdmin from "@/layout/admin/report";
 import RequirementAdmin from "@/layout/admin/requirement";
 import Account from "@/layout/admin/settings";
 import UserAdmin from "@/layout/admin/user-admin";
@@ -16,7 +17,7 @@ export function viewAdmin(
     case "user":
       return <UserAdmin />;
     case "report":
-      return <Dashboard />;
+      return <ReportAdmin />;
     case "requirement":
       return <RequirementAdmin />;
     case "settings":
