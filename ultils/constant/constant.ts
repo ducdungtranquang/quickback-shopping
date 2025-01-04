@@ -120,6 +120,7 @@ export const NAVIGATION_LIST = {
 };
 
 export const CATEGORIES = [
+  "Tất cả",
   "Thời trang",
   "Điện tử",
   "Mỹ phẩm",
@@ -132,6 +133,7 @@ export const CATEGORIES = [
   "Khách sạn",
   "Đồ thể thao",
   "Mẹ và bé",
+  "Web",
 ];
 
 export const images = [

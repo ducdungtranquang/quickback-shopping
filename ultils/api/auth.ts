@@ -106,3 +106,35 @@ export const logoutAccount = async (token: string): Promise<boolean> => {
     return false;
   }
 };
+
+export const resetPassword = async (
+  token: string,
+  newPassword: string
+): Promise<any> => {
+  try {
+    const response = await apiCall<any>(
+      "/api/user/reset-password",
+      "POST",
+      { newPassword, token },
+      token
+    );
+    return response;
+  } catch (error) {
+    return false;
+  }
+};
+
+export const forgotPassword = async (
+  email: string
+): Promise<any> => {
+  try {
+    const response = await apiCall<any>(
+      "/api/user/forgot-password",
+      "POST",
+      { email },
+    );
+    return response;
+  } catch (error) {
+    return false;
+  }
+};

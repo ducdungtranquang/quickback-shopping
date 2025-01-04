@@ -125,10 +125,10 @@ export default function ShopPage() {
         </div>
 
         <div>
-          <h2 className="text-xl font-bold text-black sm:text-normal md:text-2xl mt-[20px]">
+          <h2 className="text-xl font-bold text-black sm:text-normal md:text-2xl mt-5">
             Ưu đãi Hoàn Tiền nổi bật
           </h2>
-          <div className="flex overflow-x-auto custom-scrollbar pb-[5px]">
+          <div className="flex overflow-x-auto custom-scrollbar pb-[5px] gap-4">
             {shop?.map((item, i) => {
               {
                 if (i < 5) {
@@ -148,20 +148,10 @@ export default function ShopPage() {
           </div>
         </div>
 
-        {/* Pagination */}
-        {/* <div className="flex justify-between items-center mt-8 mb-[20px] px-2">
-          <button className="py-2 px-4 bg-gray-200 text-black rounded">
-            Trước
-          </button>
-          <div className="flex space-x-2 items-center ">
-            <span>1/9</span>
-            <button className="py-2 px-4 bg-gray-200 text-black rounded">
-              Tiếp
-            </button>
-          </div>
-        </div> */}
-
         {/* Shop Grid */}
+        <h2 className="text-xl font-bold text-black sm:text-normal md:text-2xl mt-8">
+            Danh sách cửa hàng
+          </h2>
         <div className="flex flex-wrap justify-around sm:justify-left gap-2 sm:gap-4">
           {!loading && shop?.length ? (
             shop?.map((item, i) => (

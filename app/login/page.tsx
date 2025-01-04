@@ -8,14 +8,16 @@ import InputSection from "@/components/input/input";
 import Link from "next/link";
 import useAnimateNavigation from "@/hook/useAnimateNavigation";
 import Cookies from "js-cookie";
-import { login, resendVerify } from "@/ultils/api/auth";
+import { forgotPassword, login, resendVerify } from "@/ultils/api/auth";
 import BaseModal from "@/components/modals/base-modal";
 import Toast from "@/components/toast/toast";
 import useAuth from "@/hook/useAuth";
+import { useToast } from "@/context/toastContext";
 
 const LoginPage = () => {
   const { isAnimating, handleNavigation } = useAnimateNavigation("/register");
-  const {isAuthenticated} = useAuth()
+  const { addToast } = useToast();
+  const { isAuthenticated } = useAuth();
   const router = useRouter();
 
   const [email, setEmail] = useState("");
@@ -86,11 +88,27 @@ const LoginPage = () => {
     }
   };
 
-  useEffect(()=>{
-    if(isAuthenticated){
-      router.push("/product")
+  const handleForgotPassword = async () => {
+    if (!email) {
+      addToast("Vui lòng nhập email", "error");
+    } else {
+      const res = await forgotPassword(email);
+      if (res?.message?.includes("successfully")) {
+        addToast(
+          "Vui lòng kiểm tra email để tiến hành đặt lại mật khẩu",
+          "success"
+        );
+      } else {
+        addToast("Gửi yêu cầu thất bại!", "error");
+      }
     }
-  }, [isAuthenticated, router])
+  };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.push("/product");
+    }
+  }, [isAuthenticated, router]);
 
   return (
     <section
@@ -180,6 +198,7 @@ const LoginPage = () => {
                 </div>
               </div>
               <a
+                onClick={handleForgotPassword}
                 href="#"
                 className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500 mt-5 block"
               >

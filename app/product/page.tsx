@@ -17,6 +17,7 @@ import Spinner from "@/components/spinner/spinner";
 import { useSearchParams } from "next/navigation";
 import MediaMartWidget from "@/components/acesstrade/mediaMartWidget";
 import Cookies from "js-cookie";
+import BasicButton from "@/components/button/basic-button";
 
 export default function ProductListPage() {
   const { isAuthenticated } = useAuth(false);
@@ -46,15 +47,26 @@ export default function ProductListPage() {
     };
 
     const data = await getProduct(query);
-    if (!data?.data || data?.data?.length < 20) {
+    if (!data?.data) {
       setHasMore(false);
-    } else {
-      setProducts((prev) => [...prev, ...(data?.data || [])]);
+    }
+    if (data?.data?.length < 20 && hasMore) {
+      setHasMore(false);
+      if (page === 1) {
+        setProducts(data?.data || []);
+      } else {
+        setProducts((prev) => [...prev, ...(data?.data || [])]);
+      }
+    } else if (data?.data?.length >= 20) {
+      if (page === 1) {
+        setProducts(data?.data || []);
+      } else {
+        setProducts((prev) => [...prev, ...(data?.data || [])]);
+      }
       setPage((prevPage) => prevPage + 1);
     }
     setLoading(false);
   }, [loading, hasMore, page, search, sort]);
-
   useEffect(() => {
     setPage(1);
     setProducts([]);
@@ -65,7 +77,7 @@ export default function ProductListPage() {
   useEffect(() => {
     const observer = new IntersectionObserver(
       async (entries) => {
-        if (entries[0].isIntersecting && !loading) {
+        if (entries[0].isIntersecting && !loading && hasMore) {
           await fetchMoreProducts();
         }
       },
@@ -199,8 +211,24 @@ export default function ProductListPage() {
             </button>
           </div>
 
+          <div className="max-w-[150px] pb-5">
+            <BasicButton
+              text="Reset bộ lọc"
+              variant="plain"
+              onClick={async () => {
+                window.history.replaceState(
+                  null,
+                  "",
+                  window.location.pathname.toString()
+                );
+                setHasMore(true);
+                await fetchMoreProducts();
+              }}
+            />
+          </div>
+
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 sm:justify-left gap-2 sm:gap-4 mt-2">
-            {products && products?.length && !loading ? (
+            {products && products?.length > 0 ? (
               products?.map((item, i) => (
                 <ProductCard
                   key={i}
@@ -214,7 +242,9 @@ export default function ProductListPage() {
               ))
             ) : (
               <div className="flex justify-center items-center flex-col mt-4">
-                <p className="p-2 text-black">Không tìm thấy sản phẩm</p>
+                {!loading && (
+                  <p className="p-2 text-black">Không tìm thấy sản phẩm</p>
+                )}
               </div>
             )}
           </div>
