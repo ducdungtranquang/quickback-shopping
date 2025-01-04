@@ -1,19 +1,21 @@
 import React, { createContext, useState, useContext, ReactNode } from "react";
 import { CartItem, getCart, addToCart, editCart } from "@/ultils/api/cart";
 import Cookies from "js-cookie";
+import { useToast } from "./toastContext";
 
 interface CartContextType {
   cart: CartItem[];
   total: number;
   page: number;
   fetchCart: (page: number) => Promise<void>;
-  addItem: (item: CartItem) => Promise<void>;
-  updateItem: (productId: string, quantity: number) => Promise<void>;
+  addItem: (item: CartItem) => Promise<any>;
+  updateItem: (productId: string, quantity: number) => Promise<any>;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
+  const {addToast} = useToast()
   const [cart, setCart] = useState<CartItem[]>([]);
   const [total, setTotal] = useState<number>(0);
   const [page, setPage] = useState<number>(1);
@@ -41,12 +43,14 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
     try {
       const response = await addToCart(item, token);
-      if (response) {
+      if (response?.message?.includes("success")) {
         setCart((prevCart) => [...prevCart, item]);
         await fetchCart(1);
+        addToast("Thành công", "success")
       }
+      return response
     } catch (error) {
-      console.error("Failed to add item:", error);
+      addToast("Thất bại", "error")
     }
   };
 

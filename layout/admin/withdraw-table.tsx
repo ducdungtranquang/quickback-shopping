@@ -166,17 +166,17 @@ export default function WithDrawTable() {
                   <td className="px-6 py-4 min-w-[200px] max-w-[300px]">
                     {p?.userId?.name}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {p?.userId?.name}
+                  <td className="px-6 py-4 ">
+                    {p?.userId?.email}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap min-w-[120px]">
+                  <td className="px-6 py-4  min-w-[120px]">
                     {p?.amount + "Đ"}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td className="px-6 py-4 ">
                     {formatDate(p?.createdAt)}
                   </td>
                   <td
-                    className={`px-6 py-4 whitespace-nowrap ${
+                    className={`px-6 py-4  ${
                       p.status === "pending"
                         ? "text-gray-500"
                         : p.status === "rejected"
@@ -186,7 +186,7 @@ export default function WithDrawTable() {
                   >
                     {p.status}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                  <td className="px-6 py-4  text-sm font-medium">
                     {p.status === "pending" ? (
                       <>
                         <button

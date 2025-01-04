@@ -200,14 +200,14 @@ export default function ProductListPage() {
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 sm:justify-left gap-2 sm:gap-4 mt-2">
-            {products && products?.length ? (
+            {products && products?.length && !loading ? (
               products?.map((item, i) => (
                 <ProductCard
                   key={i}
                   cost={item.price}
                   name={item.name}
                   shop={item.shop}
-                  link={`item.link?utm_source=${userId}`}
+                  link={`${item.link}?utm_source=${userId}`}
                   src={item.img || "/img_no_img.jpg"}
                   commission={item.commission}
                 />

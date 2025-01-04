@@ -65,17 +65,28 @@ export default function ProductTable() {
       if (user) handleEdit(user);
     }
     closeModal();
-    addToast("Thành công", "success");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (editingProduct) {
-      await updateProduct(token!, removeHttps(editingProduct.link), formData);
-      addToast("Thêm mới thành công", "success");
+      const res = await updateProduct(
+        token!,
+        removeHttps(editingProduct.link),
+        formData
+      );
+      if (res.message?.includes("success")) {
+        addToast("Thêm mới thành công", "success");
+      } else {
+        addToast("Thất bại", "error");
+      }
     } else {
-      await addProduct(token!, formData);
-      addToast("Thêm mới thành công", "success");
+      const res = await addProduct(token!, formData);
+      if (res.message?.includes("success")) {
+        addToast("Thêm mới thành công", "success");
+      } else {
+        addToast("Thất bại", "error");
+      }
     }
     fetchProduct();
     setEditingProduct(null);
@@ -269,9 +280,7 @@ export default function ProductTable() {
                       Sửa
                     </button>
                     <button
-                      onClick={() =>
-                        openModal("delete", removeHttps(p.link))
-                      }
+                      onClick={() => openModal("delete", removeHttps(p.link))}
                       className="text-red-600 hover:text-red-900"
                     >
                       Xóa

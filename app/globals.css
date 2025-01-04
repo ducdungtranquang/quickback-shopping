@@ -290,3 +290,14 @@ hr {
     flex-direction: column;
   }
 }
+
+/* Table */
+
+td,
+th {
+  min-width: 120px;
+  word-wrap: break-word;
+  height: auto;
+  max-height: 300px;
+  overflow: hidden;
+}

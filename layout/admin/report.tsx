@@ -1,10 +1,7 @@
 import BasicButton from "@/components/button/basic-button";
+import InputSection from "@/components/input/input";
 import { useToast } from "@/context/toastContext";
 import { getReport } from "@/ultils/api/purchase";
-import {
-  approveRequestWithdraw,
-  getAllWithdrawRequest,
-} from "@/ultils/api/withdraw";
 import { formatDate } from "@/ultils/func/helper";
 import Cookies from "js-cookie";
 import { useEffect, useState, HTMLAttributes } from "react";
@@ -13,17 +10,17 @@ export default function ReportAdmin() {
   const token = Cookies.get("authToken");
   const { addToast } = useToast();
   const [report, setReport] = useState<any>();
-  const [editingReport, setEditingReport] = useState<any>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalAction, setModalAction] = useState<"edit" | "delete" | null>(
-    null
-  );
-  const [modalReportId, setModalReportId] = useState<string | null>(null);
+  const [value, setValue] = useState<{
+    utm_source?: "";
+    limit: 100;
+    status?: 0 | 1 | 2;
+    merchant?: string;
+  }>({ utm_source: "", limit: 100, merchant: "" });
 
   const fetchReport = async () => {
-    const data = await getReport(token!);
+    const data = await getReport(token!, value);
     if (data) {
-      setReport(data.data);
+      setReport(data.userData);
     }
   };
 
@@ -31,91 +28,71 @@ export default function ReportAdmin() {
     fetchReport();
   }, []);
 
-  const openModal = (action: "edit" | "delete", reportId: string) => {
-    setModalAction(action);
-    setModalReportId(reportId);
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setModalAction(null);
-    setModalReportId(null);
-  };
-
-  const handleModalConfirm = async () => {
-    if (modalAction === "delete" && modalReportId) {
-      await handleReject(modalReportId);
-    } else if (modalAction === "edit" && modalReportId) {
-      handleEdit(modalReportId);
-    }
-    closeModal();
-  };
-
-  const handleReject = async (id: string) => {
-    const res = await approveRequestWithdraw(
-      token!,
-      { status: "rejected" },
-      id
-    );
-    if (res && res?.message?.includes("success")) {
-      addToast("Thành công", "success");
-    }
-    fetchReport();
-  };
-
-  const handleEdit = async (id: string) => {
-    const res = await approveRequestWithdraw(
-      token!,
-      { status: "approved" },
-      id
-    );
-    if (res && res?.message?.includes("success")) {
-      addToast("Thành công", "success");
-    }
-    fetchReport();
-  };
-
   return (
     <div className="">
       <h2 className="text-xl font-medium mb-8">Báo cáo</h2>
-      <BasicButton
-        onClick={async () => {
-          await fetchReport();
-        }}
-        type="button"
-        text="Tải lại báo cáo"
-        styles={{ width: "150px" } as HTMLAttributes<HTMLButtonElement>}
-      />
-
-      {isModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50 z-50">
-          <div className="bg-white rounded-lg shadow-lg p-6">
-            <h2 className="text-lg font-semibold mb-4">
-              {modalAction === "delete" ? "Xác nhận xóa" : "Xác nhận sửa"}
-            </h2>
-            <p>
-              {modalAction === "delete"
-                ? "Bạn có chắc chắn muốn từ chối yêu cầu này không?"
-                : "Bạn có chắc chắn muốn chấp thuận yêu cầu này không?"}
-            </p>
-            <div className="flex justify-end mt-4">
-              <button
-                onClick={closeModal}
-                className="bg-gray-200 text-gray-700 py-2 px-4 rounded-lg mr-2"
-              >
-                Hủy
-              </button>
-              <button
-                onClick={handleModalConfirm}
-                className="bg-red-600 text-white py-2 px-4 rounded-lg"
-              >
-                Xác nhận
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <div className="grid md:max-w-[50%] gap-5">
+        <InputSection
+          type="text"
+          value={value.utm_source}
+          label="Utm_source( ID của người dùng )"
+          onChange={(e) =>
+            setValue((prev: any) => {
+              return {
+                ...prev,
+                utm_source: e.target.value,
+              };
+            })
+          }
+        />
+        <InputSection
+          type="number"
+          value={value.limit?.toString()}
+          label="Số lượng"
+          onChange={(e) =>
+            setValue((prev: any) => {
+              return {
+                ...prev,
+                limit: e.target.value,
+              };
+            })
+          }
+        />
+        <InputSection
+          type="text"
+          value={value.merchant}
+          label="Nền tảng"
+          onChange={(e) =>
+            setValue((prev: any) => {
+              return {
+                ...prev,
+                merchant: e.target.value,
+              };
+            })
+          }
+        />
+        <InputSection
+          type="number"
+          value={value.status?.toString()}
+          label="Trạng thái (0 : hold; 1 : approved; 2 : rejected)"
+          onChange={(e) =>
+            setValue((prev: any) => {
+              return {
+                ...prev,
+                status: e.target.value,
+              };
+            })
+          }
+        />
+        <BasicButton
+          onClick={async () => {
+            await fetchReport();
+          }}
+          type="button"
+          text="Tải lại báo cáo"
+          styles={{ width: "150px" } as HTMLAttributes<HTMLButtonElement>}
+        />
+      </div>
 
       <div className="overflow-scroll bg-white shadow sm:rounded-lg mt-6">
         <table className="min-w-full divide-y divide-gray-200">
@@ -137,19 +114,61 @@ export default function ReportAdmin() {
                 scope="col"
                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
-                Số tiền yêu cầu
+                Hoa hồng
               </th>
               <th
                 scope="col"
                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
-                Ngày tạo
+                Giá
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Ngày mua
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Mã giao dịch
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Lý do từ chối
               </th>
               <th
                 scope="col"
                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
                 Trạng thái
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Sản phẩm
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Nền tảng
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Đường dẫn mua hàng
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Ngày xác nhận
               </th>
               <th
                 scope="col"
@@ -162,56 +181,56 @@ export default function ReportAdmin() {
           <tbody className="bg-white divide-y divide-gray-200">
             {report &&
               report?.length &&
-              report?.map((p:any) => (
-                <tr key={p.link}>
+              report?.map((p: any, i: number) => (
+                <tr key={i}>
                   <td className="px-6 py-4 min-w-[200px] max-w-[300px]">
-                    {p?.userId?.name}
+                    {p?.userName}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {p?.userId?.name}
+                  <td className="px-6 py-4 lg:py-5">{p?.email}</td>
+                  <td className="px-6 py-4 lg:py-5 min-w-[120px]">
+                    {p?.commission + "Đ"}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap min-w-[120px]">
-                    {p?.amount + "Đ"}
+                  <td className="px-6 py-4 lg:py-5">
+                    {p?.product_price + "Đ"}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {formatDate(p?.createdAt)}
+                  <td className="px-6 py-4 lg:py-5">
+                    {formatDate(p?.transaction_time)}
                   </td>
+                  <td className="px-6 py-4 lg:py-5">{p?.transaction_id}</td>
+                  <td className="px-6 py-4 lg:py-5">{p?.reason_rejected}</td>
                   <td
-                    className={`px-6 py-4 whitespace-nowrap ${
-                      p.status === "pending"
-                        ? "text-gray-500"
-                        : p.status === "rejected"
-                        ? "text-red-800"
-                        : "text-green-700"
+                    className={`px-6 py-4 lg:py-5 ${
+                      p.status === 1
+                        ? "text-green-600"
+                        : p.status === 0
+                        ? "text-grey-600"
+                        : "text-red-600"
                     }`}
                   >
-                    {p.status}
+                    {p.status === 1
+                      ? "Đã duyệt"
+                      : p.status === 0
+                      ? "Đang xử lý"
+                      : "Hủy"}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    {p.status === "pending" ? (
-                      <>
-                        <button
-                          onClick={() => {
-                            openModal("edit", p._id);
-                            setEditingReport(p._id);
-                          }}
-                          className="text-indigo-600 hover:text-indigo-900 mr-4"
-                        >
-                          Duyệt
-                        </button>
-                        <button
-                          onClick={() => {
-                            openModal("delete", p._id);
-                            setEditingReport(p._id);
-                          }}
-                          className="text-red-600 hover:text-red-900"
-                        >
-                          Từ chối
-                        </button>
-                      </>
-                    ) : (
-                      <BasicButton text="Kiểm tra" variant="basic" />
-                    )}
+                  <td className="px-6 py-4 lg:py-5">{p?.product_name}</td>
+                  <td className="px-6 py-4 lg:py-5">{p?.merchant}</td>
+                  <td className="px-6 py-4 lg:py-5 min-w-[250px]">
+                    <a className="text-blue-600" href={p?.click_url}>
+                      Đường dẫn sản phẩm
+                    </a>
+                  </td>
+                  <td className="px-6 py-4 lg:py-5">
+                    {formatDate(p?.confirmed_time)}
+                  </td>
+                  <td className="px-6 py-4 lg:py-5">
+                    <a
+                      className="text-blue-600 underline"
+                      href="https://pub2.accesstrade.vn/report/"
+                      target="_blank"
+                    >
+                      Kiểm tra chi tiết
+                    </a>
                   </td>
                 </tr>
               ))}

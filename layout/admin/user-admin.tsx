@@ -120,8 +120,17 @@ export default function UserAdmin() {
   };
 
   const handleEdit = (person: any) => {
-    const { moneyByEvent, _id, __v, googleId, trees, isVerified, role, inviteCode, ...rest } =
-      person;
+    const {
+      moneyByEvent,
+      _id,
+      __v,
+      googleId,
+      trees,
+      isVerified,
+      role,
+      inviteCode,
+      ...rest
+    } = person;
     setEditingUser(person);
     const restData = rest;
     const data = { ...defaultData, ...restData };
@@ -214,6 +223,12 @@ export default function UserAdmin() {
             <tr>
               <th
                 scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider min-w-[250px]"
+              >
+                ID
+              </th>
+              <th
+                scope="col"
                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
                 Tên
@@ -285,6 +300,7 @@ export default function UserAdmin() {
               people?.length &&
               people?.map((person) => (
                 <tr key={person._id}>
+                  <td className="px-6 py-4 whitespace-nowrap">{person._id}</td>
                   <td className="px-6 py-4 whitespace-nowrap">{person.name}</td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     {person.email}
@@ -324,12 +340,14 @@ export default function UserAdmin() {
                     >
                       Sửa
                     </button>
-                    <button
-                      onClick={() => openModal("delete", person._id)}
-                      className="text-red-600 hover:text-red-900"
-                    >
-                      Xóa
-                    </button>
+                    {person?.role < 2 && (
+                      <button
+                        onClick={() => openModal("delete", person._id)}
+                        className="text-red-600 hover:text-red-900"
+                      >
+                        Xóa
+                      </button>
+                    )}
                   </td>
                 </tr>
               ))}

@@ -30,12 +30,13 @@ export const getPurchase = async (
 
 export const getReport = async (
   token: string,
+  data: any,
   signal?: AbortSignal
 ): Promise<any> => {
   return apiCall<any>(
     `/api/purchase-history/admin`,
-    "GET",
-    undefined,
+    "POST",
+    data,
     token,
     signal
   );

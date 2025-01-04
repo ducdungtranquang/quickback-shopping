@@ -32,6 +32,7 @@ export const getCart = async (
 
 interface EditCartResponse {
   success: boolean;
+  message?: string
 }
 
 export const addToCart = async (
