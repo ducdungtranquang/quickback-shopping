@@ -158,12 +158,12 @@ const UserDetailInfo = () => {
       const res = await verifyRequestWithdraw(token!, data);
       if (res && res?.status) {
         await fetchProfile();
-        setIsOpenVerifyCode(false);
         addToast("Yêu cầu rút tiền thành công", "success");
         setVerifyCode("");
       } else {
         addToast("Yêu cầu rút tiền thất bại", "error");
       }
+      setIsOpenVerifyCode(false);
     } catch (error) {
       addToast("Yêu cầu rút tiền thất bại", "error");
     }
@@ -439,7 +439,10 @@ const UserDetailInfo = () => {
           {isOpenVerifyCode && (
             <BaseModal
               isOpen={isOpenVerifyCode}
-              onClose={() => setIsOpenVerifyCode(false)}
+              onClose={() => {
+                setIsOpenVerifyCode(false);
+                setVerifyCode("");
+              }}
               title={"Nhập mã xác thực"}
               onConfirm={handleVerify}
             >

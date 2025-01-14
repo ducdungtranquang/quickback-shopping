@@ -192,28 +192,26 @@ export default function WithDrawTable() {
                   >
                     {p.status}
                   </td>
-                  <td className="px-6 py-4  text-sm font-medium">
+                  <td className="px-6 py-4  text-sm font-medium min-w-[150px]">
                     {p.status === "pending" ? (
-                      <>
-                        <button
+                      <div className="flex flex-col gap-2">
+                        <BasicButton
                           onClick={() => {
                             openModal("edit", p._id);
                             setEditingWithDraw(p._id);
                           }}
-                          className="text-indigo-600 hover:text-indigo-900 mr-4"
-                        >
-                          Duyệt
-                        </button>
-                        <button
+                          text=" Duyệt"
+                          variant="success"
+                        />
+                        <BasicButton
                           onClick={() => {
                             openModal("delete", p._id);
                             setEditingWithDraw(p._id);
                           }}
-                          className="text-red-600 hover:text-red-900"
-                        >
-                          Từ chối
-                        </button>
-                      </>
+                          text="Từ chối"
+                          variant="error"
+                        />
+                      </div>
                     ) : (
                       <BasicButton text="Kiểm tra" variant="basic" />
                     )}
