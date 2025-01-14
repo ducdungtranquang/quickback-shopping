@@ -61,7 +61,7 @@ const DataTable: React.FC<TableProps> = ({ columns, data, navigate }) => {
                     }
                   }}
                   key={column.key}
-                  className="px-6 py-4 min-w-[100px] text-center"
+                  className="px-6 py-4 min-w-[150px] max-h-[150px] overflow-hidden text-center"
                 >
                   {column?.type === "image" ? (
                     <img
@@ -69,7 +69,7 @@ const DataTable: React.FC<TableProps> = ({ columns, data, navigate }) => {
                       src={row[column.key]?.toString() || "/img_no_img.jpg"}
                     />
                   ) : (
-                    <>{row[column.key]}</>
+                    <div className="line-clamp-3">{row[column.key]}</div>
                   )}
                 </td>
               ))}

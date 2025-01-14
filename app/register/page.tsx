@@ -65,7 +65,7 @@ const RegisterPage = () => {
 
   return (
     <section
-      className={`container bg-blue-200 dark:bg-gray-900 h-full py-5 ${
+      className={`container bg-blue-200 dark:bg-gray-900 h-full py-5 min-h-screen ${
         isAnimating ? "page-exit-active" : "page-enter-active"
       }`}
     >

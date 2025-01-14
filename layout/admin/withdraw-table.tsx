@@ -78,14 +78,24 @@ export default function WithDrawTable() {
 
   return (
     <div className="mt-8">
-      <BasicButton
-        onClick={async () => {
-          await fetchWithDraw();
-        }}
-        type="button"
-        text=" Tải lại yêu cầu"
-        styles={{ width: "150px" } as HTMLAttributes<HTMLButtonElement>}
-      />
+      <div className="flex flex-wrap gap-4">
+        <BasicButton
+          onClick={async () => {
+            await fetchWithDraw();
+          }}
+          type="button"
+          text=" Tải lại yêu cầu"
+          styles={{ width: "150px" } as HTMLAttributes<HTMLButtonElement>}
+        />
+        <a href="http://localhost:8888/order/create_payment_url">
+          <BasicButton
+            type="button"
+            variant="plain"
+            text="Thanh toán"
+            styles={{ width: "150px" } as HTMLAttributes<HTMLButtonElement>}
+          />
+        </a>
+      </div>
 
       {isModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50 z-50">
@@ -166,15 +176,11 @@ export default function WithDrawTable() {
                   <td className="px-6 py-4 min-w-[200px] max-w-[300px]">
                     {p?.userId?.name}
                   </td>
-                  <td className="px-6 py-4 ">
-                    {p?.userId?.email}
-                  </td>
+                  <td className="px-6 py-4 ">{p?.userId?.email}</td>
                   <td className="px-6 py-4  min-w-[120px]">
                     {p?.amount + "Đ"}
                   </td>
-                  <td className="px-6 py-4 ">
-                    {formatDate(p?.createdAt)}
-                  </td>
+                  <td className="px-6 py-4 ">{formatDate(p?.createdAt)}</td>
                   <td
                     className={`px-6 py-4  ${
                       p.status === "pending"

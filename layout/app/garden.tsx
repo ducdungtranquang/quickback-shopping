@@ -222,7 +222,7 @@ export default function GardenLayout({
             <div className="w-[200px] h-[200px] bg-[#f2faf3] rounded-full border-4 border-green-100 flex justify-center items-center">
               <img
                 alt="tree"
-                src="/Lotus_03.svg"
+                src={`/${treeStatus.type}_03.svg`}
                 className="w-[120px] h-[120px]"
               />
             </div>

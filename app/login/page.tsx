@@ -112,7 +112,7 @@ const LoginPage = () => {
 
   return (
     <section
-      className={`container bg-blue-200 dark:bg-gray-900 h-full py-5 ${
+      className={`container bg-blue-200 dark:bg-gray-900 h-full min-h-screen py-5 ${
         isAnimating ? "page-exit-active" : "page-enter-active"
       }`}
     >
@@ -192,7 +192,9 @@ const LoginPage = () => {
                       htmlFor="remember"
                       className="text-gray-500 dark:text-gray-300"
                     >
-                      Tôi đồng ý với mọi điều khoản của QuickBack Shopping
+                      <Link href="/policy">
+                        Tôi đồng ý với mọi điều khoản của QuickBack Shopping
+                      </Link>
                     </label>
                   </div>
                 </div>
@@ -216,11 +218,6 @@ const LoginPage = () => {
                 onClick={handleGoogleLoginSuccess}
               />
 
-              {/* <BasicButton
-                text="Đăng nhập bằng Telegram"
-                type="button"
-                variant="plain"
-              /> */}
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Chưa có tài khoản?{" "}
                 <Link
