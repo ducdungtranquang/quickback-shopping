@@ -53,7 +53,7 @@ export const getAllWithdrawRequest = async (
 
 export const approveRequestWithdraw = async (
   token: string,
-  data: { status: string },
+  data: { status: string; reason?: string },
   id: string,
   signal?: AbortSignal
 ): Promise<any> => {

@@ -19,6 +19,7 @@ export default function WithDrawTable() {
     null
   );
   const [modalWithDrawId, setModalWithDrawId] = useState<string | null>(null);
+  const [reason, setReason] = useState<string | undefined>(undefined);
 
   const fetchWithDraw = async () => {
     const data = await getAllWithdrawRequest(token!);
@@ -55,7 +56,7 @@ export default function WithDrawTable() {
   const handleReject = async (id: string) => {
     const res = await approveRequestWithdraw(
       token!,
-      { status: "rejected" },
+      { status: "rejected", reason: reason },
       id
     );
     if (res && res?.message?.includes("success")) {
@@ -103,7 +104,16 @@ export default function WithDrawTable() {
             <h2 className="text-lg font-semibold mb-4">
               {modalAction === "delete" ? "Xác nhận xóa" : "Xác nhận sửa"}
             </h2>
-            <p>
+            {modalAction === "delete" && (
+              <>
+                <InputSection
+                  label="Lý do"
+                  value={reason}
+                  onChange={(el) => setReason(el.target.value)}
+                />
+              </>
+            )}
+            <p className="py-2">
               {modalAction === "delete"
                 ? "Bạn có chắc chắn muốn từ chối yêu cầu này không?"
                 : "Bạn có chắc chắn muốn chấp thuận yêu cầu này không?"}
